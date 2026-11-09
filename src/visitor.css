@@ -23,32 +23,35 @@
   color: var(--ink);
 }
 .tafe-brand {
-  display: inline-flex;
-  gap: 9px;
-  align-items: center;
+  display: inline-grid;
+  justify-items: start;
   color: var(--navy);
-  font:
-    800 29px Manrope,
-    sans-serif;
-  line-height: 1;
-  letter-spacing: 0.5px;
 }
-.tafe-brand > svg {
-  width: 42px;
-  height: 42px;
-  stroke-width: 1.8;
-  color: var(--blue);
+.tafe-brand img {
+  width: 150px;
+  max-width: 100%;
+  height: auto;
 }
 .tafe-brand small {
-  display: block;
-  font:
-    700 6px "DM Sans",
-    sans-serif;
-  letter-spacing: 1.1px;
-  margin-top: 7px;
+  margin: 3px 0 0 5px;
+  font: 700 7px/1.3 "DM Sans", sans-serif;
+  letter-spacing: 0.09em;
 }
-[data-theme="dark"] .tafe-brand {
-  color: #fff;
+.tafe-brand .tafe-logo-dark,
+[data-theme="dark"] .tafe-logo-light,
+.auth-story .tafe-logo-light,
+.admin-sidebar .tafe-logo-light {
+  display: none;
+}
+[data-theme="dark"] .tafe-logo-dark,
+.auth-story .tafe-logo-dark,
+.admin-sidebar .tafe-logo-dark {
+  display: block;
+}
+[data-theme="dark"] .tafe-brand,
+.auth-story .tafe-brand,
+.admin-sidebar .tafe-brand {
+  color: #eff6ff;
 }
 .landing {
   background: var(--paper);
@@ -1246,4 +1249,43 @@
 [data-theme="dark"] .platform-preview .preview-sidebar,
 [data-theme="dark"] .feature-icon {
   color: #91baff;
+}
+
+.windows-downloads {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  margin: 64px 0;
+  padding: clamp(20px, 4vw, 40px);
+  border: 1px solid var(--stroke);
+  border-radius: 20px;
+  background: var(--surface);
+  scroll-margin-top: 24px;
+}
+.windows-download-mark {
+  display: grid;
+  place-items: center;
+  flex: 0 0 48px;
+  height: 48px;
+  color: var(--blue);
+  background: var(--paper);
+  border: 1px solid var(--stroke);
+  border-radius: 12px;
+}
+.windows-downloads h2 { margin: 0; }
+.windows-downloads p { color: var(--subtle); }
+.windows-download-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.windows-download-actions button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+}
+@media (max-width: 520px) {
+  .windows-downloads { flex-direction: column; gap: 12px; margin-block: 40px; }
+  .windows-download-mark { flex-basis: auto; width: 48px; }
 }

@@ -25,7 +25,7 @@ import {
 } from "lucide-react";
 import type { Session } from "@supabase/supabase-js";
 import { db } from "./db";
-import { Landing, InfoPage, type VisitorPage } from "./Landing";
+import { Brand, Landing, InfoPage, type VisitorPage } from "./Landing";
 import { EmailAuth } from "./EmailAuth";
 import { Onboarding } from "./Onboarding";
 import { LibraryPage } from "./LibraryPage";
@@ -143,6 +143,9 @@ function App() {
   }, [session?.user.id]);
   useEffect(() => {
     document.documentElement.dataset.theme = dark ? "dark" : "light";
+    const favicon = document.querySelector<HTMLLinkElement>('link[rel="icon"]');
+    if (favicon)
+      favicon.href = dark ? "/tafe-mark-dark.svg" : "/tafe-mark-light.svg";
     localStorage.theme = dark ? "dark" : "light";
   }, [dark]);
   useEffect(() => {
@@ -242,17 +245,15 @@ function App() {
         <AdminApp onLanguageChange={changeLanguage} />
       </Suspense>
     );
+  const fullChat = page === "ai" && !!profile.onboarded_at && !attempt;
   return (
     <>
       <aside className="student-sidebar">
         <a className="brand" href="#/student/dashboard">
-          <GraduationCap size={38} />
-          <b>
-            TAFE<span>FUTURE EXCELLENCE</span>
-          </b>
+          <Brand />
         </a>
         <small>{t("LEARNING WORKSPACE")}</small>
-        <nav>
+        <nav aria-label={t("Bosh menyu")}>
           {nav.map(([key, name, Icon]) => (
             <a
               className={page === key ? "selected" : ""}
@@ -273,7 +274,7 @@ function App() {
               }}
             >
               <Icon size={19} />
-              {t(name)}
+              <span>{t(name)}</span>
             </a>
           ))}
         </nav>
@@ -297,9 +298,20 @@ function App() {
           </button>
         </div>
       </aside>
-      <div className="workspace">
-        <header>
-          <span>TAFE / {t(nav.find((n) => n[0] === page)?.[1] || "")}</span>
+      <div
+        className={
+          fullChat
+            ? "workspace student-workspace chat-workspace"
+            : "workspace student-workspace"
+        }
+      >
+        <header className="student-topbar">
+          <span className="student-breadcrumb">
+            TAFE / {t(nav.find((n) => n[0] === page)?.[1] || "")}
+          </span>
+          <div className="student-app-title">
+            <Brand caption={t(nav.find((n) => n[0] === page)?.[1] || "")} />
+          </div>
           <div>
             <LanguagePicker onChange={changeLanguage} />
             {admin && (
@@ -326,9 +338,7 @@ function App() {
           </div>
         </header>
         <main
-          className={
-            page === "ai" ? "motion-view chat-workspace-main" : "motion-view"
-          }
+          className={fullChat ? "chat-workspace-main" : "motion-view"}
           key={attempt?.id || page}
         >
           <Feedback {...action} />
@@ -389,7 +399,7 @@ function App() {
             </>
           )}
         </main>
-        <footer>© TAFE · Training And Future Excellence</footer>
+        {!fullChat && <footer>© TAFE · Training And Future Excellence</footer>}
       </div>
     </>
   );

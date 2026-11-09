@@ -52,8 +52,6 @@ export function ChatPage({
     [search, setSearch] = useState(""),
     [draft, setDraft] = useState(initialPrompt),
     [mode, setMode] = useState("ask"),
-    [consent, setConsent] = useState(false),
-    [context, setContext] = useState(false),
     [menu, setMenu] = useState(false),
     [lastFailed, setLastFailed] = useState("");
   const action = useAction();
@@ -88,8 +86,6 @@ export function ChatPage({
     }
   }, [draft]);
   async function send(message: string) {
-    if (!consent)
-      throw Error("Savolni Gemini’ga yuborishga rozilik belgilang.");
     if (!message.trim()) return;
     let conversationId = current;
     if (!conversationId) {
@@ -114,8 +110,6 @@ export function ChatPage({
           requestId: crypto.randomUUID(),
           mode,
           message,
-          sendToGemini: true,
-          sendLearningContext: context,
         },
       });
       if (response.error) {
@@ -342,40 +336,13 @@ export function ChatPage({
               />
               <button
                 className="primary"
-                disabled={action.busy || !draft.trim() || !consent}
+                disabled={action.busy || !draft.trim()}
                 aria-label={t("Savolni yuborish")}
               >
                 <Send size={18} />
               </button>
             </div>
-            <div className="chat-consent">
-              <label className="checkbox-label">
-                <input
-                  type="checkbox"
-                  checked={consent}
-                  onChange={(e) => setConsent(e.target.checked)}
-                />
-                {t(
-                  "Savolim va shu suhbat tarixini Google Gemini’ga yuborishga roziman.",
-                )}
-              </label>
-              <label className="checkbox-label">
-                <input
-                  type="checkbox"
-                  checked={context}
-                  onChange={(e) => setContext(e.target.checked)}
-                />
-                {t(
-                  "Maqsadlarim, darajam, tarifim va oxirgi test natijalarimdan foydalanilsin.",
-                )}
-              </label>
-            </div>
           </form>
-          <small className="chat-disclaimer">
-            {t(
-              "AI javoblarini o‘quv manbalari bilan tekshiring. Rasmiy test ballari serverda hisoblanadi.",
-            )}
-          </small>
         </div>
       </div>
     </div>

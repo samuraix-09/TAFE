@@ -11,12 +11,6 @@
   --motion-elevation: 0 22px 64px #02061055;
 }
 
-.motion-brand-mark {
-  width: 39px;
-  height: 39px;
-  flex: none;
-}
-
 .landing {
   background:
     radial-gradient(
@@ -176,7 +170,7 @@
   .public-header .public-links {
     display: flex;
     position: absolute;
-    top: 83px;
+    top: 100%;
     left: 0;
     right: 0;
     z-index: 4;
@@ -197,10 +191,6 @@
     pointer-events: auto;
     transform: none;
   }
-  .motion-brand-mark {
-    width: 32px;
-    height: 32px;
-  }
   .hero-stage {
     width: 100%;
     max-width: 570px;
@@ -212,12 +202,30 @@
   .landing header.public-header {
     padding-inline: 16px;
   }
-  .public-header .public-links,
-  .public-header .public-links.open {
-    top: 76px;
+  .landing header.public-header .public-links {
+    top: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  .mobile-login-link {
-    display: inline-block;
+  .public-header .public-links a {
+    display: grid;
+    align-items: center;
+    min-height: 44px;
+    padding-inline: 10px;
+    border-radius: 8px;
+    background: var(--surface);
+  }
+  .public-header .header-actions :is(button, select) {
+    min-height: 44px;
+  }
+  .public-header .tafe-brand img {
+    width: clamp(104px, 25vw, 140px);
+  }
+  .public-header .public-links .compact-register-link {
+    display: none;
+  }
+  .public-header .mobile-login-link {
+    display: grid;
   }
   .hero-copy h1 {
     font-size: clamp(2.25rem, 10vw, 3rem);
@@ -245,8 +253,8 @@
   .public-header .header-actions > .primary {
     display: none;
   }
-  .public-header .compact-register-link {
-    display: inline-block;
+  .public-header .public-links .compact-register-link {
+    display: grid;
   }
 }
 

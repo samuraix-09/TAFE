@@ -50,3 +50,7 @@ Browser QA observed the public landing and the unauthenticated admin route's log
 Live payment processing requires a chosen provider and its credentials/webhook configuration. Payment status cannot be set by an ordinary user or administrator frontend. Current payment screens show actual saved records and the unconfigured-provider state. Paid prices remain unset until configured.
 
 Notification preferences are persisted, but scheduled reminder delivery is not active. AI responses are non-streaming and do not currently expose a generation-cancellation control. Written response grading uses administrator-supplied accepted variants, with no subjective or official AI scoring. User-created tests, resources and other authored content retain their source language. Hard account purging is not implemented.
+
+### Windows downloads on the landing page
+
+After building the website, run `node scripts/stage-windows-downloads.mjs <directory-containing-exes>` before packaging the site. This stages both Windows x64 executables in `dist/downloads/windows` with checksums for browser reassembly. The default input directory is `desktop-release`.

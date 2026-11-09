@@ -68,15 +68,6 @@ aside {
   color: var(--navy);
   margin-bottom: 55px;
 }
-.brand b {
-  font: 800 31px Manrope;
-  letter-spacing: 1px;
-}
-.brand span {
-  font: 700 8px "DM Sans";
-  display: block;
-  letter-spacing: 2px;
-}
 aside > small {
   font-size: 9px;
   color: #98a2b3;
@@ -454,9 +445,6 @@ footer {
   .brand {
     margin: 0 0 10px;
     font-size: 20px;
-  }
-  .brand b {
-    font-size: 22px;
   }
   .brand svg {
     width: 28px;

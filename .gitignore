@@ -3,3 +3,5 @@ dist/
 .env*
 
 supabase/.temp/
+
+desktop-release/

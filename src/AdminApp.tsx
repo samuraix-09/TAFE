@@ -1,3 +1,4 @@
+import { Brand } from "./Landing";
 import { t, LanguagePicker, localeTag, type Locale } from "./i18n";
 import { useEffect, useState } from "react";
 import {
@@ -5,7 +6,6 @@ import {
   BookOpen,
   ChartNoAxesCombined,
   FileQuestion,
-  GraduationCap,
   LayoutDashboard,
   Library,
   Menu,
@@ -84,11 +84,8 @@ export function AdminApp({
   return (
     <div className="admin-shell">
       <aside className={open ? "admin-sidebar open" : "admin-sidebar"}>
-        <a className="tafe-brand" href="#/admin/overview">
-          <GraduationCap />
-          <span>
-            TAFE<small>{t("ADMINISTRATION")}</small>
-          </span>
+        <a className="admin-brand" href="#/admin/overview">
+          <Brand caption={t("ADMINISTRATION")} />
         </a>
         <button
           className="admin-close"

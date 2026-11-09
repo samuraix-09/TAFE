@@ -74,22 +74,11 @@
 }
 
 .curtain-lockup img {
-  width: 82px;
-  height: 82px;
+  width: min(240px, 75vw);
+  height: auto;
   display: block;
   filter: drop-shadow(0 12px 28px #377bff42);
   animation: curtain-mark var(--motion-scene) var(--motion-spring) backwards;
-}
-
-.curtain-wordmark {
-  margin-top: 1rem;
-  font:
-    800 clamp(2rem, 7vw, 3.25rem) / 1 system-ui,
-    sans-serif;
-  letter-spacing: 0.24em;
-  text-indent: 0.24em;
-  animation: curtain-word var(--motion-scene) var(--motion-enter)
-    var(--motion-step) backwards;
 }
 
 .curtain-caption {

@@ -744,11 +744,6 @@
     "en": "No AI usage records yet.",
     "ru": "Данных об использовании ИИ пока нет."
   },
-  "Savolni Gemini’ga yuborishga rozilik belgilang.": {
-    "uz": "Savolni Gemini’ga yuborishga rozilik belgilang.",
-    "en": "Confirm that Gemini may receive your question.",
-    "ru": "Подтвердите согласие на отправку вопроса в Gemini."
-  },
   "AI bilan ulanish xatosi.": {
     "uz": "AI bilan ulanish xatosi.",
     "en": "Could not connect to AI.",
@@ -873,21 +868,6 @@
     "uz": "Savolni yuborish",
     "en": "Send question",
     "ru": "Отправить вопрос"
-  },
-  "Savolim va shu suhbat tarixini Google Gemini’ga yuborishga roziman.": {
-    "uz": "Savolim va shu suhbat tarixini Google Gemini’ga yuborishga roziman.",
-    "en": "I agree to send my question and this conversation to Google Gemini.",
-    "ru": "Я согласен отправить свой вопрос и этот диалог в Google Gemini."
-  },
-  "Maqsadlarim, darajam, tarifim va oxirgi test natijalarimdan foydalanilsin.": {
-    "uz": "Maqsadlarim, darajam, tarifim va oxirgi test natijalarimdan foydalanilsin.",
-    "en": "Use my goals, level, plan and recent test results.",
-    "ru": "Использовать мои цели, уровень, тариф и недавние результаты."
-  },
-  "AI javoblarini o‘quv manbalari bilan tekshiring. Rasmiy test ballari serverda hisoblanadi.": {
-    "uz": "AI javoblarini o‘quv manbalari bilan tekshiring. Rasmiy test ballari serverda hisoblanadi.",
-    "en": "Check AI answers against study materials. Test scores are calculated on the server.",
-    "ru": "Сверяйте ответы ИИ с учебными материалами. Баллы тестов рассчитываются на сервере."
   },
   "Javobni nusxalash": {
     "uz": "Javobni nusxalash",
@@ -3199,6 +3179,11 @@
     "en": "The Gemini key was rejected. Contact your administrator.",
     "ru": "Ключ Gemini отклонён. Обратитесь к администратору."
   },
+  "Gemini so‘rov limiti tugadi. Keyinroq qayta urinib ko‘ring.": {
+    "uz": "Gemini so‘rov limiti tugadi. Keyinroq qayta urinib ko‘ring.",
+    "en": "Gemini’s request limit was reached. Try again later.",
+    "ru": "Достигнут лимит запросов Gemini. Повторите попытку позже."
+  },
   "Gemini hozir javob bera olmadi. Keyinroq qayta urinib ko‘ring.": {
     "uz": "Gemini hozir javob bera olmadi. Keyinroq qayta urinib ko‘ring.",
     "en": "Gemini is unable to respond right now. Try again later.",
@@ -3594,10 +3579,10 @@
     "en": "Your session expired. Sign in again.",
     "ru": "Сессия истекла. Войдите снова."
   },
-  "Savol, suhbat va Gemini’ga yuborish roziligi kerak.": {
-    "uz": "Savol, suhbat va Gemini’ga yuborish roziligi kerak.",
-    "en": "Enter a question, select a conversation and consent to sending it to Gemini.",
-    "ru": "Введите вопрос, выберите чат и разрешите отправку в Gemini."
+  "Savol yoki suhbat ma’lumotlari noto‘g‘ri.": {
+    "uz": "Savol yoki suhbat ma’lumotlari noto‘g‘ri.",
+    "en": "The message or conversation details are invalid.",
+    "ru": "Неверные данные сообщения или чата."
   },
   "AI xizmati hali sozlanmagan.": {
     "uz": "AI xizmati hali sozlanmagan.",
@@ -3653,5 +3638,20 @@
     "uz": "Har bir moslashtirish qatori yoki javob maydonini to‘ldiring.",
     "en": "Complete every matching row or answer slot.",
     "ru": "Заполните каждую строку сопоставления или поле ответа."
+  },
+  "TAFE Windows uchun": {
+    "uz": "TAFE Windows uchun",
+    "en": "TAFE for Windows",
+    "ru": "TAFE для Windows"
+  },
+  "Windows x64 uchun o‘rnatiladigan yoki o‘rnatmasdan ishlaydigan versiyani tanlang.": {
+    "uz": "Windows x64 uchun o‘rnatiladigan yoki o‘rnatmasdan ishlaydigan versiyani tanlang.",
+    "en": "Choose the installer or portable edition for Windows x64.",
+    "ru": "Выберите установщик или портативную версию для Windows x64."
+  },
+  "Yuklab olishda xatolik. Qayta urinib ko‘ring.": {
+    "uz": "Yuklab olishda xatolik. Qayta urinib ko‘ring.",
+    "en": "Download failed. Please try again.",
+    "ru": "Не удалось скачать файл. Попробуйте ещё раз."
   }
 }

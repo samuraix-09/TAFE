@@ -17,6 +17,7 @@ import {
   X,
 } from "lucide-react";
 import { db } from "./db";
+import { WindowsDownloads } from "./WindowsDownloads";
 import "./visitor.css";
 export type VisitorPage =
   | "home"
@@ -27,19 +28,28 @@ export type VisitorPage =
   | "privacy"
   | "terms"
   | "contact";
-export function Brand() {
+export function Brand({
+  caption = "TRAINING AND FUTURE EXCELLENCE",
+}: {
+  caption?: string;
+}) {
   return (
     <span className="tafe-brand">
       <img
-        className="motion-brand-mark"
-        src="/tafe-mark.svg"
-        alt=""
-        width={39}
-        height={39}
+        className="tafe-logo-light"
+        src="/tafe-logo-light.svg"
+        alt="TAFE"
+        width={150}
+        height={42}
       />
-      <span>
-        TAFE<small>TRAINING AND FUTURE EXCELLENCE</small>
-      </span>
+      <img
+        className="tafe-logo-dark"
+        src="/tafe-logo-dark.svg"
+        alt="TAFE"
+        width={150}
+        height={42}
+      />
+      <small>{caption}</small>
     </span>
   );
 }
@@ -243,7 +253,12 @@ export function Landing({
               </div>
               <div className="preview-body">
                 <div className="preview-sidebar">
-                  <GraduationCap size={28} />
+                  <img
+                    src="/tafe-mark-dark.svg"
+                    alt=""
+                    width={28}
+                    height={28}
+                  />
                   <span className="preview-active">
                     <ChartNoAxesCombined />
                   </span>
@@ -447,6 +462,7 @@ export function Landing({
         {loaded && !plans.length && !error && (
           <p>{t("Tariflar hali e’lon qilinmagan.")}</p>
         )}
+        <WindowsDownloads />
         <div className="final-cta">
           <p className="eyebrow">{t("MAKE YOUR NEXT MOVE")}</p>
           <h2>
@@ -468,6 +484,7 @@ export function Landing({
         <nav aria-label={t("Pastki menyu")}>
           <a href="#home">{t("About")}</a>
           <a href="#features">{t("Features")}</a>
+          <a href="#windows">Windows</a>
           <button onClick={() => go("contact")}>{t("Contact")}</button>
           <button onClick={() => go("privacy")}>{t("Privacy Policy")}</button>
           <button onClick={() => go("terms")}>{t("Terms of Service")}</button>
@@ -496,7 +513,7 @@ export function InfoPage({
       ? [
           "Privacy Policy",
           "TAFE hisobingizdagi ism, email, tayyorgarlik maqsadlari, test javoblari va natijalarini xizmatni taqdim etish uchun Supabase’da saqlaydi.",
-          "Tasdiqlash xatlari EmailJS orqali yuboriladi. AI suhbatida rozilik bergan savolingiz Google Gemini’ga yuboriladi. AI suhbatiga maxfiy ma’lumot kiritishdan oldin buni hisobga oling.",
+          "Tasdiqlash xatlari EmailJS orqali yuboriladi. TAFE AI’da xabar yuborganingizda, shu xabar Google Gemini’ga uzatiladi. Suhbatga maxfiy ma’lumot kiritmang.",
           "Hisob va o‘quv ma’lumotlari tegishli foydalanuvchining sessiyasi orqali himoyalanadi. Email yetkazib berish va AI javoblari tashqi xizmatlarga bog‘liq.",
         ]
       : kind === "terms"

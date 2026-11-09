@@ -31,6 +31,7 @@ export function ExamPlayer({
     [error, setError] = useState(""),
     [finishing, setFinishing] = useState(false),
     [image, setImage] = useState<string | null>(null);
+  const questionHeading = useRef<HTMLHeadingElement>(null);
   const latest = useRef(answers),
     queue = useRef(Promise.resolve()),
     timer = useRef<ReturnType<typeof setTimeout> | null>(null),
@@ -131,6 +132,16 @@ export function ExamPlayer({
     }
     save(latest.current, true);
   }
+  function goToQuestion(next: number) {
+    if (next === index) return;
+    setIndex(next);
+    if (matchMedia("(max-width: 700px)").matches) {
+      requestAnimationFrame(() => {
+        questionHeading.current?.focus({ preventScroll: true });
+        questionHeading.current?.scrollIntoView({ block: "start" });
+      });
+    }
+  }
   const q = attempt.questions[index],
     answered = attempt.questions.filter((item: Row) =>
       hasAnswer(answers[item.id]),
@@ -199,7 +210,13 @@ export function ExamPlayer({
               </button>
             </div>
             {q.group_name && <p className="eyebrow">{q.group_name}</p>}
-            <h2>{q.prompt}</h2>
+            <h2
+              ref={questionHeading}
+              tabIndex={-1}
+              className="exam-question-prompt"
+            >
+              {q.prompt}
+            </h2>
             <QuestionInput
               question={q}
               value={answers[q.id]}
@@ -209,13 +226,13 @@ export function ExamPlayer({
             <div className="exam-pagination">
               <button
                 disabled={index === 0}
-                onClick={() => setIndex(index - 1)}
+                onClick={() => goToQuestion(index - 1)}
               >
                 {t("← Oldingi")}
               </button>
               <button
                 disabled={index === attempt.questions.length - 1}
-                onClick={() => setIndex(index + 1)}
+                onClick={() => goToQuestion(index + 1)}
               >
                 {t("Keyingi →")}
               </button>
@@ -234,7 +251,8 @@ export function ExamPlayer({
                   hasAnswer(answers[item.id]) ? "answered" : "",
                   flags.includes(item.id) ? "flagged" : "",
                 ].join(" ")}
-                onClick={() => setIndex(i)}
+                aria-current={index === i ? "step" : undefined}
+                onClick={() => goToQuestion(i)}
               >
                 {i + 1}
               </button>

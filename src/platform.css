@@ -1,3 +1,6 @@
+.student-topbar .student-app-title {
+  display: none;
+}
 .student-sidebar nav {
   display: grid;
   gap: 7px;
@@ -311,20 +314,9 @@ td button {
   color: #c0cde1;
   z-index: 10;
 }
-.admin-sidebar .tafe-brand {
-  color: white;
-  font-size: 28px;
+.admin-brand {
+  display: block;
   margin: 5px 12px 40px;
-  gap: 11px;
-}
-.admin-sidebar .tafe-brand small {
-  font-size: 7px;
-  letter-spacing: 2px;
-}
-.admin-sidebar .tafe-brand svg {
-  color: #82b7ff;
-  width: 34px;
-  height: 34px;
 }
 .admin-caption {
   font-size: 8px;
@@ -1026,17 +1018,33 @@ progress::-webkit-progress-value {
 .results-bars strong {
   text-align: right;
 }
+.chat-workspace {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  box-sizing: border-box;
+  height: 100dvh;
+  min-width: 0;
+}
+.chat-workspace > .student-topbar {
+  height: 64px;
+}
 .chat-workspace-main {
-  padding: 26px !important;
-  max-width: 1600px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: none;
+  min-width: 0;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
 }
 .chat-layout {
+  flex: 1;
   display: grid;
   grid-template-columns: 235px minmax(0, 1fr);
-  height: calc(100dvh - 160px);
-  min-height: 560px;
-  border: 1px solid var(--stroke);
-  border-radius: 15px;
+  grid-template-rows: minmax(0, 1fr);
+  min-width: 0;
+  min-height: 0;
   background: var(--paper);
   overflow: hidden;
 }
@@ -1121,6 +1129,8 @@ progress::-webkit-progress-value {
 }
 .chat-messages {
   flex: 1;
+  min-height: 0;
+  overscroll-behavior: contain;
   overflow: auto;
   padding: 25px;
   scrollbar-width: thin;
@@ -1264,6 +1274,7 @@ progress::-webkit-progress-value {
   opacity: 0.4;
 }
 .chat-composer {
+  flex: none;
   padding: 15px 24px;
   border-top: 1px solid var(--stroke);
 }
@@ -1310,26 +1321,6 @@ progress::-webkit-progress-value {
   padding: 10px !important;
   width: 37px;
   height: 37px;
-}
-.chat-consent {
-  display: flex;
-  flex-direction: column;
-  gap: 7px;
-}
-.chat-consent label {
-  font-size: 9px !important;
-  line-height: 1.7;
-  gap: 7px;
-}
-.chat-consent input {
-  margin-top: 2px;
-}
-.chat-disclaimer {
-  font-size: 8px;
-  color: var(--subtle);
-  display: block;
-  margin-top: 12px;
-  text-align: center;
 }
 .retry-link {
   font-size: 11px;
@@ -1378,9 +1369,6 @@ progress::-webkit-progress-value {
   }
   .conversation-item > button:first-child span {
     max-width: 100px;
-  }
-  .chat-workspace-main {
-    padding: 20px !important;
   }
   .exam-layout {
     grid-template-columns: minmax(0, 1fr) 185px;
@@ -1482,7 +1470,6 @@ progress::-webkit-progress-value {
   }
   .exam-navigation {
     position: static;
-    grid-row: 1;
     padding: 18px;
   }
   .exam-navigation > .primary {
@@ -1525,7 +1512,18 @@ progress::-webkit-progress-value {
     height: 65px;
   }
   .admin-header > span {
-    font-size: 10px;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 12px;
+  }
+  .admin-header > div {
+    flex-shrink: 0;
+    gap: 6px;
+  }
+  .admin-header :is(button, select) {
+    min-height: 44px;
   }
   .secure-badge {
     display: none;
@@ -1541,7 +1539,7 @@ progress::-webkit-progress-value {
     right: 12px;
     color: white;
   }
-  .admin-sidebar .tafe-brand {
+  .admin-brand {
     margin-bottom: 27px;
   }
   .admin-sidebar nav a {
@@ -1593,18 +1591,99 @@ progress::-webkit-progress-value {
   }
 }
 @media (max-width: 700px) {
+  aside.student-sidebar {
+    position: fixed;
+    inset: auto 0 0;
+    z-index: 20;
+    width: 100%;
+    height: auto;
+    padding: 5px 6px calc(5px + env(safe-area-inset-bottom, 0px));
+    border: 0;
+    border-top: 1px solid var(--stroke);
+    background: var(--paper);
+    box-shadow: 0 -8px 30px #071b3a12;
+  }
+  .student-sidebar > .brand {
+    display: none;
+  }
   .student-sidebar nav {
-    display: flex;
-    overflow: auto;
-    gap: 4px;
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 2px;
+    overflow: visible;
   }
   .student-sidebar nav > a {
-    padding: 10px 11px;
-    font-size: 11px;
-    white-space: nowrap;
+    min-width: 0;
+    min-height: 56px;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+    padding: 5px 2px;
+    font-size: 10px;
+    line-height: 1.15;
+    text-align: center;
+    overflow-wrap: anywhere;
   }
   .student-sidebar nav > a svg {
+    display: block;
+    flex: none;
+    width: 19px;
+    height: 19px;
+  }
+  .student-sidebar nav > a[aria-current="page"] {
+    color: var(--blue);
+    background: var(--surface);
+  }
+  .student-workspace {
+    padding-bottom: calc(76px + env(safe-area-inset-bottom, 0px));
+  }
+  .student-workspace > .student-topbar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    height: auto;
+    min-height: 64px;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 6px 10px;
+  }
+  .student-topbar .student-breadcrumb {
     display: none;
+  }
+  .student-topbar .student-app-title {
+    display: flex;
+    flex: 1;
+    min-width: 94px;
+  }
+  .student-app-title .tafe-brand img {
+    width: 99px;
+  }
+  .student-app-title .tafe-brand small {
+    font-size: 9px;
+    letter-spacing: normal;
+  }
+  .student-topbar > div:last-child {
+    flex-wrap: wrap;
+    min-width: 0;
+    gap: 4px;
+  }
+  .student-topbar :is(button, select, .admin-portal-link) {
+    min-height: 44px;
+  }
+  .student-topbar :is(.mobile-theme, .mobile-logout) {
+    min-width: 44px;
+    justify-content: center;
+    align-items: center;
+  }
+  .student-topbar .avatar {
+    display: none;
+  }
+  .exam-navigation .question-numbers {
+    max-height: 11rem;
+    overflow-y: auto;
+  }
+  .exam-navigation .question-numbers > button {
+    min-height: 44px;
   }
   .mobile-theme {
     display: inline-flex;
@@ -1718,13 +1797,8 @@ progress::-webkit-progress-value {
   .filter-bar .search-field {
     flex-basis: 100%;
   }
-  .chat-workspace-main {
-    padding: 12px !important;
-  }
-  .chat-layout {
-    height: calc(100dvh - 215px);
-    min-height: 540px;
-    border-radius: 10px;
+  .chat-workspace > .student-topbar {
+    height: auto;
   }
   .chat-header {
     padding: 13px;
@@ -1759,7 +1833,8 @@ progress::-webkit-progress-value {
     padding: 12px;
   }
   .message-body {
-    font-size: 12px;
+    overflow-wrap: anywhere;
+    font-size: 14px;
     padding: 0 4px 8px;
   }
   .message-avatar {
@@ -1769,20 +1844,49 @@ progress::-webkit-progress-value {
   .chat-message {
     gap: 9px;
   }
-  .chat-consent label {
-    font-size: 8px !important;
-  }
-  .chat-disclaimer {
-    font-size: 7px;
-  }
   .composer-input textarea {
-    font-size: 11px;
+    min-width: 0;
+    font-size: 16px;
+    line-height: 1.4;
+  }
+  .composer-input > .primary {
+    flex: 0 0 44px;
+    height: 44px;
+    width: 44px;
   }
   .composer-top small {
     font-size: 8px;
   }
   .conversation-panel {
     top: 50px;
+  }
+  .exam-toolbar {
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .exam-toolbar > div:first-child,
+  .exam-layout > * {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+  .exam-clock {
+    flex-shrink: 0;
+  }
+  .exam-passage p {
+    max-height: 28dvh;
+    overflow-y: auto;
+  }
+  .exam-question-prompt {
+    scroll-margin-top: 125px;
+    white-space: pre-wrap;
+  }
+  .exam-pagination button,
+  .exam-navigation > button,
+  .result button {
+    min-height: 44px;
+  }
+  .student-workspace :is(input:not([type="checkbox"], [type="radio"]), textarea) {
+    font-size: 16px;
   }
   .exam-toolbar h1 {
     font-size: 25px;
@@ -1808,7 +1912,7 @@ progress::-webkit-progress-value {
     padding: 15px !important;
   }
   .results-summary h2 {
-    font-size: 27px;
+    font-size: clamp(18px, 6vw, 27px);
   }
   .results-summary p {
     font-size: 10px;
@@ -1819,8 +1923,10 @@ progress::-webkit-progress-value {
     font-size: 9px;
   }
   .result {
-    gap: 13px;
+    gap: 10px;
+    flex-wrap: wrap;
     align-items: flex-start;
+    overflow-wrap: anywhere;
   }
   .result .button-row {
     justify-content: flex-end;
