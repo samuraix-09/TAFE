@@ -1,0 +1,193 @@
+:root {
+  --motion-press: 100ms;
+  --motion-fast: 180ms;
+  --motion-panel: 280ms;
+  --motion-page: 420ms;
+  --motion-scene: 680ms;
+  --motion-step: 65ms;
+  --motion-enter: cubic-bezier(0.16, 1, 0.3, 1);
+  --motion-exit: cubic-bezier(0.4, 0, 0.72, 0.45);
+  --motion-spring: cubic-bezier(0.22, 1.24, 0.36, 1);
+}
+
+@supports (animation-timing-function: linear(0, 1)) {
+  :root {
+    --motion-spring: linear(0, 0.26, 0.59, 0.82, 0.96, 1.035, 1.045, 1.02, 1);
+  }
+}
+
+.motion-curtain {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  isolation: isolate;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  pointer-events: none;
+  color: #e9f2ff;
+  background: #060e1c;
+  transition:
+    opacity var(--motion-page) var(--motion-enter),
+    visibility var(--motion-page) step-end;
+  animation: curtain-failsafe 8s step-end forwards;
+}
+
+.motion-curtain::before,
+.motion-curtain::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.motion-curtain::before {
+  width: min(96vw, 58rem);
+  aspect-ratio: 1;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  background: radial-gradient(
+    ellipse,
+    #1a438b 0%,
+    #112751 36%,
+    transparent 68%
+  );
+  animation: curtain-field calc(var(--motion-scene) * 3) var(--motion-enter)
+    both;
+}
+
+.motion-curtain::after {
+  inset: 0;
+  background-image:
+    linear-gradient(#9ec5ff0c 1px, transparent 1px),
+    linear-gradient(90deg, #9ec5ff0c 1px, transparent 1px);
+  background-size: 42px 42px;
+  mask-image: radial-gradient(ellipse, #000 10%, transparent 74%);
+}
+
+.curtain-lockup {
+  display: grid;
+  justify-items: center;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.curtain-lockup img {
+  width: 82px;
+  height: 82px;
+  display: block;
+  filter: drop-shadow(0 12px 28px #377bff42);
+  animation: curtain-mark var(--motion-scene) var(--motion-spring) backwards;
+}
+
+.curtain-wordmark {
+  margin-top: 1rem;
+  font:
+    800 clamp(2rem, 7vw, 3.25rem) / 1 system-ui,
+    sans-serif;
+  letter-spacing: 0.24em;
+  text-indent: 0.24em;
+  animation: curtain-word var(--motion-scene) var(--motion-enter)
+    var(--motion-step) backwards;
+}
+
+.curtain-caption {
+  color: #a4bbdb;
+  font:
+    600 0.625rem / 1.5 system-ui,
+    sans-serif;
+  letter-spacing: 0.19em;
+  margin: 0.75rem 0 1.5rem;
+  animation: curtain-word var(--motion-page) var(--motion-enter)
+    calc(2 * var(--motion-step)) backwards;
+}
+
+.curtain-progress {
+  height: 2px;
+  width: 104px;
+  overflow: hidden;
+  border-radius: 20px;
+  background: #bedaff2e;
+}
+
+.curtain-progress::after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform-origin: left;
+  background: linear-gradient(90deg, #377cff, #9aeaff);
+  animation: curtain-load 1.7s var(--motion-enter) both;
+}
+
+html[data-tafe-ready]:not([data-tafe-outro]) .motion-curtain,
+html:not([data-tafe-outro]) #root:focus-within + .motion-curtain {
+  opacity: 0;
+  visibility: hidden;
+  animation: none;
+}
+
+html[data-tafe-ready]:not([data-tafe-outro]) .curtain-progress::after {
+  animation: none;
+  transform: scaleX(1);
+}
+
+html[data-tafe-outro] .motion-curtain {
+  pointer-events: auto;
+  visibility: visible;
+  transition: none;
+  animation: curtain-in var(--motion-panel) var(--motion-enter) both;
+}
+
+html[data-tafe-outro] .curtain-lockup {
+  animation: curtain-word var(--motion-page) var(--motion-spring) both;
+}
+
+html[data-tafe-outro] .curtain-progress {
+  visibility: hidden;
+}
+
+@keyframes curtain-failsafe {
+  to {
+    visibility: hidden;
+  }
+}
+@keyframes curtain-field {
+  from {
+    transform: scale(0.72);
+    opacity: 0.48;
+  }
+}
+@keyframes curtain-mark {
+  from {
+    transform: translateY(12px) scale(0.8);
+    opacity: 0;
+    filter: blur(6px);
+  }
+}
+@keyframes curtain-word {
+  from {
+    transform: translateY(8px);
+    opacity: 0;
+  }
+}
+@keyframes curtain-load {
+  from {
+    transform: scaleX(0.06);
+  }
+  to {
+    transform: scaleX(0.91);
+  }
+}
+@keyframes curtain-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .motion-curtain {
+    display: none;
+  }
+}

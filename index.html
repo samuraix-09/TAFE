@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="uz">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <!-- Keep inline scripts blocked except for the two pinned deployment script hashes. -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' 'sha256-xhihy66JXOp/3BgRszcHPLU/dVrAgADZPws12kZD1iE=' 'sha256-7JDzZ9ifflYEMMdW3Nn2E6jVuXIYcqt4krdxLnN09Cg='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https://ydfmjhosuqabtgbksrsg.supabase.co; connect-src 'self' https://ydfmjhosuqabtgbksrsg.supabase.co wss://ydfmjhosuqabtgbksrsg.supabase.co; frame-src https://ydfmjhosuqabtgbksrsg.supabase.co; object-src 'none'; base-uri 'none'; form-action 'self'"
+    />
+    <link rel="stylesheet" href="/launch.css" />
+    <title>TAFE — Prepare Smarter. Achieve More.</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <div class="motion-curtain" aria-hidden="true">
+      <div class="curtain-lockup">
+        <img
+          src="/tafe-mark.svg"
+          alt=""
+          width="82"
+          height="82"
+          fetchpriority="high"
+        />
+        <div class="curtain-wordmark">TAFE</div>
+        <div class="curtain-caption">TRAINING AND FUTURE EXCELLENCE</div>
+        <div class="curtain-progress"></div>
+      </div>
+    </div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

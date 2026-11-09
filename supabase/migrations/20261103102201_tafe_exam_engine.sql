@@ -1,0 +1,50 @@
+create function public.is_admin() returns boolean language sql stable security definer set search_path='' as $$select exists(select 1 from public.user_roles where user_id=auth.uid() and role='admin')$$;
+grant execute on function public.is_admin() to authenticated;
+create policy admin_categories on public.exam_categories for all to authenticated using(public.is_admin()) with check(public.is_admin());
+grant insert,update,delete on public.exam_categories to authenticated;
+create table public.tests(id uuid primary key default gen_random_uuid(),category_id uuid references public.exam_categories not null,title text not null,duration integer not null check(duration between 1 and 240),published boolean not null default false,created_at timestamptz default now());
+create table public.questions(id uuid primary key default gen_random_uuid(),test_id uuid references public.tests on delete cascade not null,prompt text not null,options jsonb not null check(jsonb_typeof(options)='array'),position integer not null default 0);
+create table public.answer_keys(question_id uuid primary key references public.questions on delete cascade,answer text not null);
+create table public.test_attempts(id uuid primary key default gen_random_uuid(),user_id uuid references auth.users on delete cascade not null,test_id uuid references public.tests not null,started_at timestamptz not null default now(),expires_at timestamptz not null,submitted_at timestamptz,score integer,total integer not null,answers jsonb not null default '{}',snapshot jsonb not null);
+create index attempts_owner on public.test_attempts(user_id);
+create unique index one_active_attempt on public.test_attempts(user_id,test_id) where submitted_at is null;
+create table public.library_resources(id uuid primary key default gen_random_uuid(),title text not null,url text not null check(url like 'https://%'),description text not null default '',created_at timestamptz default now());
+alter table public.tests enable row level security;alter table public.questions enable row level security;alter table public.answer_keys enable row level security;alter table public.test_attempts enable row level security;alter table public.library_resources enable row level security;
+create policy tests_read on public.tests for select to authenticated using(published or public.is_admin());
+create policy tests_admin on public.tests for all to authenticated using(public.is_admin()) with check(public.is_admin());
+create policy questions_admin on public.questions for all to authenticated using(public.is_admin()) with check(public.is_admin());
+create policy keys_admin on public.answer_keys for all to authenticated using(public.is_admin()) with check(public.is_admin());
+create policy attempts_read on public.test_attempts for select to authenticated using(user_id=auth.uid());
+create policy resources_read on public.library_resources for select to authenticated using(true);
+create policy resources_admin on public.library_resources for all to authenticated using(public.is_admin()) with check(public.is_admin());
+grant select,insert,update,delete on public.tests,public.questions,public.answer_keys,public.library_resources to authenticated;
+grant select(id,user_id,test_id,started_at,expires_at,submitted_at,score,total,answers) on public.test_attempts to authenticated;
+create function public.start_test(t uuid) returns jsonb language plpgsql security definer set search_path='' as $$declare a public.test_attempts;exam public.tests;snap jsonb;begin
+if auth.uid() is null then raise exception 'Sign in required';end if;
+perform pg_advisory_xact_lock(hashtextextended(auth.uid()::text||t::text,0));
+select * into exam from public.tests where id=t and published;
+if not found then raise exception 'Test unavailable';end if;
+select * into a from public.test_attempts where user_id=auth.uid() and test_id=t and submitted_at is null;
+if not found then
+select jsonb_agg(jsonb_build_object('id',q.id,'prompt',q.prompt,'options',q.options,'answer',k.answer) order by q.position) into snap from public.questions q join public.answer_keys k on k.question_id=q.id where q.test_id=t;
+if snap is null then raise exception 'Test has no graded questions';end if;
+insert into public.test_attempts(user_id,test_id,expires_at,total,snapshot) values(auth.uid(),t,now()+make_interval(mins=>exam.duration),jsonb_array_length(snap),snap) returning * into a;
+end if;
+return jsonb_build_object('id',a.id,'expires_at',a.expires_at,'answers',a.answers,'questions',(select jsonb_agg(x-'answer') from jsonb_array_elements(a.snapshot) x));
+end$$;
+create function public.save_attempt(attempt uuid,response jsonb,finish boolean default false) returns jsonb language plpgsql security definer set search_path='' as $$declare a public.test_attempts;n integer;begin
+select * into a from public.test_attempts where id=attempt and user_id=auth.uid() for update;
+if not found then raise exception 'Attempt unavailable';end if;
+if a.submitted_at is not null then return jsonb_build_object('score',a.score,'total',a.total,'submitted',true);end if;
+if jsonb_typeof(response)<>'object' or octet_length(response::text)>100000 then raise exception 'Invalid answers';end if;
+if now()<a.expires_at then a.answers=response;end if;
+if finish or now()>=a.expires_at then
+select count(*) into n from jsonb_array_elements(a.snapshot) x where a.answers->>(x->>'id')=x->>'answer';
+update public.test_attempts set answers=a.answers,submitted_at=now(),score=n where id=a.id;
+return jsonb_build_object('score',n,'total',a.total,'submitted',true);
+end if;
+update public.test_attempts set answers=a.answers where id=a.id;
+return jsonb_build_object('submitted',false);
+end$$;
+revoke all on function public.start_test(uuid),public.save_attempt(uuid,jsonb,boolean) from public,anon;
+grant execute on function public.start_test(uuid),public.save_attempt(uuid,jsonb,boolean) to authenticated;

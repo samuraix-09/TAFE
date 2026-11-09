@@ -1,0 +1,16 @@
+create table public.profiles(id uuid primary key references auth.users on delete cascade, display_name text, language text not null default 'uz' check(language in ('uz','en','ru')), theme text default 'system' check(theme in ('system','light','dark')), exam_date date, target_score text, created_at timestamptz not null default now());
+create table public.user_roles(user_id uuid primary key references auth.users on delete cascade, role text not null check(role='admin'));
+alter table public.profiles enable row level security;
+alter table public.user_roles enable row level security;
+create policy own_profile on public.profiles for select to authenticated using(id=(select auth.uid()));
+create policy edit_profile on public.profiles for update to authenticated using(id=(select auth.uid())) with check(id=(select auth.uid()));
+revoke all on public.profiles,public.user_roles from anon,authenticated;
+grant select,update(display_name,language,theme,exam_date,target_score) on public.profiles to authenticated;
+create function public.initialize_tafe_profile() returns trigger language plpgsql security definer set search_path='' as $$begin insert into public.profiles(id,display_name) values(new.id,left(new.raw_user_meta_data->>'display_name',120)); return new; end$$;
+revoke all on function public.initialize_tafe_profile() from public,anon,authenticated;
+create trigger initialize_tafe_profile after insert on auth.users for each row execute function public.initialize_tafe_profile();
+create table public.exam_categories(id uuid primary key default gen_random_uuid(),name text not null,slug text not null unique, description text not null default '', active boolean not null default false,display_order integer not null default 0);
+alter table public.exam_categories enable row level security;
+create policy visible_categories on public.exam_categories for select to authenticated using(active);
+grant select on public.exam_categories to authenticated;
+insert into public.exam_categories(name,slug,active,display_order) values ('IELTS','ielts',true,1),('SAT','sat',true,2),('Milliy sertifikat','milliy-sertifikat',true,3),('CEFR','cefr',true,4);

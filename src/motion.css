@@ -1,0 +1,558 @@
+/* Shared interaction and presentation layers. Timing tokens live in launch.css. */
+:root {
+  --motion-glow: #337aff29;
+  --motion-hairline: #6792cf2c;
+  --motion-elevation: 0 22px 64px #102e611a;
+}
+
+[data-theme="dark"] {
+  --motion-glow: #4d8aff36;
+  --motion-hairline: #82b3ff33;
+  --motion-elevation: 0 22px 64px #02061055;
+}
+
+.motion-brand-mark {
+  width: 39px;
+  height: 39px;
+  flex: none;
+}
+
+.landing {
+  background:
+    radial-gradient(
+      ellipse 85% 32rem at 82% 1%,
+      var(--motion-glow),
+      transparent 72%
+    ),
+    var(--paper);
+}
+
+.landing header.public-header {
+  z-index: 5;
+}
+
+.landing-hero {
+  position: relative;
+  isolation: isolate;
+}
+
+.hero-line {
+  display: block;
+}
+
+.hero-stage {
+  position: relative;
+  min-width: 0;
+  isolation: isolate;
+}
+
+.hero-stage::before,
+.hero-stage::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.hero-stage::before {
+  inset: 2% -7%;
+  background:
+    radial-gradient(ellipse at 45% 64%, var(--motion-glow), transparent 69%),
+    repeating-radial-gradient(
+      ellipse at 50% 50%,
+      transparent 0 29px,
+      var(--motion-hairline) 30px 31px
+    );
+  mask-image: radial-gradient(ellipse, #000 18%, transparent 70%);
+}
+
+.hero-stage::after {
+  inset: -4% -3%;
+  border: 1px solid var(--motion-hairline);
+  border-radius: 24px;
+  transform: rotate(2deg);
+}
+
+.platform-preview {
+  border-radius: 19px;
+  border-color: var(--motion-hairline);
+  box-shadow: var(--motion-elevation);
+  transform: rotate(-1deg);
+}
+
+.hero-copy h1 em {
+  color: #155eef;
+  background: linear-gradient(105deg, #153aba, #1869e9 64%, #147da5);
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+[data-theme="dark"] .hero-copy h1 em {
+  color: #9dc6ff;
+  background-image: linear-gradient(105deg, #a4beff, #70acff 58%, #63ddff);
+}
+
+.landing .hero-note {
+  font-size: 0.75rem;
+}
+
+.landing .public-links a,
+.secondary-link {
+  position: relative;
+}
+
+.public-links a::after,
+.secondary-link::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 -5px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+}
+
+.public-links a:hover::after,
+.public-links a:focus-visible::after,
+.secondary-link:hover::after,
+.secondary-link:focus-visible::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+.workspace > header,
+.admin-workspace > .admin-header {
+  border-bottom-color: var(--motion-hairline);
+}
+
+.workspace > main > .title h1,
+.admin-main .section-toolbar h2 {
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+
+.workspace > main > .hero,
+.dashboard-goal,
+.admin-stats > section {
+  border-color: var(--motion-hairline);
+}
+
+.auth-story {
+  isolation: isolate;
+  position: relative;
+  overflow: hidden;
+}
+
+.auth-story::after {
+  content: "";
+  position: absolute;
+  inset: -25%;
+  z-index: -1;
+  pointer-events: none;
+  background: repeating-radial-gradient(
+    ellipse,
+    transparent 0 29px,
+    #94b7ff20 30px 31px
+  );
+  mask-image: radial-gradient(ellipse at 65% 55%, #000 8%, transparent 62%);
+}
+
+:where(button, a, select, summary, input, textarea):focus-visible {
+  outline: 2px solid #2f78eb;
+  outline-offset: 3px;
+}
+
+[data-theme="dark"]
+  :where(button, a, select, summary, input, textarea):focus-visible {
+  outline-color: #83b9ff;
+}
+
+.mobile-login-link,
+.compact-register-link {
+  display: none;
+}
+
+@media (max-width: 800px) {
+  .public-header .public-links {
+    display: flex;
+    position: absolute;
+    top: 83px;
+    left: 0;
+    right: 0;
+    z-index: 4;
+    padding: 20px 25px;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    background: var(--paper);
+    border-bottom: 1px solid var(--stroke);
+    box-shadow: var(--motion-elevation);
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-7px);
+  }
+  .public-header .public-links.open {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+    transform: none;
+  }
+  .motion-brand-mark {
+    width: 32px;
+    height: 32px;
+  }
+  .hero-stage {
+    width: 100%;
+    max-width: 570px;
+    margin-inline: auto;
+  }
+}
+
+@media (max-width: 600px) {
+  .landing header.public-header {
+    padding-inline: 16px;
+  }
+  .public-header .public-links,
+  .public-header .public-links.open {
+    top: 76px;
+  }
+  .mobile-login-link {
+    display: inline-block;
+  }
+  .hero-copy h1 {
+    font-size: clamp(2.25rem, 10vw, 3rem);
+    overflow-wrap: anywhere;
+  }
+  .hero-stage::after {
+    inset-inline: 0;
+  }
+  .hero-stage::before {
+    inset-inline: -4%;
+  }
+}
+
+@media (max-width: 420px) {
+  .public-header .tafe-brand small {
+    display: none;
+  }
+  .public-header .tafe-brand {
+    gap: 5px;
+    font-size: 20px;
+  }
+  .public-header .header-actions {
+    gap: 2px;
+  }
+  .public-header .header-actions > .primary {
+    display: none;
+  }
+  .public-header .compact-register-link {
+    display: inline-block;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  button {
+    transition:
+      background-color var(--motion-fast) ease,
+      border-color var(--motion-fast) ease,
+      color var(--motion-fast) ease,
+      box-shadow var(--motion-fast) ease,
+      transform var(--motion-fast) var(--motion-spring);
+  }
+  button:active:not(:disabled) {
+    transform: scale(0.975);
+    transition-duration: var(--motion-press);
+  }
+  .primary svg,
+  .secondary-link svg,
+  .public-links a::after,
+  .secondary-link::after {
+    transition: transform var(--motion-panel) var(--motion-enter);
+  }
+  button.primary:hover:not(:disabled) svg,
+  .secondary-link:hover svg {
+    transform: translateX(3px);
+  }
+  :where(input, select, textarea) {
+    transition:
+      border-color var(--motion-fast) ease,
+      box-shadow var(--motion-fast) ease;
+  }
+  :where(input, select, textarea):focus-visible {
+    box-shadow: 0 0 0 4px var(--motion-glow);
+  }
+
+  :is(
+    .feature-card,
+    .pricing-card,
+    .book-card,
+    .dashboard-goal,
+    .admin-stats > section,
+    .public-exams > button
+  ) {
+    transition:
+      transform var(--motion-panel) var(--motion-spring),
+      border-color var(--motion-fast) ease,
+      box-shadow var(--motion-panel) var(--motion-enter);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    :is(
+      .feature-card,
+      .pricing-card,
+      .book-card,
+      .public-exams > button
+    ):hover {
+      transform: translateY(-4px);
+      border-color: #5891f86e;
+      box-shadow: var(--motion-elevation);
+    }
+  }
+  .student-sidebar nav a,
+  .admin-sidebar nav a,
+  .profile-navigation nav button {
+    transition:
+      background-color var(--motion-fast) ease,
+      color var(--motion-fast) ease,
+      border-color var(--motion-fast) ease;
+  }
+  .student-sidebar nav a svg,
+  .admin-sidebar nav a svg {
+    transition: transform var(--motion-panel) var(--motion-spring);
+  }
+  .student-sidebar nav a:hover svg,
+  .admin-sidebar nav a:hover svg {
+    transform: translateX(2px);
+  }
+
+  .public-header > a,
+  .public-header > nav,
+  .public-header > .header-actions {
+    animation: motion-page var(--motion-page) var(--motion-enter) backwards;
+  }
+  .public-header > nav {
+    animation-delay: var(--motion-step);
+  }
+  .public-header > .header-actions {
+    animation-delay: calc(var(--motion-step) * 2);
+  }
+  .hero-copy > :is(.tiny-label, p, .hero-actions, .hero-note) {
+    animation: motion-page var(--motion-scene) var(--motion-enter) backwards;
+  }
+  .hero-line {
+    animation: motion-mask var(--motion-scene) var(--motion-enter) backwards;
+  }
+  .hero-line:first-child {
+    animation-delay: var(--motion-step);
+  }
+  .hero-line:last-child {
+    animation-delay: calc(var(--motion-step) * 2);
+  }
+  .hero-copy > p {
+    animation-delay: calc(var(--motion-step) * 3);
+  }
+  .hero-copy > .hero-actions {
+    animation-delay: calc(var(--motion-step) * 4);
+  }
+  .hero-copy > .hero-note {
+    animation-delay: calc(var(--motion-step) * 5);
+  }
+  .hero-stage {
+    animation: motion-stage var(--motion-scene) var(--motion-spring)
+      calc(var(--motion-step) * 2) backwards;
+  }
+  html:not([data-tafe-ready])
+    :is(
+      .public-header > a,
+      .public-header > nav,
+      .public-header > .header-actions,
+      .hero-copy > *,
+      .hero-line,
+      .hero-stage
+    ) {
+    animation-play-state: paused;
+  }
+  html:not([data-tafe-ready])
+    #root:focus-within
+    :is(
+      .public-header > a,
+      .public-header > nav,
+      .public-header > .header-actions,
+      .hero-copy > *,
+      .hero-line,
+      .hero-stage
+    ) {
+    animation-play-state: running;
+  }
+  .motion-view,
+  .auth-story > div,
+  .auth-form-wrap,
+  .test-builder > section:not([hidden]),
+  .test-builder > .builder-grid:not([hidden]),
+  .builder-advanced[open] > :not(summary) {
+    animation: motion-page var(--motion-page) var(--motion-enter) backwards;
+  }
+  .auth-story::after {
+    animation: motion-stage var(--motion-scene) var(--motion-enter) backwards;
+  }
+  .inline-loading,
+  .success-note,
+  .error,
+  .chat-message {
+    animation: motion-page var(--motion-panel) var(--motion-enter) backwards;
+  }
+  .platform-modal[open] {
+    animation: motion-modal-in var(--motion-panel) var(--motion-spring)
+      backwards;
+  }
+  .platform-modal[open]::backdrop {
+    animation: motion-backdrop-in var(--motion-panel) ease backwards;
+  }
+  .platform-modal[data-closing] {
+    animation: motion-modal-out var(--motion-fast) var(--motion-exit) both;
+    pointer-events: none;
+  }
+  .platform-modal[data-closing]::backdrop {
+    animation: motion-backdrop-out var(--motion-fast) ease both;
+  }
+  .admin-sidebar,
+  .conversation-panel {
+    transition: transform var(--motion-panel) var(--motion-enter);
+  }
+  .spinner,
+  .inline-loading svg {
+    animation: motion-spin calc(var(--motion-scene) + var(--motion-panel))
+      linear infinite;
+  }
+  .chat-typing i {
+    animation: motion-typing calc(var(--motion-scene) + var(--motion-panel))
+      ease-in-out infinite;
+  }
+  .chat-typing i:nth-child(2) {
+    animation-delay: calc(var(--motion-step) * 2);
+  }
+  .chat-typing i:nth-child(3) {
+    animation-delay: calc(var(--motion-step) * 4);
+  }
+
+  @media (max-width: 800px) {
+    .public-header > nav.public-links {
+      animation: none;
+      transition:
+        opacity var(--motion-fast) ease,
+        transform var(--motion-panel) var(--motion-enter),
+        visibility var(--motion-panel) step-end;
+    }
+    .public-header > nav.public-links.open {
+      transition-delay: 0s;
+      transition-timing-function: ease, var(--motion-enter), step-start;
+    }
+  }
+  @supports (animation-timeline: view()) {
+    :is(
+      .section-heading,
+      .feature-card,
+      .public-exams > button,
+      .pricing-card,
+      .how-block,
+      .final-cta
+    ) {
+      animation: motion-scroll linear both;
+      animation-timeline: view();
+      animation-range: entry 1% entry 28%;
+    }
+    :is(.feature-card, .public-exams > button, .pricing-card):focus-within {
+      animation: none;
+    }
+  }
+  @supports (animation-timeline: scroll()) {
+    @media (min-width: 801px) and (pointer: fine) {
+      .hero-stage::before {
+        animation: motion-parallax linear both;
+        animation-timeline: scroll(root);
+        animation-range: 0px 440px;
+      }
+    }
+  }
+}
+
+@keyframes motion-page {
+  from {
+    opacity: 0.15;
+    transform: translateY(9px);
+  }
+}
+@keyframes motion-mask {
+  from {
+    opacity: 0;
+    transform: translateY(18%);
+    clip-path: inset(8% 0 40%);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    clip-path: inset(-8% -5% -12%);
+  }
+}
+@keyframes motion-stage {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.985);
+  }
+}
+@keyframes motion-scroll {
+  from {
+    opacity: 0.35;
+    translate: 0 14px;
+  }
+}
+@keyframes motion-parallax {
+  to {
+    translate: 0 -30px;
+  }
+}
+@keyframes motion-modal-in {
+  from {
+    opacity: 0;
+    transform: translateY(11px) scale(0.98);
+  }
+}
+@keyframes motion-modal-out {
+  to {
+    opacity: 0;
+    transform: translateY(8px) scale(0.985);
+  }
+}
+@keyframes motion-backdrop-in {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes motion-backdrop-out {
+  to {
+    opacity: 0;
+  }
+}
+@keyframes motion-spin {
+  to {
+    transform: rotate(1turn);
+  }
+}
+@keyframes motion-typing {
+  50% {
+    opacity: 1;
+    transform: translateY(-3px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .public-header .public-links {
+    transform: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .hero-copy h1 em {
+    background: none;
+    -webkit-text-fill-color: CanvasText;
+  }
+}

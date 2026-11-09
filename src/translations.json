@@ -1,0 +1,3657 @@
+{
+  "Dashboard": {
+    "uz": "Boshqaruv paneli",
+    "en": "Dashboard",
+    "ru": "Главная"
+  },
+  "Testlar": {
+    "uz": "Testlar",
+    "en": "Tests",
+    "ru": "Тесты"
+  },
+  "Natijalarim": {
+    "uz": "Natijalarim",
+    "en": "My results",
+    "ru": "Мои результаты"
+  },
+  "Kutubxona": {
+    "uz": "Kutubxona",
+    "en": "Library",
+    "ru": "Библиотека"
+  },
+  "Profil": {
+    "uz": "Profil",
+    "en": "Profile",
+    "ru": "Профиль"
+  },
+  "Overview": {
+    "uz": "Umumiy ko‘rinish",
+    "en": "Overview",
+    "ru": "Обзор"
+  },
+  "User Management": {
+    "uz": "Foydalanuvchilar boshqaruvi",
+    "en": "User management",
+    "ru": "Управление пользователями"
+  },
+  "Exam Categories": {
+    "uz": "Imtihon kategoriyalari",
+    "en": "Exam categories",
+    "ru": "Категории экзаменов"
+  },
+  "Test Management": {
+    "uz": "Testlar boshqaruvi",
+    "en": "Test management",
+    "ru": "Управление тестами"
+  },
+  "Question Management": {
+    "uz": "Savollar boshqaruvi",
+    "en": "Question management",
+    "ru": "Управление вопросами"
+  },
+  "Library Management": {
+    "uz": "Kutubxona boshqaruvi",
+    "en": "Library management",
+    "ru": "Управление библиотекой"
+  },
+  "TAFE AI Management": {
+    "uz": "TAFE AI boshqaruvi",
+    "en": "TAFE AI management",
+    "ru": "Управление TAFE AI"
+  },
+  "Subscription Management": {
+    "uz": "Obunalar boshqaruvi",
+    "en": "Subscription management",
+    "ru": "Управление подписками"
+  },
+  "Payment Management": {
+    "uz": "To‘lovlar boshqaruvi",
+    "en": "Payment management",
+    "ru": "Управление платежами"
+  },
+  "Analytics": {
+    "uz": "Tahlil",
+    "en": "Analytics",
+    "ru": "Аналитика"
+  },
+  "Platform Settings": {
+    "uz": "Platforma sozlamalari",
+    "en": "Platform settings",
+    "ru": "Настройки платформы"
+  },
+  "Audit Logs": {
+    "uz": "Audit jurnali",
+    "en": "Audit logs",
+    "ru": "Журнал аудита"
+  },
+  "Admin huquqi tekshirilmoqda…": {
+    "uz": "Admin huquqi tekshirilmoqda…",
+    "en": "Checking administrator access…",
+    "ru": "Проверяем права администратора…"
+  },
+  "Kirish cheklangan": {
+    "uz": "Kirish cheklangan",
+    "en": "Access restricted",
+    "ru": "Доступ ограничен"
+  },
+  "Bu bo‘lim faqat vakolatli administratorlar uchun.": {
+    "uz": "Bu bo‘lim faqat vakolatli administratorlar uchun.",
+    "en": "This section is for authorized administrators.",
+    "ru": "Этот раздел доступен администраторам."
+  },
+  "Platformaga qaytish": {
+    "uz": "Platformaga qaytish",
+    "en": "Back to platform",
+    "ru": "Вернуться на платформу"
+  },
+  "ADMINISTRATION": {
+    "uz": "BOSHQARUV",
+    "en": "ADMINISTRATION",
+    "ru": "АДМИНИСТРИРОВАНИЕ"
+  },
+  "Menyuni yopish": {
+    "uz": "Menyuni yopish",
+    "en": "Close menu",
+    "ru": "Закрыть меню"
+  },
+  "PLATFORM CONTROL": {
+    "uz": "PLATFORMA BOSHQARUVI",
+    "en": "PLATFORM CONTROL",
+    "ru": "УПРАВЛЕНИЕ ПЛАТФОРМОЙ"
+  },
+  "Talaba platformasi": {
+    "uz": "Talaba platformasi",
+    "en": "Student platform",
+    "ru": "Кабинет ученика"
+  },
+  "Admin menyusini ochish": {
+    "uz": "Admin menyusini ochish",
+    "en": "Open admin menu",
+    "ru": "Открыть меню администратора"
+  },
+  "Authorized administrator": {
+    "uz": "Vakolatli administrator",
+    "en": "Authorized administrator",
+    "ru": "Авторизованный администратор"
+  },
+  "TAFE CONTROL CENTER": {
+    "uz": "TAFE BOSHQARUV MARKAZI",
+    "en": "TAFE CONTROL CENTER",
+    "ru": "ЦЕНТР УПРАВЛЕНИЯ TAFE"
+  },
+  "Platforma tahlili": {
+    "uz": "Platforma tahlili",
+    "en": "Platform analytics",
+    "ru": "Аналитика платформы"
+  },
+  "Platforma umumiy ko‘rinishi": {
+    "uz": "Platforma umumiy ko‘rinishi",
+    "en": "Platform overview",
+    "ru": "Обзор платформы"
+  },
+  "Haqiqiy foydalanuvchilar, natijalar va platforma faoliyati.": {
+    "uz": "Haqiqiy foydalanuvchilar, natijalar va platforma faoliyati.",
+    "en": "Users, results and platform activity.",
+    "ru": "Пользователи, результаты и активность платформы."
+  },
+  "Faol obunachilar": {
+    "uz": "Faol obunachilar",
+    "en": "Active subscribers",
+    "ru": "Активные подписчики"
+  },
+  "E’lon qilingan testlar": {
+    "uz": "E’lon qilingan testlar",
+    "en": "Published tests",
+    "ru": "Опубликованные тесты"
+  },
+  "Test urinishlari": {
+    "uz": "Test urinishlari",
+    "en": "Test attempts",
+    "ru": "Попытки прохождения"
+  },
+  "AI so‘rovlari": {
+    "uz": "AI so‘rovlari",
+    "en": "AI requests",
+    "ru": "Запросы к ИИ"
+  },
+  "Tasdiqlangan tushum (UZS)": {
+    "uz": "Tasdiqlangan tushum (UZS)",
+    "en": "Confirmed revenue (UZS)",
+    "ru": "Подтверждённая выручка (UZS)"
+  },
+  "AI xatolari": {
+    "uz": "AI xatolari",
+    "en": "AI errors",
+    "ru": "Ошибки ИИ"
+  },
+  "So‘nggi boshqaruv amallari": {
+    "uz": "So‘nggi boshqaruv amallari",
+    "en": "Recent administrative actions",
+    "ru": "Последние действия администратора"
+  },
+  "Hozircha audit yozuvlari yo‘q.": {
+    "uz": "Hozircha audit yozuvlari yo‘q.",
+    "en": "There are no audit entries yet.",
+    "ru": "Записей аудита пока нет."
+  },
+  "Ha": {
+    "uz": "Ha",
+    "en": "Yes",
+    "ru": "Да"
+  },
+  "Yo‘q": {
+    "uz": "Yo‘q",
+    "en": "No",
+    "ru": "Нет"
+  },
+  "PEOPLE & ACCESS": {
+    "uz": "FOYDALANUVCHILAR VA KIRISH",
+    "en": "PEOPLE & ACCESS",
+    "ru": "ПОЛЬЗОВАТЕЛИ И ДОСТУП"
+  },
+  "Foydalanuvchilar": {
+    "uz": "Foydalanuvchilar",
+    "en": "Users",
+    "ru": "Пользователи"
+  },
+  "Foydalanuvchi": {
+    "uz": "Foydalanuvchi",
+    "en": "User",
+    "ru": "Пользователь"
+  },
+  "Ism yoki email": {
+    "uz": "Ism yoki email",
+    "en": "Name or email",
+    "ru": "Имя или email"
+  },
+  "Ism yoki email bo‘yicha qidirish": {
+    "uz": "Ism yoki email bo‘yicha qidirish",
+    "en": "Search by name or email",
+    "ru": "Поиск по имени или email"
+  },
+  "Qidirish": {
+    "uz": "Qidirish",
+    "en": "Search",
+    "ru": "Поиск"
+  },
+  "Holat filtri": {
+    "uz": "Holat filtri",
+    "en": "Status filter",
+    "ru": "Фильтр по статусу"
+  },
+  "Barcha holatlar": {
+    "uz": "Barcha holatlar",
+    "en": "All statuses",
+    "ru": "Все статусы"
+  },
+  "Faol": {
+    "uz": "Faol",
+    "en": "Active",
+    "ru": "Активен"
+  },
+  "Bloklangan": {
+    "uz": "Bloklangan",
+    "en": "Suspended",
+    "ru": "Заблокирован"
+  },
+  "O‘chirilgan": {
+    "uz": "O‘chirilgan",
+    "en": "Deleted",
+    "ru": "Удалён"
+  },
+  "Yangi foydalanuvchilar": {
+    "uz": "Yangi foydalanuvchilar",
+    "en": "Newest users",
+    "ru": "Новые пользователи"
+  },
+  "Avval ro‘yxatdan o‘tganlar": {
+    "uz": "Avval ro‘yxatdan o‘tganlar",
+    "en": "Oldest registrations",
+    "ru": "Ранние регистрации"
+  },
+  "Ism A–Z": {
+    "uz": "Ism A–Z",
+    "en": "Name A–Z",
+    "ru": "Имя А–Я"
+  },
+  "Ism Z–A": {
+    "uz": "Ism Z–A",
+    "en": "Name Z–A",
+    "ru": "Имя Я–А"
+  },
+  "So‘nggi faollik": {
+    "uz": "So‘nggi faollik",
+    "en": "Last activity",
+    "ru": "Последняя активность"
+  },
+  "Saralash": {
+    "uz": "Saralash",
+    "en": "Sort",
+    "ru": "Сортировка"
+  },
+  "Obuna muddati": {
+    "uz": "Obuna muddati",
+    "en": "Subscription expiry",
+    "ru": "Окончание подписки"
+  },
+  "Tasdiqlash": {
+    "uz": "Tasdiqlash",
+    "en": "Verification",
+    "ru": "Подтверждение"
+  },
+  "Ro‘yxat sanasi": {
+    "uz": "Ro‘yxat sanasi",
+    "en": "Registration date",
+    "ru": "Дата регистрации"
+  },
+  "So‘nggi kirish": {
+    "uz": "So‘nggi kirish",
+    "en": "Last sign-in",
+    "ru": "Последний вход"
+  },
+  "Ism kiritilmagan": {
+    "uz": "Ism kiritilmagan",
+    "en": "Name unavailable",
+    "ru": "Имя не указано"
+  },
+  "O‘chirish so‘rovi bor": {
+    "uz": "O‘chirish so‘rovi bor",
+    "en": "Deletion requested",
+    "ru": "Запрошено удаление"
+  },
+  "Asosiy tarif": {
+    "uz": "Asosiy tarif",
+    "en": "Default plan",
+    "ru": "Базовый тариф"
+  },
+  "Tasdiqlangan": {
+    "uz": "Tasdiqlangan",
+    "en": "Verified",
+    "ru": "Подтверждён"
+  },
+  "Kutilmoqda": {
+    "uz": "Kutilmoqda",
+    "en": "Pending",
+    "ru": "Ожидает"
+  },
+  "Boshqarish ↗": {
+    "uz": "Boshqarish ↗",
+    "en": "Manage ↗",
+    "ru": "Управление ↗"
+  },
+  "Foydalanuvchi topilmadi.": {
+    "uz": "Foydalanuvchi topilmadi.",
+    "en": "No users found.",
+    "ru": "Пользователи не найдены."
+  },
+  "Jami": {
+    "uz": "Jami",
+    "en": "Total",
+    "ru": "Всего"
+  },
+  "ta": {
+    "uz": "ta",
+    "en": "items",
+    "ru": "шт."
+  },
+  "Oldingi": {
+    "uz": "Oldingi",
+    "en": "Previous",
+    "ru": "Назад"
+  },
+  "Keyingi": {
+    "uz": "Keyingi",
+    "en": "Next",
+    "ru": "Далее"
+  },
+  "Bu hisobni qaytarish mumkin bo‘lgan o‘chirishga o‘tkazish uchun DELETE yozing": {
+    "uz": "Bu hisobni qaytarish mumkin bo‘lgan o‘chirishga o‘tkazish uchun DELETE yozing",
+    "en": "Type DELETE to deactivate this account reversibly",
+    "ru": "Введите DELETE для обратимого удаления аккаунта"
+  },
+  "Foydalanuvchi kirishini bloklaysizmi?": {
+    "uz": "Foydalanuvchi kirishini bloklaysizmi?",
+    "en": "Suspend this user’s access?",
+    "ru": "Заблокировать доступ пользователя?"
+  },
+  "Hisob ma’lumotlari": {
+    "uz": "Hisob ma’lumotlari",
+    "en": "Account details",
+    "ru": "Данные аккаунта"
+  },
+  "To‘liq ism": {
+    "uz": "To‘liq ism",
+    "en": "Full name",
+    "ru": "Полное имя"
+  },
+  "Ismni saqlash": {
+    "uz": "Ismni saqlash",
+    "en": "Save name",
+    "ru": "Сохранить имя"
+  },
+  "Holat —": {
+    "uz": "Holat —",
+    "en": "Status —",
+    "ru": "Статус —"
+  },
+  "Bloklash": {
+    "uz": "Bloklash",
+    "en": "Suspend",
+    "ru": "Заблокировать"
+  },
+  "Qayta faollashtirish": {
+    "uz": "Qayta faollashtirish",
+    "en": "Reactivate",
+    "ru": "Восстановить"
+  },
+  "Hisobni yumshoq o‘chirish": {
+    "uz": "Hisobni yumshoq o‘chirish",
+    "en": "Delete account reversibly",
+    "ru": "Удалить аккаунт с восстановлением"
+  },
+  "Yumshoq o‘chirilgan hisob saqlanadi va qayta faollashtirilishi mumkin. Barcha amallar auditga yoziladi.": {
+    "uz": "Yumshoq o‘chirilgan hisob saqlanadi va qayta faollashtirilishi mumkin. Barcha amallar auditga yoziladi.",
+    "en": "Deleted accounts can be restored. Actions are recorded in the audit log.",
+    "ru": "Удалённый аккаунт можно восстановить. Действия записываются в журнал аудита."
+  },
+  "Obuna tayinlash / uzaytirish": {
+    "uz": "Obuna tayinlash / uzaytirish",
+    "en": "Assign or extend subscription",
+    "ru": "Назначить или продлить подписку"
+  },
+  "Tarif": {
+    "uz": "Tarif",
+    "en": "Plan",
+    "ru": "Тариф"
+  },
+  "Kunlar soni": {
+    "uz": "Kunlar soni",
+    "en": "Number of days",
+    "ru": "Количество дней"
+  },
+  "Tayinlash / uzaytirish": {
+    "uz": "Tayinlash / uzaytirish",
+    "en": "Assign / extend",
+    "ru": "Назначить / продлить"
+  },
+  "Obuna tarixi": {
+    "uz": "Obuna tarixi",
+    "en": "Subscription history",
+    "ru": "История подписок"
+  },
+  "Obunani bekor qilish ·": {
+    "uz": "Obunani bekor qilish ·",
+    "en": "Cancel subscription ·",
+    "ru": "Отменить подписку ·"
+  },
+  "Test tarixi": {
+    "uz": "Test tarixi",
+    "en": "Test history",
+    "ru": "История тестов"
+  },
+  "Joriy oydagi foydalanish": {
+    "uz": "Joriy oydagi foydalanish",
+    "en": "This month’s usage",
+    "ru": "Использование в этом месяце"
+  },
+  "To‘lovlar tarixi": {
+    "uz": "To‘lovlar tarixi",
+    "en": "Payment history",
+    "ru": "История платежей"
+  },
+  "Imtihon kategoriyalari": {
+    "uz": "Imtihon kategoriyalari",
+    "en": "Exam categories",
+    "ru": "Категории экзаменов"
+  },
+  "Qo‘shish": {
+    "uz": "Qo‘shish",
+    "en": "Add",
+    "ru": "Добавить"
+  },
+  "Tahrirlash": {
+    "uz": "Tahrirlash",
+    "en": "Edit",
+    "ru": "Редактировать"
+  },
+  "Nomi": {
+    "uz": "Nomi",
+    "en": "Name",
+    "ru": "Название"
+  },
+  "Slug": {
+    "uz": "Slug",
+    "en": "Slug",
+    "ru": "Идентификатор URL"
+  },
+  "Tavsif": {
+    "uz": "Tavsif",
+    "en": "Description",
+    "ru": "Описание"
+  },
+  "Tartib": {
+    "uz": "Tartib",
+    "en": "Order",
+    "ru": "Порядок"
+  },
+  "Arxiv": {
+    "uz": "Arxiv",
+    "en": "Archived",
+    "ru": "Архив"
+  },
+  "Saqlash": {
+    "uz": "Saqlash",
+    "en": "Save",
+    "ru": "Сохранить"
+  },
+  "EXAM AUTHORING": {
+    "uz": "TEST YARATISH",
+    "en": "EXAM AUTHORING",
+    "ru": "СОЗДАНИЕ ТЕСТОВ"
+  },
+  "Test va savollar": {
+    "uz": "Test va savollar",
+    "en": "Tests and questions",
+    "ru": "Тесты и вопросы"
+  },
+  "Vizual test yaratish": {
+    "uz": "Vizual test yaratish",
+    "en": "Create a test",
+    "ru": "Создать тест"
+  },
+  "daqiqa ·": {
+    "uz": "daqiqa ·",
+    "en": "minutes ·",
+    "ru": "мин ·"
+  },
+  "E’lon qilingan": {
+    "uz": "E’lon qilingan",
+    "en": "Published",
+    "ru": "Опубликован"
+  },
+  "Savollarni tahrirlash": {
+    "uz": "Savollarni tahrirlash",
+    "en": "Edit questions",
+    "ru": "Редактировать вопросы"
+  },
+  "Qoralamaga olish": {
+    "uz": "Qoralamaga olish",
+    "en": "Move to draft",
+    "ru": "Перевести в черновик"
+  },
+  "Birinchi testni vizual muharrirda yarating.": {
+    "uz": "Birinchi testni vizual muharrirda yarating.",
+    "en": "Create your first test in the editor.",
+    "ru": "Создайте первый тест в редакторе."
+  },
+  "ENTITLEMENTS & LIMITS": {
+    "uz": "RUXSATLAR VA LIMITLAR",
+    "en": "ENTITLEMENTS & LIMITS",
+    "ru": "ПРАВА И ЛИМИТЫ"
+  },
+  "Tariflar va ruxsatlar": {
+    "uz": "Tariflar va ruxsatlar",
+    "en": "Plans and permissions",
+    "ru": "Тарифы и разрешения"
+  },
+  "Tarif qo‘shish": {
+    "uz": "Tarif qo‘shish",
+    "en": "Add plan",
+    "ru": "Добавить тариф"
+  },
+  "Faol emas": {
+    "uz": "Faol emas",
+    "en": "Inactive",
+    "ru": "Неактивен"
+  },
+  "/kun ·": {
+    "uz": "/kun ·",
+    "en": "/day ·",
+    "ru": "/день ·"
+  },
+  "/oy": {
+    "uz": "/oy",
+    "en": "/month",
+    "ru": "/месяц"
+  },
+  "Kutubxona darajasi —": {
+    "uz": "Kutubxona darajasi —",
+    "en": "Library level —",
+    "ru": "Уровень библиотеки —"
+  },
+  "Tarifni boshqarish": {
+    "uz": "Tarifni boshqarish",
+    "en": "Manage plan",
+    "ru": "Управлять тарифом"
+  },
+  "Tarif sozlamalari": {
+    "uz": "Tarif sozlamalari",
+    "en": "Plan settings",
+    "ru": "Настройки тарифа"
+  },
+  "Asosiy tarifni o‘chirib bo‘lmaydi.": {
+    "uz": "Asosiy tarifni o‘chirib bo‘lmaydi.",
+    "en": "The default plan must remain active.",
+    "ru": "Базовый тариф должен быть активен."
+  },
+  "Tarif nomi": {
+    "uz": "Tarif nomi",
+    "en": "Plan name",
+    "ru": "Название тарифа"
+  },
+  "Valyuta": {
+    "uz": "Valyuta",
+    "en": "Currency",
+    "ru": "Валюта"
+  },
+  "Oylik narx": {
+    "uz": "Oylik narx",
+    "en": "Monthly price",
+    "ru": "Цена за месяц"
+  },
+  "Yillik narx": {
+    "uz": "Yillik narx",
+    "en": "Annual price",
+    "ru": "Цена за год"
+  },
+  "Kunlik AI": {
+    "uz": "Kunlik AI",
+    "en": "Daily AI requests",
+    "ru": "Запросы к ИИ в день"
+  },
+  "Oylik AI": {
+    "uz": "Oylik AI",
+    "en": "Monthly AI requests",
+    "ru": "Запросы к ИИ в месяц"
+  },
+  "Kunlik test": {
+    "uz": "Kunlik test",
+    "en": "Daily tests",
+    "ru": "Тесты в день"
+  },
+  "Oylik test": {
+    "uz": "Oylik test",
+    "en": "Monthly tests",
+    "ru": "Тесты в месяц"
+  },
+  "Kutubxona darajasi": {
+    "uz": "Kutubxona darajasi",
+    "en": "Library level",
+    "ru": "Уровень библиотеки"
+  },
+  "Imkoniyatlar (har biri yangi qatorda)": {
+    "uz": "Imkoniyatlar (har biri yangi qatorda)",
+    "en": "Features (one per line)",
+    "ru": "Возможности (по одной на строку)"
+  },
+  "Savol berish": {
+    "uz": "Savol berish",
+    "en": "Ask a question",
+    "ru": "Задать вопрос"
+  },
+  "Xatolarni tushuntirish": {
+    "uz": "Xatolarni tushuntirish",
+    "en": "Explain mistakes",
+    "ru": "Объяснить ошибки"
+  },
+  "Mashq yaratish": {
+    "uz": "Mashq yaratish",
+    "en": "Create practice",
+    "ru": "Создать упражнения"
+  },
+  "O‘quv reja": {
+    "uz": "O‘quv reja",
+    "en": "Study plan",
+    "ru": "План обучения"
+  },
+  "Full mock testlar": {
+    "uz": "Full mock testlar",
+    "en": "Full mock exams",
+    "ru": "Полные пробные экзамены"
+  },
+  "Platforma sozlamalari": {
+    "uz": "Platforma sozlamalari",
+    "en": "Platform settings",
+    "ru": "Настройки платформы"
+  },
+  "Platforma nomi": {
+    "uz": "Platforma nomi",
+    "en": "Platform name",
+    "ru": "Название платформы"
+  },
+  "Aloqa emaili": {
+    "uz": "Aloqa emaili",
+    "en": "Contact email",
+    "ru": "Контактный email"
+  },
+  "Gemini modeli": {
+    "uz": "Gemini modeli",
+    "en": "Gemini model",
+    "ru": "Модель Gemini"
+  },
+  "TAFE AI ko‘rsatmasi": {
+    "uz": "TAFE AI ko‘rsatmasi",
+    "en": "TAFE AI instructions",
+    "ru": "Инструкции для TAFE AI"
+  },
+  "TAFE AI faol": {
+    "uz": "TAFE AI faol",
+    "en": "TAFE AI enabled",
+    "ru": "TAFE AI включён"
+  },
+  "API sirlari server muhitida saqlanadi.": {
+    "uz": "API sirlari server muhitida saqlanadi.",
+    "en": "API secrets are stored on the server.",
+    "ru": "Секреты API хранятся на сервере."
+  },
+  "To‘lovlar": {
+    "uz": "To‘lovlar",
+    "en": "Payments",
+    "ru": "Платежи"
+  },
+  "Jonli to‘lov provayderi hali ulanmagan. To‘lov faqat provayder tasdig‘idan keyin tasdiqlangan deb yozilishi kerak.": {
+    "uz": "Jonli to‘lov provayderi hali ulanmagan. To‘lov faqat provayder tasdig‘idan keyin tasdiqlangan deb yozilishi kerak.",
+    "en": "A payment provider has yet to be connected. Payment confirmation requires a provider receipt.",
+    "ru": "Платёжный провайдер ещё не подключён. Для подтверждения платежа нужна квитанция провайдера."
+  },
+  "To‘lovlar mavjud emas.": {
+    "uz": "To‘lovlar mavjud emas.",
+    "en": "No payments yet.",
+    "ru": "Платежей пока нет."
+  },
+  "Audit jurnali": {
+    "uz": "Audit jurnali",
+    "en": "Audit log",
+    "ru": "Журнал аудита"
+  },
+  "TAFE AI boshqaruvi": {
+    "uz": "TAFE AI boshqaruvi",
+    "en": "TAFE AI management",
+    "ru": "Управление TAFE AI"
+  },
+  "Tariflar bo‘yicha limitlar": {
+    "uz": "Tariflar bo‘yicha limitlar",
+    "en": "Plan limits",
+    "ru": "Лимиты тарифов"
+  },
+  "Model va ko‘rsatmalar": {
+    "uz": "Model va ko‘rsatmalar",
+    "en": "Model and instructions",
+    "ru": "Модель и инструкции"
+  },
+  "AI foydalanish yozuvlari hali yo‘q.": {
+    "uz": "AI foydalanish yozuvlari hali yo‘q.",
+    "en": "No AI usage records yet.",
+    "ru": "Данных об использовании ИИ пока нет."
+  },
+  "Savolni Gemini’ga yuborishga rozilik belgilang.": {
+    "uz": "Savolni Gemini’ga yuborishga rozilik belgilang.",
+    "en": "Confirm that Gemini may receive your question.",
+    "ru": "Подтвердите согласие на отправку вопроса в Gemini."
+  },
+  "AI bilan ulanish xatosi.": {
+    "uz": "AI bilan ulanish xatosi.",
+    "en": "Could not connect to AI.",
+    "ru": "Не удалось подключиться к ИИ."
+  },
+  "Yangi suhbat": {
+    "uz": "Yangi suhbat",
+    "en": "New conversation",
+    "ru": "Новый диалог"
+  },
+  "Suhbatlarni qidirish": {
+    "uz": "Suhbatlarni qidirish",
+    "en": "Search conversations",
+    "ru": "Поиск диалогов"
+  },
+  "Suhbat qidirish": {
+    "uz": "Suhbat qidirish",
+    "en": "Search conversations",
+    "ru": "Поиск диалогов"
+  },
+  "Suhbat nomini o‘zgartirish": {
+    "uz": "Suhbat nomini o‘zgartirish",
+    "en": "Rename conversation",
+    "ru": "Переименовать диалог"
+  },
+  "Suhbat nomi": {
+    "uz": "Suhbat nomi",
+    "en": "Conversation title",
+    "ru": "Название диалога"
+  },
+  "Suhbatni o‘chirish": {
+    "uz": "Suhbatni o‘chirish",
+    "en": "Delete conversation",
+    "ru": "Удалить диалог"
+  },
+  "Suhbat va xabarlarni o‘chirasizmi?": {
+    "uz": "Suhbat va xabarlarni o‘chirasizmi?",
+    "en": "Delete this conversation and its messages?",
+    "ru": "Удалить диалог и его сообщения?"
+  },
+  "Suhbatlar menyusi": {
+    "uz": "Suhbatlar menyusi",
+    "en": "Conversations menu",
+    "ru": "Меню диалогов"
+  },
+  "Shaxsiy yordamchi": {
+    "uz": "Shaxsiy yordamchi",
+    "en": "Personal assistant",
+    "ru": "Личный помощник"
+  },
+  "Bugun nimani o‘rganamiz?": {
+    "uz": "Bugun nimani o‘rganamiz?",
+    "en": "What shall we learn today?",
+    "ru": "Что изучим сегодня?"
+  },
+  "Mavzuni tushuning, mashq qiling va tayyorgarligingizni rejalashtiring.": {
+    "uz": "Mavzuni tushuning, mashq qiling va tayyorgarligingizni rejalashtiring.",
+    "en": "Explore a topic, practice and plan your preparation.",
+    "ru": "Разберите тему, потренируйтесь и спланируйте подготовку."
+  },
+  "Reading savollaridagi xatolarni tushuntirish": {
+    "uz": "Reading savollaridagi xatolarni tushuntirish",
+    "en": "Explain my reading mistakes",
+    "ru": "Объясни ошибки в заданиях по чтению"
+  },
+  "Bir haftalik tayyorgarlik rejasini tuzish": {
+    "uz": "Bir haftalik tayyorgarlik rejasini tuzish",
+    "en": "Create a one-week study plan",
+    "ru": "Составь план подготовки на неделю"
+  },
+  "Mavzu bo‘yicha yangi mashqlar": {
+    "uz": "Mavzu bo‘yicha yangi mashqlar",
+    "en": "Create practice on a topic",
+    "ru": "Подготовь упражнения по теме"
+  },
+  "Natijalarimni tahlil qilish": {
+    "uz": "Natijalarimni tahlil qilish",
+    "en": "Analyze my results",
+    "ru": "Проанализируй мои результаты"
+  },
+  "TAFE AI o‘ylamoqda…": {
+    "uz": "TAFE AI o‘ylamoqda…",
+    "en": "TAFE AI is thinking…",
+    "ru": "TAFE AI готовит ответ…"
+  },
+  "So‘rovni qayta yuborish": {
+    "uz": "So‘rovni qayta yuborish",
+    "en": "Retry request",
+    "ru": "Повторить запрос"
+  },
+  "AI imkoniyati": {
+    "uz": "AI imkoniyati",
+    "en": "AI feature",
+    "ru": "Функция ИИ"
+  },
+  "Xatoni tushuntirish": {
+    "uz": "Xatoni tushuntirish",
+    "en": "Explain a mistake",
+    "ru": "Объяснить ошибку"
+  },
+  "Tahlil": {
+    "uz": "Tahlil",
+    "en": "Analysis",
+    "ru": "Анализ"
+  },
+  "kunlik so‘rov": {
+    "uz": "kunlik so‘rov",
+    "en": "daily requests",
+    "ru": "запросов в день"
+  },
+  "TAFE AI uchun savol": {
+    "uz": "TAFE AI uchun savol",
+    "en": "Question for TAFE AI",
+    "ru": "Вопрос для TAFE AI"
+  },
+  "TAFE AI’dan so‘rang… Shift + Enter — yangi qator": {
+    "uz": "TAFE AI’dan so‘rang… Shift + Enter — yangi qator",
+    "en": "Ask TAFE AI… Shift + Enter for a new line",
+    "ru": "Спросите TAFE AI… Shift + Enter для новой строки"
+  },
+  "Savolni yuborish": {
+    "uz": "Savolni yuborish",
+    "en": "Send question",
+    "ru": "Отправить вопрос"
+  },
+  "Savolim va shu suhbat tarixini Google Gemini’ga yuborishga roziman.": {
+    "uz": "Savolim va shu suhbat tarixini Google Gemini’ga yuborishga roziman.",
+    "en": "I agree to send my question and this conversation to Google Gemini.",
+    "ru": "Я согласен отправить свой вопрос и этот диалог в Google Gemini."
+  },
+  "Maqsadlarim, darajam, tarifim va oxirgi test natijalarimdan foydalanilsin.": {
+    "uz": "Maqsadlarim, darajam, tarifim va oxirgi test natijalarimdan foydalanilsin.",
+    "en": "Use my goals, level, plan and recent test results.",
+    "ru": "Использовать мои цели, уровень, тариф и недавние результаты."
+  },
+  "AI javoblarini o‘quv manbalari bilan tekshiring. Rasmiy test ballari serverda hisoblanadi.": {
+    "uz": "AI javoblarini o‘quv manbalari bilan tekshiring. Rasmiy test ballari serverda hisoblanadi.",
+    "en": "Check AI answers against study materials. Test scores are calculated on the server.",
+    "ru": "Сверяйте ответы ИИ с учебными материалами. Баллы тестов рассчитываются на сервере."
+  },
+  "Javobni nusxalash": {
+    "uz": "Javobni nusxalash",
+    "en": "Copy answer",
+    "ru": "Скопировать ответ"
+  },
+  "Siz": {
+    "uz": "Siz",
+    "en": "You",
+    "ru": "Вы"
+  },
+  "Nusxalandi": {
+    "uz": "Nusxalandi",
+    "en": "Copied",
+    "ru": "Скопировано"
+  },
+  "Nusxalash": {
+    "uz": "Nusxalash",
+    "en": "Copy",
+    "ru": "Скопировать"
+  },
+  "So‘rov bajarilmadi. Internet ulanishini tekshiring.": {
+    "uz": "So‘rov bajarilmadi. Internet ulanishini tekshiring.",
+    "en": "Request failed. Check your connection.",
+    "ru": "Запрос не выполнен. Проверьте подключение."
+  },
+  "Tasdiqlash xizmati bilan bog‘lanib bo‘lmadi.": {
+    "uz": "Tasdiqlash xizmati bilan bog‘lanib bo‘lmadi.",
+    "en": "Could not reach the verification service.",
+    "ru": "Не удалось связаться со службой подтверждения."
+  },
+  "Bir daqiqa kuting.": {
+    "uz": "Bir daqiqa kuting.",
+    "en": "Wait one minute.",
+    "ru": "Подождите одну минуту."
+  },
+  "EmailJS orqali tasdiqlash kodi yuborildi. Spam papkasini ham tekshiring.": {
+    "uz": "EmailJS orqali tasdiqlash kodi yuborildi. Spam papkasini ham tekshiring.",
+    "en": "A verification code was sent. Check your spam folder as well.",
+    "ru": "Код подтверждения отправлен. Проверьте также папку «Спам»."
+  },
+  "Parollar mos kelmadi.": {
+    "uz": "Parollar mos kelmadi.",
+    "en": "Passwords do not match.",
+    "ru": "Пароли не совпадают."
+  },
+  "Avval emailingizni kod orqali tasdiqlang.": {
+    "uz": "Avval emailingizni kod orqali tasdiqlang.",
+    "en": "Verify your email first.",
+    "ru": "Сначала подтвердите email кодом."
+  },
+  "Kod muddati tugadi. Yangi kod so‘rang.": {
+    "uz": "Kod muddati tugadi. Yangi kod so‘rang.",
+    "en": "The code expired. Request a new one.",
+    "ru": "Срок действия кода истёк. Запросите новый."
+  },
+  "Foydalanish shartlarini qabul qiling.": {
+    "uz": "Foydalanish shartlarini qabul qiling.",
+    "en": "Accept the terms of service.",
+    "ru": "Примите условия использования."
+  },
+  "A CLEARER PATH FORWARD": {
+    "uz": "MAQSAD SARI ANIQ YO‘L",
+    "en": "A CLEARER PATH FORWARD",
+    "ru": "ПОНЯТНЫЙ ПУТЬ К ЦЕЛИ"
+  },
+  "Your ambition.": {
+    "uz": "Sizning maqsadingiz.",
+    "en": "Your ambition.",
+    "ru": "Ваши цели."
+  },
+  "Our shared": {
+    "uz": "Bizning umumiy",
+    "en": "Our shared",
+    "ru": "Наш общий"
+  },
+  "starting point.": {
+    "uz": "boshlanish nuqtamiz.",
+    "en": "starting point.",
+    "ru": "старт."
+  },
+  "Bilimingizni mustahkamlang. Natijalaringizni kuzating. Har kuni maqsadingiz sari bir qadam tashlang.": {
+    "uz": "Bilimingizni mustahkamlang. Natijalaringizni kuzating. Har kuni maqsadingiz sari bir qadam tashlang.",
+    "en": "Build your skills, track your results and move toward your goal each day.",
+    "ru": "Укрепляйте знания, отслеживайте результаты и приближайтесь к цели каждый день."
+  },
+  "Bosh sahifa": {
+    "uz": "Bosh sahifa",
+    "en": "Home",
+    "ru": "Главная"
+  },
+  "Rang rejimini almashtirish": {
+    "uz": "Rang rejimini almashtirish",
+    "en": "Switch theme",
+    "ru": "Переключить тему"
+  },
+  "WELCOME TO TAFE": {
+    "uz": "TAFE’GA XUSH KELIBSIZ",
+    "en": "WELCOME TO TAFE",
+    "ru": "ДОБРО ПОЖАЛОВАТЬ В TAFE"
+  },
+  "Verify your email address": {
+    "uz": "Email manzilingizni tasdiqlang",
+    "en": "Verify your email address",
+    "ru": "Подтвердите email"
+  },
+  "Yangi parol yarating": {
+    "uz": "Yangi parol yarating",
+    "en": "Create a new password",
+    "ru": "Создайте новый пароль"
+  },
+  "Kelajagingizga birinchi qadam.": {
+    "uz": "Kelajagingizga birinchi qadam.",
+    "en": "Your first step toward the future.",
+    "ru": "Первый шаг к вашему будущему."
+  },
+  "Parolni tiklash": {
+    "uz": "Parolni tiklash",
+    "en": "Reset password",
+    "ru": "Восстановление пароля"
+  },
+  "Yana xush kelibsiz.": {
+    "uz": "Yana xush kelibsiz.",
+    "en": "Welcome back.",
+    "ru": "С возвращением."
+  },
+  "We have sent a verification code to your email address.": {
+    "uz": "Email manzilingizga tasdiqlash kodi yubordik.",
+    "en": "We have sent a verification code to your email address.",
+    "ru": "Мы отправили код подтверждения на ваш email."
+  },
+  "Hisobingiz uchun yangi parol kiriting.": {
+    "uz": "Hisobingiz uchun yangi parol kiriting.",
+    "en": "Enter a new password for your account.",
+    "ru": "Введите новый пароль для аккаунта."
+  },
+  "Hisob yarating va tayyorgarligingizni boshlang.": {
+    "uz": "Hisob yarating va tayyorgarligingizni boshlang.",
+    "en": "Create an account to start preparing.",
+    "ru": "Создайте аккаунт и начните подготовку."
+  },
+  "Hisob emailingizga tasdiqlash kodi yuboramiz.": {
+    "uz": "Hisob emailingizga tasdiqlash kodi yuboramiz.",
+    "en": "We will send a code to your account email.",
+    "ru": "Мы отправим код на email вашего аккаунта."
+  },
+  "Hisobingizga kiring va o‘rganishni davom ettiring.": {
+    "uz": "Hisobingizga kiring va o‘rganishni davom ettiring.",
+    "en": "Sign in to continue learning.",
+    "ru": "Войдите, чтобы продолжить обучение."
+  },
+  "Email manzil": {
+    "uz": "Email manzil",
+    "en": "Email address",
+    "ru": "Адрес электронной почты"
+  },
+  "Parol": {
+    "uz": "Parol",
+    "en": "Password",
+    "ru": "Пароль"
+  },
+  "Parolni yashirish": {
+    "uz": "Parolni yashirish",
+    "en": "Hide password",
+    "ru": "Скрыть пароль"
+  },
+  "Parolni ko‘rsatish": {
+    "uz": "Parolni ko‘rsatish",
+    "en": "Show password",
+    "ru": "Показать пароль"
+  },
+  "Parol kuchi": {
+    "uz": "Parol kuchi",
+    "en": "Password strength",
+    "ru": "Надёжность пароля"
+  },
+  "Kamida 8 belgi. Katta harf, son va belgilar parolni kuchaytiradi.": {
+    "uz": "Kamida 8 belgi. Katta harf, son va belgilar parolni kuchaytiradi.",
+    "en": "Use at least 8 characters. Uppercase letters, numbers and symbols make a stronger password.",
+    "ru": "Не менее 8 символов. Прописные буквы, цифры и знаки повышают надёжность."
+  },
+  "Parolni tasdiqlash": {
+    "uz": "Parolni tasdiqlash",
+    "en": "Confirm password",
+    "ru": "Подтвердите пароль"
+  },
+  "Foydalanish shartlari": {
+    "uz": "Foydalanish shartlari",
+    "en": "Terms of service",
+    "ru": "Условия использования"
+  },
+  "va": {
+    "uz": "va",
+    "en": "and",
+    "ru": "и"
+  },
+  "maxfiylik siyosati": {
+    "uz": "maxfiylik siyosati",
+    "en": "privacy policy",
+    "ru": "политикой конфиденциальности"
+  },
+  "bilan tanishdim va qabul qilaman.": {
+    "uz": "bilan tanishdim va qabul qilaman.",
+    "en": "I have read and accept them.",
+    "ru": "Я ознакомился и принимаю их."
+  },
+  "Tasdiqlash kodi (": {
+    "uz": "Tasdiqlash kodi (",
+    "en": "Verification code (",
+    "ru": "Код подтверждения ("
+  },
+  "xonali)": {
+    "uz": "xonali)",
+    "en": "digits)",
+    "ru": "цифр)"
+  },
+  "vaqt qoldi": {
+    "uz": "vaqt qoldi",
+    "en": "remaining",
+    "ru": "осталось"
+  },
+  "Kod muddati tugadi": {
+    "uz": "Kod muddati tugadi",
+    "en": "Code expired",
+    "ru": "Срок действия кода истёк"
+  },
+  "Parolni unutdingizmi?": {
+    "uz": "Parolni unutdingizmi?",
+    "en": "Forgot your password?",
+    "ru": "Забыли пароль?"
+  },
+  "Kodni tasdiqlash": {
+    "uz": "Kodni tasdiqlash",
+    "en": "Verify code",
+    "ru": "Подтвердить код"
+  },
+  "Parolni saqlash": {
+    "uz": "Parolni saqlash",
+    "en": "Save password",
+    "ru": "Сохранить пароль"
+  },
+  "Emailga kod yuborish": {
+    "uz": "Emailga kod yuborish",
+    "en": "Send email code",
+    "ru": "Отправить код на email"
+  },
+  "Tiklash kodini yuborish": {
+    "uz": "Tiklash kodini yuborish",
+    "en": "Send recovery code",
+    "ru": "Отправить код восстановления"
+  },
+  "Hisobga kirish": {
+    "uz": "Hisobga kirish",
+    "en": "Sign in",
+    "ru": "Войти"
+  },
+  "Qayta yuborish (": {
+    "uz": "Qayta yuborish (",
+    "en": "Resend (",
+    "ru": "Отправить снова ("
+  },
+  "Kodni qayta yuborish": {
+    "uz": "Kodni qayta yuborish",
+    "en": "Resend code",
+    "ru": "Отправить код повторно"
+  },
+  "Emailni o‘zgartirish": {
+    "uz": "Emailni o‘zgartirish",
+    "en": "Change email",
+    "ru": "Изменить email"
+  },
+  "Hisobingiz bormi?": {
+    "uz": "Hisobingiz bormi?",
+    "en": "Already have an account?",
+    "ru": "Уже есть аккаунт?"
+  },
+  "TAFE’da yangimisiz?": {
+    "uz": "TAFE’da yangimisiz?",
+    "en": "New to TAFE?",
+    "ru": "Впервые в TAFE?"
+  },
+  "Hisob yaratish": {
+    "uz": "Hisob yaratish",
+    "en": "Create an account",
+    "ru": "Создать аккаунт"
+  },
+  "Kirish": {
+    "uz": "Kirish",
+    "en": "Sign in",
+    "ru": "Вход"
+  },
+  "Supabase Auth bilan himoyalangan": {
+    "uz": "Supabase Auth bilan himoyalangan",
+    "en": "Secured by Supabase Auth",
+    "ru": "Защищено Supabase Auth"
+  },
+  "Testni yakunlaysizmi? Javoblarni keyin o‘zgartirib bo‘lmaydi.": {
+    "uz": "Testni yakunlaysizmi? Javoblarni keyin o‘zgartirib bo‘lmaydi.",
+    "en": "Submit this test? Answers cannot be edited after submission.",
+    "ru": "Завершить тест? После отправки ответы нельзя изменить."
+  },
+  "EXAM SESSION": {
+    "uz": "TEST SESSIYASI",
+    "en": "EXAM SESSION",
+    "ru": "ЭКЗАМЕНАЦИОННАЯ СЕССИЯ"
+  },
+  "Test topshirish": {
+    "uz": "Test topshirish",
+    "en": "Take test",
+    "ru": "Прохождение теста"
+  },
+  "Javoblar saqlandi": {
+    "uz": "Javoblar saqlandi",
+    "en": "Answers saved",
+    "ru": "Ответы сохранены"
+  },
+  "Saqlanmoqda…": {
+    "uz": "Saqlanmoqda…",
+    "en": "Saving…",
+    "ru": "Сохранение…"
+  },
+  "javob berildi": {
+    "uz": "javob berildi",
+    "en": "answered",
+    "ru": "ответов"
+  },
+  "Test materiali": {
+    "uz": "Test materiali",
+    "en": "Test material",
+    "ru": "Материал теста"
+  },
+  "Passage rasmi": {
+    "uz": "Passage rasmi",
+    "en": "Passage image",
+    "ru": "Иллюстрация к тексту"
+  },
+  "-savol ·": {
+    "uz": "-savol ·",
+    "en": " question ·",
+    "ru": " вопрос ·"
+  },
+  "ball ·": {
+    "uz": "ball ·",
+    "en": "points ·",
+    "ru": "баллов ·"
+  },
+  "majburiy": {
+    "uz": "majburiy",
+    "en": "required",
+    "ru": "обязательный"
+  },
+  "ixtiyoriy": {
+    "uz": "ixtiyoriy",
+    "en": "optional",
+    "ru": "необязательный"
+  },
+  "Belgilangan": {
+    "uz": "Belgilangan",
+    "en": "Flagged",
+    "ru": "Отмечен"
+  },
+  "Belgilash": {
+    "uz": "Belgilash",
+    "en": "Flag",
+    "ru": "Отметить"
+  },
+  "← Oldingi": {
+    "uz": "← Oldingi",
+    "en": "← Previous",
+    "ru": "← Назад"
+  },
+  "Keyingi →": {
+    "uz": "Keyingi →",
+    "en": "Next →",
+    "ru": "Далее →"
+  },
+  "Savollar": {
+    "uz": "Savollar",
+    "en": "Questions",
+    "ru": "Вопросы"
+  },
+  "Ko‘k — javob berilgan": {
+    "uz": "Ko‘k — javob berilgan",
+    "en": "Blue — answered",
+    "ru": "Синий — есть ответ"
+  },
+  "Belgi — qayta ko‘rib chiqish uchun": {
+    "uz": "Belgi — qayta ko‘rib chiqish uchun",
+    "en": "Flag — review later",
+    "ru": "Флаг — вернуться позже"
+  },
+  "Testni yakunlash": {
+    "uz": "Testni yakunlash",
+    "en": "Submit test",
+    "ru": "Завершить тест"
+  },
+  "Yakunlanmoqda…": {
+    "uz": "Yakunlanmoqda…",
+    "en": "Submitting…",
+    "ru": "Отправляем…"
+  },
+  "Qayta saqlash": {
+    "uz": "Qayta saqlash",
+    "en": "Retry save",
+    "ru": "Повторить сохранение"
+  },
+  "Smart Exam Preparation": {
+    "uz": "Imtihonga tayyorgarlik",
+    "en": "Smart exam preparation",
+    "ru": "Подготовка к экзаменам"
+  },
+  "Imtihon yo‘nalishingizni tanlang va mavjud testlarda bilimingizni sinang.": {
+    "uz": "Imtihon yo‘nalishingizni tanlang va mavjud testlarda bilimingizni sinang.",
+    "en": "Choose an exam and test your knowledge with available practice.",
+    "ru": "Выберите экзамен и проверьте знания на доступных тестах."
+  },
+  "Personal TAFE AI": {
+    "uz": "Shaxsiy TAFE AI",
+    "en": "Personal TAFE AI",
+    "ru": "Персональный TAFE AI"
+  },
+  "Savollar bering, murakkab mavzularni tushuntirishni so‘rang.": {
+    "uz": "Savollar bering, murakkab mavzularni tushuntirishni so‘rang.",
+    "en": "Ask questions and get explanations for difficult topics.",
+    "ru": "Задавайте вопросы и получайте объяснения сложных тем."
+  },
+  "Performance Analysis": {
+    "uz": "Natijalar tahlili",
+    "en": "Performance analysis",
+    "ru": "Анализ результатов"
+  },
+  "Saqlangan test natijalaringizni ko‘rib, tayyorgarlikni baholang.": {
+    "uz": "Saqlangan test natijalaringizni ko‘rib, tayyorgarlikni baholang.",
+    "en": "Review saved results to assess your preparation.",
+    "ru": "Оцените подготовку по сохранённым результатам."
+  },
+  "Personalized Study Plans": {
+    "uz": "Shaxsiy o‘quv rejalari",
+    "en": "Personalized study plans",
+    "ru": "Персональные планы обучения"
+  },
+  "Maqsadli ball va imtihon sanasini belgilab, AI bilan reja tuzing.": {
+    "uz": "Maqsadli ball va imtihon sanasini belgilab, AI bilan reja tuzing.",
+    "en": "Set a target score and exam date, then plan with AI.",
+    "ru": "Укажите целевой балл и дату экзамена, затем составьте план с ИИ."
+  },
+  "Educational Library": {
+    "uz": "O‘quv kutubxonasi",
+    "en": "Educational library",
+    "ru": "Учебная библиотека"
+  },
+  "Administrator joylashtirgan o‘quv materiallarini bir joyda toping.": {
+    "uz": "Administrator joylashtirgan o‘quv materiallarini bir joyda toping.",
+    "en": "Find study materials published by administrators.",
+    "ru": "Найдите учебные материалы, опубликованные администраторами."
+  },
+  "Multiple Examination Systems": {
+    "uz": "Turli imtihon tizimlari",
+    "en": "Multiple examination systems",
+    "ru": "Несколько экзаменационных систем"
+  },
+  "Turli imtihonlarga bitta shaxsiy kabinet orqali tayyorlaning.": {
+    "uz": "Turli imtihonlarga bitta shaxsiy kabinet orqali tayyorlaning.",
+    "en": "Prepare for multiple exams from one account.",
+    "ru": "Готовьтесь к разным экзаменам из одного кабинета."
+  },
+  "Katalogni yuklashning imkoni bo‘lmadi. Sahifani yangilab ko‘ring.": {
+    "uz": "Katalogni yuklashning imkoni bo‘lmadi. Sahifani yangilab ko‘ring.",
+    "en": "Could not load the catalog. Reload the page.",
+    "ru": "Не удалось загрузить каталог. Обновите страницу."
+  },
+  "Internet ulanishini tekshiring.": {
+    "uz": "Internet ulanishini tekshiring.",
+    "en": "Check your connection.",
+    "ru": "Проверьте подключение."
+  },
+  "TAFE bosh sahifa": {
+    "uz": "TAFE bosh sahifa",
+    "en": "TAFE home",
+    "ru": "Главная TAFE"
+  },
+  "Bosh menyu": {
+    "uz": "Bosh menyu",
+    "en": "Main menu",
+    "ru": "Главное меню"
+  },
+  "Home": {
+    "uz": "Bosh sahifa",
+    "en": "Home",
+    "ru": "Главная"
+  },
+  "Features": {
+    "uz": "Imkoniyatlar",
+    "en": "Features",
+    "ru": "Возможности"
+  },
+  "Exams": {
+    "uz": "Imtihonlar",
+    "en": "Exams",
+    "ru": "Экзамены"
+  },
+  "Pricing": {
+    "uz": "Tariflar",
+    "en": "Pricing",
+    "ru": "Тарифы"
+  },
+  "Yorug‘ rejim": {
+    "uz": "Yorug‘ rejim",
+    "en": "Light mode",
+    "ru": "Светлая тема"
+  },
+  "Tungi rejim": {
+    "uz": "Tungi rejim",
+    "en": "Dark mode",
+    "ru": "Тёмная тема"
+  },
+  "Log in": {
+    "uz": "Kirish",
+    "en": "Log in",
+    "ru": "Войти"
+  },
+  "Get Started": {
+    "uz": "Boshlash",
+    "en": "Get started",
+    "ru": "Начать"
+  },
+  "Menyuni ochish": {
+    "uz": "Menyuni ochish",
+    "en": "Open menu",
+    "ru": "Открыть меню"
+  },
+  "YOUR NEXT CHAPTER STARTS HERE": {
+    "uz": "YANGI BOSQICH SHU YERDAN BOSHLANADI",
+    "en": "YOUR NEXT CHAPTER STARTS HERE",
+    "ru": "ВАШ НОВЫЙ ЭТАП НАЧИНАЕТСЯ ЗДЕСЬ"
+  },
+  "Prepare Smarter.": {
+    "uz": "Puxta tayyorlaning.",
+    "en": "Prepare smarter.",
+    "ru": "Готовьтесь эффективнее."
+  },
+  "Achieve More.": {
+    "uz": "Ko‘proq yutuqqa erishing.",
+    "en": "Achieve more.",
+    "ru": "Достигайте большего."
+  },
+  "Prepare Smarter. Achieve More.": {
+    "uz": "Puxta tayyorlaning. Ko‘proq yutuqqa erishing.",
+    "en": "Prepare smarter. Achieve more.",
+    "ru": "Готовьтесь эффективнее. Достигайте большего."
+  },
+  "Your personal platform for preparing for IELTS, SAT, National Certificates, and other important examinations.": {
+    "uz": "IELTS, SAT, milliy sertifikat va boshqa imtihonlarga tayyorgarlik platformasi.",
+    "en": "Your platform for IELTS, SAT, National Certificate and other exams.",
+    "ru": "Платформа для подготовки к IELTS, SAT, национальным сертификатам и другим экзаменам."
+  },
+  "Explore Platform": {
+    "uz": "Platformani ko‘rish",
+    "en": "Explore platform",
+    "ru": "Посмотреть платформу"
+  },
+  "Shaxsiy natijalar. Aniq maqsad. Doimiy rivojlanish.": {
+    "uz": "Shaxsiy natijalar. Aniq maqsad. Doimiy rivojlanish.",
+    "en": "Personal results, clear goals and steady progress.",
+    "ru": "Личные результаты, ясная цель и устойчивый прогресс."
+  },
+  "TAFE dashboard interfeysi ko‘rinishi": {
+    "uz": "TAFE dashboard interfeysi ko‘rinishi",
+    "en": "TAFE dashboard preview",
+    "ru": "Предпросмотр кабинета TAFE"
+  },
+  "TAFE / Learning workspace": {
+    "uz": "TAFE / O‘quv kabineti",
+    "en": "TAFE / Learning workspace",
+    "ru": "TAFE / Учебный кабинет"
+  },
+  "YOUR PERSONAL WORKSPACE": {
+    "uz": "SHAXSIY KABINET",
+    "en": "YOUR PERSONAL WORKSPACE",
+    "ru": "ВАШ ЛИЧНЫЙ КАБИНЕТ"
+  },
+  "Kelajagingiz shu yerdan boshlanadi.": {
+    "uz": "Kelajagingiz shu yerdan boshlanadi.",
+    "en": "Your future starts here.",
+    "ru": "Ваше будущее начинается здесь."
+  },
+  "PREPARE · PRACTICE · PROGRESS": {
+    "uz": "TAYYORLANING · MASHQ QILING · RIVOJLANING",
+    "en": "PREPARE · PRACTICE · PROGRESS",
+    "ru": "ПОДГОТОВКА · ПРАКТИКА · ПРОГРЕСС"
+  },
+  "Har bir mashq —": {
+    "uz": "Har bir mashq —",
+    "en": "Every practice session is",
+    "ru": "Каждая тренировка —"
+  },
+  "oldinga bir qadam.": {
+    "uz": "oldinga bir qadam.",
+    "en": "a step forward.",
+    "ru": "шаг вперёд."
+  },
+  "Maqsadlaringiz": {
+    "uz": "Maqsadlaringiz",
+    "en": "Your goals",
+    "ru": "Ваши цели"
+  },
+  "Testlaringiz": {
+    "uz": "Testlaringiz",
+    "en": "Your tests",
+    "ru": "Ваши тесты"
+  },
+  "Natijalaringiz": {
+    "uz": "Natijalaringiz",
+    "en": "Your results",
+    "ru": "Ваши результаты"
+  },
+  "Shaxsiy o‘rganish yo‘lingiz": {
+    "uz": "Shaxsiy o‘rganish yo‘lingiz",
+    "en": "Your learning journey",
+    "ru": "Ваш учебный путь"
+  },
+  "Hisob yarating va birinchi testingizni boshlang.": {
+    "uz": "Hisob yarating va birinchi testingizni boshlang.",
+    "en": "Create an account and start your first test.",
+    "ru": "Создайте аккаунт и пройдите первый тест."
+  },
+  "Learn with clarity.": {
+    "uz": "Tushunib o‘rganing.",
+    "en": "Learn with clarity.",
+    "ru": "Учитесь осознанно."
+  },
+  "Grow with TAFE.": {
+    "uz": "TAFE bilan rivojlaning.",
+    "en": "Grow with TAFE.",
+    "ru": "Развивайтесь с TAFE."
+  },
+  "YOUR GOALS. ONE WORKSPACE.": {
+    "uz": "MAQSADLARINGIZ BITTA KABINETDA",
+    "en": "YOUR GOALS. ONE WORKSPACE.",
+    "ru": "ВАШИ ЦЕЛИ В ОДНОМ КАБИНЕТЕ"
+  },
+  "BUILT AROUND YOUR AMBITION": {
+    "uz": "MAQSADINGIZGA MOS",
+    "en": "BUILT AROUND YOUR AMBITION",
+    "ru": "СОЗДАНО ДЛЯ ВАШИХ ЦЕЛЕЙ"
+  },
+  "Everything you need.": {
+    "uz": "Sizga kerakli imkoniyatlar.",
+    "en": "Everything you need.",
+    "ru": "Всё необходимое."
+  },
+  "A clearer path forward.": {
+    "uz": "Oldinga aniq yo‘l.",
+    "en": "A clearer path forward.",
+    "ru": "Понятный путь вперёд."
+  },
+  "Tayyorgarlik, amaliyot va shaxsiy natijalaringiz bir joyda.": {
+    "uz": "Tayyorgarlik, amaliyot va shaxsiy natijalaringiz bir joyda.",
+    "en": "Preparation, practice and your results in one place.",
+    "ru": "Подготовка, практика и результаты в одном месте."
+  },
+  "CHOOSE YOUR DIRECTION": {
+    "uz": "YO‘NALISHNI TANLANG",
+    "en": "CHOOSE YOUR DIRECTION",
+    "ru": "ВЫБЕРИТЕ НАПРАВЛЕНИЕ"
+  },
+  "Your exam.": {
+    "uz": "Sizning imtihoningiz.",
+    "en": "Your exam.",
+    "ru": "Ваш экзамен."
+  },
+  "Your starting point.": {
+    "uz": "Sizning boshlanish nuqtangiz.",
+    "en": "Your starting point.",
+    "ru": "Ваша отправная точка."
+  },
+  "Tayyorgarlikni shu yerdan boshlang.": {
+    "uz": "Tayyorgarlikni shu yerdan boshlang.",
+    "en": "Start preparing here.",
+    "ru": "Начните подготовку здесь."
+  },
+  "Yo‘nalishlar yuklanmoqda…": {
+    "uz": "Yo‘nalishlar yuklanmoqda…",
+    "en": "Loading exams…",
+    "ru": "Загружаем экзамены…"
+  },
+  "A SIMPLE WAY FORWARD": {
+    "uz": "OLDINGA OSON QADAMLAR",
+    "en": "A SIMPLE WAY FORWARD",
+    "ru": "ПРОСТОЙ ПУТЬ ВПЕРЁД"
+  },
+  "Small steps.": {
+    "uz": "Kichik qadamlar.",
+    "en": "Small steps.",
+    "ru": "Маленькие шаги."
+  },
+  "Meaningful progress.": {
+    "uz": "Sezilarli rivojlanish.",
+    "en": "Meaningful progress.",
+    "ru": "Заметный прогресс."
+  },
+  "O‘zingizga mos sur’atda tayyorlaning.": {
+    "uz": "O‘zingizga mos sur’atda tayyorlaning.",
+    "en": "Prepare at your own pace.",
+    "ru": "Готовьтесь в удобном темпе."
+  },
+  "Start your journey": {
+    "uz": "O‘rganishni boshlash",
+    "en": "Start your journey",
+    "ru": "Начать обучение"
+  },
+  "Create your account": {
+    "uz": "Hisob yarating",
+    "en": "Create your account",
+    "ru": "Создайте аккаунт"
+  },
+  "Choose your examination": {
+    "uz": "Imtihoningizni tanlang",
+    "en": "Choose your exam",
+    "ru": "Выберите экзамен"
+  },
+  "Complete practice tests": {
+    "uz": "Mashq testlarini ishlang",
+    "en": "Complete practice tests",
+    "ru": "Пройдите тренировочные тесты"
+  },
+  "Understand your mistakes with TAFE AI": {
+    "uz": "Xatolarni TAFE AI bilan tushuning",
+    "en": "Understand mistakes with TAFE AI",
+    "ru": "Разберите ошибки с TAFE AI"
+  },
+  "Improve your performance": {
+    "uz": "Natijangizni yaxshilang",
+    "en": "Improve your performance",
+    "ru": "Улучшайте результаты"
+  },
+  "ROOM TO GROW": {
+    "uz": "RIVOJLANISH UCHUN",
+    "en": "ROOM TO GROW",
+    "ru": "ПРОСТРАНСТВО ДЛЯ РОСТА"
+  },
+  "A plan for": {
+    "uz": "Tarif tanlang",
+    "en": "A plan for",
+    "ru": "Тариф для"
+  },
+  "your ambition.": {
+    "uz": "maqsadingizga mos.",
+    "en": "your ambition.",
+    "ru": "ваших целей."
+  },
+  "Tariflar va narxlar platforma bazasidan olinadi.": {
+    "uz": "Tariflar va narxlar platforma bazasidan olinadi.",
+    "en": "Plans and prices are managed on the platform.",
+    "ru": "Тарифы и цены управляются на платформе."
+  },
+  "Narx hali e’lon qilinmagan": {
+    "uz": "Narx hali e’lon qilinmagan",
+    "en": "Price not published",
+    "ru": "Цена ещё не опубликована"
+  },
+  "Bepul": {
+    "uz": "Bepul",
+    "en": "Free",
+    "ru": "Бесплатно"
+  },
+  "boshlash uchun": {
+    "uz": "boshlash uchun",
+    "en": "to get started",
+    "ru": "для начала"
+  },
+  "/ oy": {
+    "uz": "/ oy",
+    "en": "/ month",
+    "ru": "/ месяц"
+  },
+  "Pullik ulanish hali ochilmagan.": {
+    "uz": "Pullik ulanish hali ochilmagan.",
+    "en": "Paid subscriptions are not available yet.",
+    "ru": "Платные подписки пока недоступны."
+  },
+  "Tariflar hali e’lon qilinmagan.": {
+    "uz": "Tariflar hali e’lon qilinmagan.",
+    "en": "Plans have yet to be published.",
+    "ru": "Тарифы пока не опубликованы."
+  },
+  "MAKE YOUR NEXT MOVE": {
+    "uz": "KEYINGI QADAM",
+    "en": "MAKE YOUR NEXT MOVE",
+    "ru": "СДЕЛАЙТЕ СЛЕДУЮЩИЙ ШАГ"
+  },
+  "Your next achievement": {
+    "uz": "Keyingi yutug‘ingiz",
+    "en": "Your next achievement",
+    "ru": "Ваше следующее достижение"
+  },
+  "starts with TAFE.": {
+    "uz": "TAFE’dan boshlanadi.",
+    "en": "starts with TAFE.",
+    "ru": "начинается с TAFE."
+  },
+  "Start Learning": {
+    "uz": "O‘rganishni boshlash",
+    "en": "Start learning",
+    "ru": "Начать обучение"
+  },
+  "Pastki menyu": {
+    "uz": "Pastki menyu",
+    "en": "Footer menu",
+    "ru": "Нижнее меню"
+  },
+  "About": {
+    "uz": "Platforma haqida",
+    "en": "About",
+    "ru": "О платформе"
+  },
+  "Contact": {
+    "uz": "Aloqa",
+    "en": "Contact",
+    "ru": "Контакты"
+  },
+  "Privacy Policy": {
+    "uz": "Maxfiylik siyosati",
+    "en": "Privacy policy",
+    "ru": "Политика конфиденциальности"
+  },
+  "Terms of Service": {
+    "uz": "Foydalanish shartlari",
+    "en": "Terms of service",
+    "ru": "Условия использования"
+  },
+  "Platformaning aloqa manzili hali administrator tomonidan belgilanmagan.": {
+    "uz": "Platformaning aloqa manzili hali administrator tomonidan belgilanmagan.",
+    "en": "The administrator has not configured a contact address yet.",
+    "ru": "Администратор пока не указал контактный адрес."
+  },
+  "← Bosh sahifa": {
+    "uz": "← Bosh sahifa",
+    "en": "← Home",
+    "ru": "← Главная"
+  },
+  "Kitob fayli mavjud emas.": {
+    "uz": "Kitob fayli mavjud emas.",
+    "en": "The book file is unavailable.",
+    "ru": "Файл книги недоступен."
+  },
+  "THE LEARNING COLLECTION": {
+    "uz": "O‘QUV TO‘PLAMI",
+    "en": "THE LEARNING COLLECTION",
+    "ru": "УЧЕБНАЯ КОЛЛЕКЦИЯ"
+  },
+  "Kutubxona boshqaruvi": {
+    "uz": "Kutubxona boshqaruvi",
+    "en": "Library management",
+    "ru": "Управление библиотекой"
+  },
+  "O‘rganish uchun yangi sahifa.": {
+    "uz": "O‘rganish uchun yangi sahifa.",
+    "en": "A new page for learning.",
+    "ru": "Новая страница обучения."
+  },
+  "Kitoblar va materiallar joriy tarifingiz ruxsatiga ko‘ra ko‘rsatiladi.": {
+    "uz": "Kitoblar va materiallar joriy tarifingiz ruxsatiga ko‘ra ko‘rsatiladi.",
+    "en": "Books and materials are shown according to your plan.",
+    "ru": "Книги и материалы отображаются в соответствии с тарифом."
+  },
+  "Kitob qo‘shish": {
+    "uz": "Kitob qo‘shish",
+    "en": "Add a book",
+    "ru": "Добавить книгу"
+  },
+  "Kitob qidirish": {
+    "uz": "Kitob qidirish",
+    "en": "Search books",
+    "ru": "Поиск книг"
+  },
+  "Kitob yoki muallif…": {
+    "uz": "Kitob yoki muallif…",
+    "en": "Book or author…",
+    "ru": "Книга или автор…"
+  },
+  "Barcha yo‘nalishlar": {
+    "uz": "Barcha yo‘nalishlar",
+    "en": "All categories",
+    "ru": "Все категории"
+  },
+  "Barcha tillar": {
+    "uz": "Barcha tillar",
+    "en": "All languages",
+    "ru": "Все языки"
+  },
+  "Barcha fanlar": {
+    "uz": "Barcha fanlar",
+    "en": "All subjects",
+    "ru": "Все предметы"
+  },
+  "tafsilotlari": {
+    "uz": "tafsilotlari",
+    "en": "details",
+    "ru": "подробности"
+  },
+  "muqovasi": {
+    "uz": "muqovasi",
+    "en": "cover",
+    "ru": "обложка"
+  },
+  "Muqova yuklanmagan": {
+    "uz": "Muqova yuklanmagan",
+    "en": "No cover uploaded",
+    "ru": "Обложка не загружена"
+  },
+  "O‘quv materiali": {
+    "uz": "O‘quv materiali",
+    "en": "Study material",
+    "ru": "Учебный материал"
+  },
+  "Maqsadingizga mos": {
+    "uz": "Maqsadingizga mos",
+    "en": "Matches your goal",
+    "ru": "Подходит вашей цели"
+  },
+  "Muallif ko‘rsatilmagan": {
+    "uz": "Muallif ko‘rsatilmagan",
+    "en": "Author unavailable",
+    "ru": "Автор не указан"
+  },
+  "Tafsilotlar": {
+    "uz": "Tafsilotlar",
+    "en": "Details",
+    "ru": "Подробнее"
+  },
+  "O‘qish": {
+    "uz": "O‘qish",
+    "en": "Read",
+    "ru": "Читать"
+  },
+  "Hozircha tanlangan filtrlar va tarifingizga mos materiallar yo‘q.": {
+    "uz": "Hozircha tanlangan filtrlar va tarifingizga mos materiallar yo‘q.",
+    "en": "No materials match your filters and plan.",
+    "ru": "Нет материалов, подходящих фильтрам и тарифу."
+  },
+  "O‘qish / yuklab olish": {
+    "uz": "O‘qish / yuklab olish",
+    "en": "Read / download",
+    "ru": "Читать / скачать"
+  },
+  "Kitobni o‘qish": {
+    "uz": "Kitobni o‘qish",
+    "en": "Read book",
+    "ru": "Читать книгу"
+  },
+  "Alohida oynada ochish / yuklab olish ↗": {
+    "uz": "Alohida oynada ochish / yuklab olish ↗",
+    "en": "Open in a new tab / download ↗",
+    "ru": "Открыть в новой вкладке / скачать ↗"
+  },
+  "Kitob hujjati": {
+    "uz": "Kitob hujjati",
+    "en": "Book document",
+    "ru": "Файл книги"
+  },
+  "PDF yoki hujjat yuklang.": {
+    "uz": "PDF yoki hujjat yuklang.",
+    "en": "Upload a PDF or document.",
+    "ru": "Загрузите PDF или документ."
+  },
+  "Kitobni tahrirlash": {
+    "uz": "Kitobni tahrirlash",
+    "en": "Edit book",
+    "ru": "Редактировать книгу"
+  },
+  "Muqova ko‘rinishi": {
+    "uz": "Muqova ko‘rinishi",
+    "en": "Cover preview",
+    "ru": "Предпросмотр обложки"
+  },
+  "Muqova rasmi": {
+    "uz": "Muqova rasmi",
+    "en": "Cover image",
+    "ru": "Обложка"
+  },
+  "Muqova yuklash (JPG, PNG, WEBP · 3 MB)": {
+    "uz": "Muqova yuklash (JPG, PNG, WEBP · 3 MB)",
+    "en": "Upload cover (JPG, PNG, WEBP · 3 MB)",
+    "ru": "Загрузить обложку (JPG, PNG, WEBP · 3 МБ)"
+  },
+  "Muqovani olib tashlash": {
+    "uz": "Muqovani olib tashlash",
+    "en": "Remove cover",
+    "ru": "Удалить обложку"
+  },
+  "Kitob nomi": {
+    "uz": "Kitob nomi",
+    "en": "Book title",
+    "ru": "Название книги"
+  },
+  "Muallif": {
+    "uz": "Muallif",
+    "en": "Author",
+    "ru": "Автор"
+  },
+  "Fan": {
+    "uz": "Fan",
+    "en": "Subject",
+    "ru": "Предмет"
+  },
+  "Kategoriya": {
+    "uz": "Kategoriya",
+    "en": "Category",
+    "ru": "Категория"
+  },
+  "Umumiy": {
+    "uz": "Umumiy",
+    "en": "General",
+    "ru": "Общее"
+  },
+  "Til": {
+    "uz": "Til",
+    "en": "Language",
+    "ru": "Язык"
+  },
+  "Daraja": {
+    "uz": "Daraja",
+    "en": "Level",
+    "ru": "Уровень"
+  },
+  "Boshlang‘ich": {
+    "uz": "Boshlang‘ich",
+    "en": "Beginner",
+    "ru": "Начальный"
+  },
+  "O‘rta": {
+    "uz": "O‘rta",
+    "en": "Intermediate",
+    "ru": "Средний"
+  },
+  "Yuqori": {
+    "uz": "Yuqori",
+    "en": "Advanced",
+    "ru": "Продвинутый"
+  },
+  "Nashr ma’lumoti": {
+    "uz": "Nashr ma’lumoti",
+    "en": "Publication information",
+    "ru": "Сведения об издании"
+  },
+  "Minimal kirish darajasi": {
+    "uz": "Minimal kirish darajasi",
+    "en": "Minimum access level",
+    "ru": "Минимальный уровень доступа"
+  },
+  "Mavjud hujjat saqlanadi. Almashtirish uchun yangi fayl tanlang.": {
+    "uz": "Mavjud hujjat saqlanadi. Almashtirish uchun yangi fayl tanlang.",
+    "en": "The current document is kept. Select a new file to replace it.",
+    "ru": "Текущий документ сохранится. Выберите новый файл для замены."
+  },
+  "E’lon qilish": {
+    "uz": "E’lon qilish",
+    "en": "Publish",
+    "ru": "Опубликовать"
+  },
+  "Kitobni saqlash": {
+    "uz": "Kitobni saqlash",
+    "en": "Save book",
+    "ru": "Сохранить книгу"
+  },
+  "LET’S MAKE IT PERSONAL": {
+    "uz": "SHAXSIY SOZLASH",
+    "en": "LET’S MAKE IT PERSONAL",
+    "ru": "НАСТРОИМ ОБУЧЕНИЕ ДЛЯ ВАС"
+  },
+  "Tayyorgarligingizni": {
+    "uz": "Tayyorgarligingizni",
+    "en": "Let’s tailor",
+    "ru": "Настроим подготовку"
+  },
+  "sizga moslaymiz.": {
+    "uz": "sizga moslaymiz.",
+    "en": "your preparation.",
+    "ru": "под ваши цели."
+  },
+  "Maqsadingizni belgilang. Bu ma’lumotlarni keyin profilingizda o‘zgartirish mumkin.": {
+    "uz": "Maqsadingizni belgilang. Bu ma’lumotlarni keyin profilingizda o‘zgartirish mumkin.",
+    "en": "Set your goal. You can edit it later in your profile.",
+    "ru": "Укажите цель. Вы сможете изменить её в профиле."
+  },
+  "Saqlanmadi. Qayta urinib ko‘ring.": {
+    "uz": "Saqlanmadi. Qayta urinib ko‘ring.",
+    "en": "Could not save. Try again.",
+    "ru": "Не удалось сохранить. Повторите попытку."
+  },
+  "Afzal til": {
+    "uz": "Afzal til",
+    "en": "Preferred language",
+    "ru": "Предпочитаемый язык"
+  },
+  "Maqsadli imtihon": {
+    "uz": "Maqsadli imtihon",
+    "en": "Target exam",
+    "ru": "Целевой экзамен"
+  },
+  "Yo‘nalishni tanlang": {
+    "uz": "Yo‘nalishni tanlang",
+    "en": "Select an exam",
+    "ru": "Выберите экзамен"
+  },
+  "Hozirgi darajangiz": {
+    "uz": "Hozirgi darajangiz",
+    "en": "Current level",
+    "ru": "Текущий уровень"
+  },
+  "Darajani tanlang": {
+    "uz": "Darajani tanlang",
+    "en": "Select a level",
+    "ru": "Выберите уровень"
+  },
+  "Maqsadli ball": {
+    "uz": "Maqsadli ball",
+    "en": "Target score",
+    "ru": "Целевой балл"
+  },
+  "Masalan, IELTS 7.0 yoki SAT 1400": {
+    "uz": "Masalan, IELTS 7.0 yoki SAT 1400",
+    "en": "For example, IELTS 7.0 or SAT 1400",
+    "ru": "Например, IELTS 7.0 или SAT 1400"
+  },
+  "Imtihon sanasi (ixtiyoriy)": {
+    "uz": "Imtihon sanasi (ixtiyoriy)",
+    "en": "Exam date (optional)",
+    "ru": "Дата экзамена (необязательно)"
+  },
+  "Tayyorgarlikni boshlash": {
+    "uz": "Tayyorgarlikni boshlash",
+    "en": "Start preparing",
+    "ru": "Начать подготовку"
+  },
+  "Maqsadlaringiz shaxsiy profilingizda saqlanadi.": {
+    "uz": "Maqsadlaringiz shaxsiy profilingizda saqlanadi.",
+    "en": "Your goals are saved in your profile.",
+    "ru": "Ваши цели сохраняются в профиле."
+  },
+  "Shaxsiy ma’lumotlar": {
+    "uz": "Shaxsiy ma’lumotlar",
+    "en": "Personal details",
+    "ru": "Личные данные"
+  },
+  "Hisob va xavfsizlik": {
+    "uz": "Hisob va xavfsizlik",
+    "en": "Account and security",
+    "ru": "Аккаунт и безопасность"
+  },
+  "Ko‘rinish": {
+    "uz": "Ko‘rinish",
+    "en": "Appearance",
+    "ru": "Внешний вид"
+  },
+  "Bildirishnomalar": {
+    "uz": "Bildirishnomalar",
+    "en": "Notifications",
+    "ru": "Уведомления"
+  },
+  "Obuna va to‘lovlar": {
+    "uz": "Obuna va to‘lovlar",
+    "en": "Subscription and billing",
+    "ru": "Подписка и оплата"
+  },
+  "Maxfiylik": {
+    "uz": "Maxfiylik",
+    "en": "Privacy",
+    "ru": "Конфиденциальность"
+  },
+  "Profil rasmi": {
+    "uz": "Profil rasmi",
+    "en": "Profile photo",
+    "ru": "Фото профиля"
+  },
+  "TAFE o‘quvchisi": {
+    "uz": "TAFE o‘quvchisi",
+    "en": "TAFE student",
+    "ru": "Ученик TAFE"
+  },
+  "TAFE Admin’ni ochish ↗": {
+    "uz": "TAFE Admin’ni ochish ↗",
+    "en": "Open TAFE Admin ↗",
+    "ru": "Открыть TAFE Admin ↗"
+  },
+  "YOUR PERSONAL DETAILS": {
+    "uz": "SHAXSIY MA’LUMOTLAR",
+    "en": "YOUR PERSONAL DETAILS",
+    "ru": "ВАШИ ЛИЧНЫЕ ДАННЫЕ"
+  },
+  "Profil rasmini yuklash (2 MB)": {
+    "uz": "Profil rasmini yuklash (2 MB)",
+    "en": "Upload profile photo (2 MB)",
+    "ru": "Загрузить фото профиля (2 МБ)"
+  },
+  "Email": {
+    "uz": "Email",
+    "en": "Email",
+    "ru": "Электронная почта"
+  },
+  "Telefon": {
+    "uz": "Telefon",
+    "en": "Phone",
+    "ru": "Телефон"
+  },
+  "Tanlang": {
+    "uz": "Tanlang",
+    "en": "Select",
+    "ru": "Выберите"
+  },
+  "Hozirgi daraja": {
+    "uz": "Hozirgi daraja",
+    "en": "Current level",
+    "ru": "Текущий уровень"
+  },
+  "Imtihon sanasi": {
+    "uz": "Imtihon sanasi",
+    "en": "Exam date",
+    "ru": "Дата экзамена"
+  },
+  "O‘zgarishlarni saqlash": {
+    "uz": "O‘zgarishlarni saqlash",
+    "en": "Save changes",
+    "ru": "Сохранить изменения"
+  },
+  "ACCOUNT SECURITY": {
+    "uz": "HISOB XAVFSIZLIGI",
+    "en": "ACCOUNT SECURITY",
+    "ru": "БЕЗОПАСНОСТЬ АККАУНТА"
+  },
+  "Parol va hisob sozlamalari": {
+    "uz": "Parol va hisob sozlamalari",
+    "en": "Password and account settings",
+    "ru": "Пароль и настройки аккаунта"
+  },
+  "Parollar mos emas.": {
+    "uz": "Parollar mos emas.",
+    "en": "Passwords do not match.",
+    "ru": "Пароли не совпадают."
+  },
+  "Yangi parol": {
+    "uz": "Yangi parol",
+    "en": "New password",
+    "ru": "Новый пароль"
+  },
+  "Parolni yangilash": {
+    "uz": "Parolni yangilash",
+    "en": "Update password",
+    "ru": "Обновить пароль"
+  },
+  "Email manzilni o‘zgartirish": {
+    "uz": "Email manzilni o‘zgartirish",
+    "en": "Change email address",
+    "ru": "Изменить email"
+  },
+  "Bu amal Supabase Auth xavfsizlik tasdig‘ini talab qiladi.": {
+    "uz": "Bu amal Supabase Auth xavfsizlik tasdig‘ini talab qiladi.",
+    "en": "Supabase Auth requires confirmation for this action.",
+    "ru": "Supabase Auth требует подтверждения этого действия."
+  },
+  "Email o‘zgartirish so‘rovi yuborildi. Tasdiqlash xatini tekshiring.": {
+    "uz": "Email o‘zgartirish so‘rovi yuborildi. Tasdiqlash xatini tekshiring.",
+    "en": "Email change requested. Check the confirmation email.",
+    "ru": "Запрос на смену email отправлен. Проверьте письмо подтверждения."
+  },
+  "Yangi email": {
+    "uz": "Yangi email",
+    "en": "New email address",
+    "ru": "Новый email"
+  },
+  "Tasdiqlash so‘rovini yuborish": {
+    "uz": "Tasdiqlash so‘rovini yuborish",
+    "en": "Send confirmation request",
+    "ru": "Отправить запрос подтверждения"
+  },
+  "Sessiya": {
+    "uz": "Sessiya",
+    "en": "Session",
+    "ru": "Сессия"
+  },
+  "So‘nggi kirish —": {
+    "uz": "So‘nggi kirish —",
+    "en": "Last sign-in —",
+    "ru": "Последний вход —"
+  },
+  "Barcha sessiyalardan chiqish": {
+    "uz": "Barcha sessiyalardan chiqish",
+    "en": "Sign out of all sessions",
+    "ru": "Выйти из всех сеансов"
+  },
+  "MAKE IT YOURS": {
+    "uz": "SHAXSIY TANLOV",
+    "en": "MAKE IT YOURS",
+    "ru": "ВАШИ НАСТРОЙКИ"
+  },
+  "Ko‘rinish sozlamalari": {
+    "uz": "Ko‘rinish sozlamalari",
+    "en": "Appearance settings",
+    "ru": "Настройки внешнего вида"
+  },
+  "Tanlovingiz hisobingiz bilan birga saqlanadi.": {
+    "uz": "Tanlovingiz hisobingiz bilan birga saqlanadi.",
+    "en": "Your preference is saved to your account.",
+    "ru": "Выбор сохраняется в аккаунте."
+  },
+  "Yorug‘": {
+    "uz": "Yorug‘",
+    "en": "Light",
+    "ru": "Светлая"
+  },
+  "Tungi": {
+    "uz": "Tungi",
+    "en": "Dark",
+    "ru": "Тёмная"
+  },
+  "Tizimga mos": {
+    "uz": "Tizimga mos",
+    "en": "System",
+    "ru": "Системная"
+  },
+  "STAY IN THE LOOP": {
+    "uz": "XABARDOR BO‘LING",
+    "en": "STAY IN THE LOOP",
+    "ru": "БУДЬТЕ В КУРСЕ"
+  },
+  "Bildirishnoma tanlovlari": {
+    "uz": "Bildirishnoma tanlovlari",
+    "en": "Notification preferences",
+    "ru": "Настройки уведомлений"
+  },
+  "O‘qish eslatmalari": {
+    "uz": "O‘qish eslatmalari",
+    "en": "Study reminders",
+    "ru": "Напоминания об учёбе"
+  },
+  "Test bildirishnomalari": {
+    "uz": "Test bildirishnomalari",
+    "en": "Test notifications",
+    "ru": "Уведомления о тестах"
+  },
+  "Obuna bildirishnomalari": {
+    "uz": "Obuna bildirishnomalari",
+    "en": "Subscription notifications",
+    "ru": "Уведомления о подписке"
+  },
+  "Muhim platforma yangiliklari": {
+    "uz": "Muhim platforma yangiliklari",
+    "en": "Important platform updates",
+    "ru": "Важные новости платформы"
+  },
+  "Bu tanlovlar xabarnoma ruxsatlarini saqlaydi. Rejalashtirilgan eslatmalar xizmati hali yoqilmagan.": {
+    "uz": "Bu tanlovlar xabarnoma ruxsatlarini saqlaydi. Rejalashtirilgan eslatmalar xizmati hali yoqilmagan.",
+    "en": "Preferences are saved. Scheduled reminders are not active yet.",
+    "ru": "Настройки сохраняются. Запланированные напоминания пока выключены."
+  },
+  "YOUR PLAN & USAGE": {
+    "uz": "TARIF VA FOYDALANISH",
+    "en": "YOUR PLAN & USAGE",
+    "ru": "ТАРИФ И ИСПОЛЬЗОВАНИЕ"
+  },
+  "Obuna va foydalanish": {
+    "uz": "Obuna va foydalanish",
+    "en": "Subscription and usage",
+    "ru": "Подписка и использование"
+  },
+  "Joriy tarif": {
+    "uz": "Joriy tarif",
+    "en": "Current plan",
+    "ru": "Текущий тариф"
+  },
+  "Muddat —": {
+    "uz": "Muddat —",
+    "en": "Expires —",
+    "ru": "Действует до —"
+  },
+  "Asosiy tarif · muddatsiz": {
+    "uz": "Asosiy tarif · muddatsiz",
+    "en": "Default plan · no expiry",
+    "ru": "Базовый тариф · бессрочно"
+  },
+  "Avtomatik yangilanish yoqilmagan.": {
+    "uz": "Avtomatik yangilanish yoqilmagan.",
+    "en": "Automatic renewal is off.",
+    "ru": "Автопродление выключено."
+  },
+  "AI / kun": {
+    "uz": "AI / kun",
+    "en": "AI / day",
+    "ru": "ИИ / день"
+  },
+  "AI / oy": {
+    "uz": "AI / oy",
+    "en": "AI / month",
+    "ru": "ИИ / месяц"
+  },
+  "Test / kun": {
+    "uz": "Test / kun",
+    "en": "Tests / day",
+    "ru": "Тесты / день"
+  },
+  "Test / oy": {
+    "uz": "Test / oy",
+    "en": "Tests / month",
+    "ru": "Тесты / месяц"
+  },
+  "ta qoldi": {
+    "uz": "ta qoldi",
+    "en": "remaining",
+    "ru": "осталось"
+  },
+  "Mavjud tariflar": {
+    "uz": "Mavjud tariflar",
+    "en": "Available plans",
+    "ru": "Доступные тарифы"
+  },
+  "Narx e’lon qilinmagan": {
+    "uz": "Narx e’lon qilinmagan",
+    "en": "Price not published",
+    "ru": "Цена не опубликована"
+  },
+  "Tarifni o‘zgartirish uchun administratorga murojaat qiling. Jonli to‘lov hali ulanmagan.": {
+    "uz": "Tarifni o‘zgartirish uchun administratorga murojaat qiling. Jonli to‘lov hali ulanmagan.",
+    "en": "Contact the administrator to change plans. Online payments are not active yet.",
+    "ru": "Для смены тарифа обратитесь к администратору. Онлайн-оплата пока недоступна."
+  },
+  "Sana": {
+    "uz": "Sana",
+    "en": "Date",
+    "ru": "Дата"
+  },
+  "Summa": {
+    "uz": "Summa",
+    "en": "Amount",
+    "ru": "Сумма"
+  },
+  "Holat": {
+    "uz": "Holat",
+    "en": "Status",
+    "ru": "Статус"
+  },
+  "To‘lovlar hali yo‘q.": {
+    "uz": "To‘lovlar hali yo‘q.",
+    "en": "No payments yet.",
+    "ru": "Платежей пока нет."
+  },
+  "YOUR DATA, YOUR CHOICES": {
+    "uz": "MA’LUMOTLARINGIZ VA TANLOVINGIZ",
+    "en": "YOUR DATA, YOUR CHOICES",
+    "ru": "ВАШИ ДАННЫЕ И ВАШ ВЫБОР"
+  },
+  "Maxfiylik va ma’lumotlar": {
+    "uz": "Maxfiylik va ma’lumotlar",
+    "en": "Privacy and data",
+    "ru": "Конфиденциальность и данные"
+  },
+  "TAFE AI faqat suhbatda rozilik bergan ma’lumotlaringizni Gemini’ga yuboradi.": {
+    "uz": "TAFE AI faqat suhbatda rozilik bergan ma’lumotlaringizni Gemini’ga yuboradi.",
+    "en": "TAFE AI sends only the data you agree to share with Gemini.",
+    "ru": "TAFE AI отправляет Gemini только данные, которыми вы согласились поделиться."
+  },
+  "Ma’lumotlaringiz tayyorlandi.": {
+    "uz": "Ma’lumotlaringiz tayyorlandi.",
+    "en": "Your data is ready.",
+    "ru": "Ваши данные готовы."
+  },
+  "Ma’lumotlarimni yuklab olish": {
+    "uz": "Ma’lumotlarimni yuklab olish",
+    "en": "Download my data",
+    "ru": "Скачать мои данные"
+  },
+  "Hisobni o‘chirish so‘rovi": {
+    "uz": "Hisobni o‘chirish so‘rovi",
+    "en": "Account deletion request",
+    "ru": "Запрос на удаление аккаунта"
+  },
+  "So‘rov administrator ko‘rib chiqishi uchun saqlanadi. Hisob administrator orqali qaytarish mumkin bo‘lgan holatda o‘chiriladi.": {
+    "uz": "So‘rov administrator ko‘rib chiqishi uchun saqlanadi. Hisob administrator orqali qaytarish mumkin bo‘lgan holatda o‘chiriladi.",
+    "en": "The administrator will review your request. Account deletion is reversible.",
+    "ru": "Администратор рассмотрит запрос. Удалённый аккаунт можно восстановить."
+  },
+  "Hisobingizni o‘chirish uchun so‘rov yuborasizmi?": {
+    "uz": "Hisobingizni o‘chirish uchun so‘rov yuborasizmi?",
+    "en": "Request deletion of your account?",
+    "ru": "Запросить удаление аккаунта?"
+  },
+  "O‘chirish so‘rovini bekor qilish": {
+    "uz": "O‘chirish so‘rovini bekor qilish",
+    "en": "Cancel deletion request",
+    "ru": "Отменить запрос на удаление"
+  },
+  "Hisobni o‘chirishni so‘rash": {
+    "uz": "Hisobni o‘chirishni so‘rash",
+    "en": "Request account deletion",
+    "ru": "Запросить удаление аккаунта"
+  },
+  "O‘rtacha natija": {
+    "uz": "O‘rtacha natija",
+    "en": "Average score",
+    "ru": "Средний результат"
+  },
+  "Yakunlangan testlar": {
+    "uz": "Yakunlangan testlar",
+    "en": "Completed tests",
+    "ru": "Завершённые тесты"
+  },
+  "Davom etayotgan testlar": {
+    "uz": "Davom etayotgan testlar",
+    "en": "Tests in progress",
+    "ru": "Незавершённые тесты"
+  },
+  "O‘sish tarixi": {
+    "uz": "O‘sish tarixi",
+    "en": "Progress history",
+    "ru": "История прогресса"
+  },
+  "Natijalar test yakunlangach paydo bo‘ladi.": {
+    "uz": "Natijalar test yakunlangach paydo bo‘ladi.",
+    "en": "Results appear after you complete a test.",
+    "ru": "Результаты появятся после завершения теста."
+  },
+  "Testlar tarixi": {
+    "uz": "Testlar tarixi",
+    "en": "Test history",
+    "ru": "История тестов"
+  },
+  "Davom etish": {
+    "uz": "Davom etish",
+    "en": "Resume",
+    "ru": "Продолжить"
+  },
+  "Hali test ishlamagansiz.": {
+    "uz": "Hali test ishlamagansiz.",
+    "en": "You have not taken any tests yet.",
+    "ru": "Вы ещё не проходили тесты."
+  },
+  "Test tahlili": {
+    "uz": "Test tahlili",
+    "en": "Test review",
+    "ru": "Разбор теста"
+  },
+  "Sizning javobingiz —": {
+    "uz": "Sizning javobingiz —",
+    "en": "Your answer —",
+    "ru": "Ваш ответ —"
+  },
+  "Javob berilmagan": {
+    "uz": "Javob berilmagan",
+    "en": "Unanswered",
+    "ru": "Без ответа"
+  },
+  "Qabul qilinadigan javob —": {
+    "uz": "Qabul qilinadigan javob —",
+    "en": "Accepted answer —",
+    "ru": "Допустимый ответ —"
+  },
+  "Dalil keltirilmagan": {
+    "uz": "Dalil keltirilmagan",
+    "en": "No evidence supplied",
+    "ru": "Доказательство не предоставлено"
+  },
+  "TAFE AI bilan tushunish": {
+    "uz": "TAFE AI bilan tushunish",
+    "en": "Explain with TAFE AI",
+    "ru": "Разобрать с TAFE AI"
+  },
+  "Test nomi va kategoriyasini kiriting.": {
+    "uz": "Test nomi va kategoriyasini kiriting.",
+    "en": "Enter a test name and category.",
+    "ru": "Укажите название и категорию теста."
+  },
+  "Kamida bitta savol qo‘shing.": {
+    "uz": "Kamida bitta savol qo‘shing.",
+    "en": "Add at least one question.",
+    "ru": "Добавьте хотя бы один вопрос."
+  },
+  "-savol matni bo‘sh.": {
+    "uz": "-savol matni bo‘sh.",
+    "en": ": question text is empty.",
+    "ru": ": текст вопроса пуст."
+  },
+  "-savol variantlarini to‘ldiring.": {
+    "uz": "-savol variantlarini to‘ldiring.",
+    "en": ": complete the answer choices.",
+    "ru": ": заполните варианты ответа."
+  },
+  "Variantlar takrorlanmasin.": {
+    "uz": "Variantlar takrorlanmasin.",
+    "en": "Use distinct answer choices.",
+    "ru": "Варианты ответа не должны повторяться."
+  },
+  "-savolning javobini belgilang.": {
+    "uz": "-savolning javobini belgilang.",
+    "en": ": mark the correct answer.",
+    "ru": ": укажите правильный ответ."
+  },
+  "Moslashtirish va bo‘shliqlar javoblarini to‘ldiring.": {
+    "uz": "Moslashtirish va bo‘shliqlar javoblarini to‘ldiring.",
+    "en": "Complete all matching and gap answers.",
+    "ru": "Заполните ответы для соответствий и пропусков."
+  },
+  "VISUAL TEST STUDIO": {
+    "uz": "VIZUAL TEST MUHARRIRI",
+    "en": "VISUAL TEST BUILDER",
+    "ru": "КОНСТРУКТОР ТЕСТОВ"
+  },
+  "Testni tahrirlash": {
+    "uz": "Testni tahrirlash",
+    "en": "Edit test",
+    "ru": "Редактировать тест"
+  },
+  "Yangi test": {
+    "uz": "Yangi test",
+    "en": "New test",
+    "ru": "Новый тест"
+  },
+  "Bekor qilish": {
+    "uz": "Bekor qilish",
+    "en": "Cancel",
+    "ru": "Отмена"
+  },
+  "Ko‘rish": {
+    "uz": "Ko‘rish",
+    "en": "Preview",
+    "ru": "Предпросмотр"
+  },
+  "Qoralama": {
+    "uz": "Qoralama",
+    "en": "Draft",
+    "ru": "Черновик"
+  },
+  "01 / Test ma’lumotlari": {
+    "uz": "01 / Test ma’lumotlari",
+    "en": "01 / Test details",
+    "ru": "01 / Параметры теста"
+  },
+  "Test nomi": {
+    "uz": "Test nomi",
+    "en": "Test name",
+    "ru": "Название теста"
+  },
+  "Bo‘lim / fan": {
+    "uz": "Bo‘lim / fan",
+    "en": "Section / subject",
+    "ru": "Раздел / предмет"
+  },
+  "Qiyinlik": {
+    "uz": "Qiyinlik",
+    "en": "Difficulty",
+    "ru": "Сложность"
+  },
+  "Oson": {
+    "uz": "Oson",
+    "en": "Easy",
+    "ru": "Лёгкий"
+  },
+  "Qiyin": {
+    "uz": "Qiyin",
+    "en": "Hard",
+    "ru": "Сложный"
+  },
+  "Vaqt (daqiqa)": {
+    "uz": "Vaqt (daqiqa)",
+    "en": "Duration (minutes)",
+    "ru": "Время (минуты)"
+  },
+  "Turi": {
+    "uz": "Turi",
+    "en": "Type",
+    "ru": "Тип"
+  },
+  "Practice": {
+    "uz": "Mashq",
+    "en": "Practice",
+    "ru": "Тренировка"
+  },
+  "Full mock": {
+    "uz": "To‘liq sinov",
+    "en": "Full mock",
+    "ru": "Полный пробный экзамен"
+  },
+  "Kirish darajasi": {
+    "uz": "Kirish darajasi",
+    "en": "Access level",
+    "ru": "Уровень доступа"
+  },
+  "Savollar soni": {
+    "uz": "Savollar soni",
+    "en": "Question count",
+    "ru": "Количество вопросов"
+  },
+  "Ko‘rsatmalar": {
+    "uz": "Ko‘rsatmalar",
+    "en": "Instructions",
+    "ru": "Инструкции"
+  },
+  "02 / Passage va material": {
+    "uz": "02 / Passage va material",
+    "en": "02 / Passage and material",
+    "ru": "02 / Текст и материалы"
+  },
+  "Passage nomi": {
+    "uz": "Passage nomi",
+    "en": "Passage title",
+    "ru": "Название текста"
+  },
+  "Passage rasmi (ixtiyoriy · 3 MB)": {
+    "uz": "Passage rasmi (ixtiyoriy · 3 MB)",
+    "en": "Passage image (optional · 3 MB)",
+    "ru": "Иллюстрация (необязательно · 3 МБ)"
+  },
+  "Mavjud rasmni olib tashlash": {
+    "uz": "Mavjud rasmni olib tashlash",
+    "en": "Remove existing image",
+    "ru": "Удалить текущее изображение"
+  },
+  "Passage matni": {
+    "uz": "Passage matni",
+    "en": "Passage text",
+    "ru": "Текст для чтения"
+  },
+  "03 / Savollar": {
+    "uz": "03 / Savollar",
+    "en": "03 / Questions",
+    "ru": "03 / Вопросы"
+  },
+  "Yangi savol": {
+    "uz": "Yangi savol",
+    "en": "New question",
+    "ru": "Новый вопрос"
+  },
+  "Savol qo‘shish": {
+    "uz": "Savol qo‘shish",
+    "en": "Add question",
+    "ru": "Добавить вопрос"
+  },
+  "-savol": {
+    "uz": "-savol",
+    "en": " question",
+    "ru": " вопрос"
+  },
+  "Savolni yuqoriga": {
+    "uz": "Savolni yuqoriga",
+    "en": "Move question up",
+    "ru": "Поднять вопрос"
+  },
+  "Savolni pastga": {
+    "uz": "Savolni pastga",
+    "en": "Move question down",
+    "ru": "Опустить вопрос"
+  },
+  "Nusxa": {
+    "uz": "Nusxa",
+    "en": "Duplicate",
+    "ru": "Дублировать"
+  },
+  "O‘chirish": {
+    "uz": "O‘chirish",
+    "en": "Delete",
+    "ru": "Удалить"
+  },
+  "Savol turi": {
+    "uz": "Savol turi",
+    "en": "Question type",
+    "ru": "Тип вопроса"
+  },
+  "Ball": {
+    "uz": "Ball",
+    "en": "Points",
+    "ru": "Баллы"
+  },
+  "Guruh": {
+    "uz": "Guruh",
+    "en": "Group",
+    "ru": "Группа"
+  },
+  "Majburiy savol": {
+    "uz": "Majburiy savol",
+    "en": "Required question",
+    "ru": "Обязательный вопрос"
+  },
+  "Savol matni": {
+    "uz": "Savol matni",
+    "en": "Question text",
+    "ru": "Текст вопроса"
+  },
+  "Variantlar": {
+    "uz": "Variantlar",
+    "en": "Choices",
+    "ru": "Варианты"
+  },
+  "To‘g‘ri javob": {
+    "uz": "To‘g‘ri javob",
+    "en": "Correct answer",
+    "ru": "Правильный ответ"
+  },
+  "Variant": {
+    "uz": "Variant",
+    "en": "Choice",
+    "ru": "Вариант"
+  },
+  "Variantni o‘chirish": {
+    "uz": "Variantni o‘chirish",
+    "en": "Remove choice",
+    "ru": "Удалить вариант"
+  },
+  "Variant qo‘shish": {
+    "uz": "Variant qo‘shish",
+    "en": "Add choice",
+    "ru": "Добавить вариант"
+  },
+  "Moslashtirish qatorlari": {
+    "uz": "Moslashtirish qatorlari",
+    "en": "Matching rows",
+    "ru": "Строки соответствия"
+  },
+  "Bo‘shliqlar / jadval qatorlari": {
+    "uz": "Bo‘shliqlar / jadval qatorlari",
+    "en": "Gaps / table rows",
+    "ru": "Пропуски / строки таблицы"
+  },
+  "Qator / bo‘shliq matni": {
+    "uz": "Qator / bo‘shliq matni",
+    "en": "Row or gap label",
+    "ru": "Текст строки или пропуска"
+  },
+  "To‘g‘ri moslik": {
+    "uz": "To‘g‘ri moslik",
+    "en": "Correct match",
+    "ru": "Правильное соответствие"
+  },
+  "Qabul qilinadigan javoblar (har biri yangi qatorda)": {
+    "uz": "Qabul qilinadigan javoblar (har biri yangi qatorda)",
+    "en": "Accepted answers (one per line)",
+    "ru": "Допустимые ответы (по одному на строку)"
+  },
+  "Qatorni olib tashlash": {
+    "uz": "Qatorni olib tashlash",
+    "en": "Remove row",
+    "ru": "Удалить строку"
+  },
+  "Qator qo‘shish": {
+    "uz": "Qator qo‘shish",
+    "en": "Add row",
+    "ru": "Добавить строку"
+  },
+  "Matn javoblari tasdiqlangan variantlar bilan serverda solishtiriladi.": {
+    "uz": "Matn javoblari tasdiqlangan variantlar bilan serverda solishtiriladi.",
+    "en": "Text answers are compared with accepted variants on the server.",
+    "ru": "Текстовые ответы сравниваются с допустимыми вариантами на сервере."
+  },
+  "Izoh": {
+    "uz": "Izoh",
+    "en": "Explanation",
+    "ru": "Пояснение"
+  },
+  "Passage dalili": {
+    "uz": "Passage dalili",
+    "en": "Passage evidence",
+    "ru": "Подтверждение из текста"
+  },
+  "Savol qo‘shish tugmasini bosing.": {
+    "uz": "Savol qo‘shish tugmasini bosing.",
+    "en": "Click Add question to begin.",
+    "ru": "Нажмите «Добавить вопрос»."
+  },
+  "Talaba ko‘rinishi": {
+    "uz": "Talaba ko‘rinishi",
+    "en": "Student preview",
+    "ru": "Предпросмотр для ученика"
+  },
+  "savol": {
+    "uz": "savol",
+    "en": "questions",
+    "ru": "вопросов"
+  },
+  "Qayta urinish": {
+    "uz": "Qayta urinish",
+    "en": "Retry",
+    "ru": "Повторить"
+  },
+  "Chiqish": {
+    "uz": "Chiqish",
+    "en": "Sign out",
+    "ru": "Выйти"
+  },
+  "Hisobingiz faol emas.": {
+    "uz": "Hisobingiz faol emas.",
+    "en": "Your account is inactive.",
+    "ru": "Ваш аккаунт неактивен."
+  },
+  "Hisob holati —": {
+    "uz": "Hisob holati —",
+    "en": "Account status —",
+    "ru": "Статус аккаунта —"
+  },
+  ". Administratorga murojaat qiling.": {
+    "uz": ". Administratorga murojaat qiling.",
+    "en": ". Contact the administrator.",
+    "ru": ". Обратитесь к администратору."
+  },
+  "LEARNING WORKSPACE": {
+    "uz": "O‘QUV KABINETI",
+    "en": "LEARNING WORKSPACE",
+    "ru": "УЧЕБНЫЙ КАБИНЕТ"
+  },
+  "Testdan chiqasizmi? Saqlangan javoblar bilan keyin davom etishingiz mumkin.": {
+    "uz": "Testdan chiqasizmi? Saqlangan javoblar bilan keyin davom etishingiz mumkin.",
+    "en": "Leave the test? You can resume with saved answers.",
+    "ru": "Выйти из теста? Вы сможете продолжить с сохранёнными ответами."
+  },
+  "Har kuni bir qadam.": {
+    "uz": "Har kuni bir qadam.",
+    "en": "One step each day.",
+    "ru": "Один шаг каждый день."
+  },
+  "Maqsadingiz sari.": {
+    "uz": "Maqsadingiz sari.",
+    "en": "Toward your goal.",
+    "ru": "К вашей цели."
+  },
+  "rejim": {
+    "uz": "rejim",
+    "en": "mode",
+    "ru": "режим"
+  },
+  "Rang rejimi": {
+    "uz": "Rang rejimi",
+    "en": "Theme",
+    "ru": "Тема"
+  },
+  "MEASURE YOUR PROGRESS": {
+    "uz": "RIVOJLANISHNI KUZATING",
+    "en": "MEASURE YOUR PROGRESS",
+    "ru": "ОТСЛЕЖИВАЙТЕ ПРОГРЕСС"
+  },
+  "YOUR ACCOUNT": {
+    "uz": "HISOBINGIZ",
+    "en": "YOUR ACCOUNT",
+    "ru": "ВАШ АККАУНТ"
+  },
+  "Profil va sozlamalar": {
+    "uz": "Profil va sozlamalar",
+    "en": "Profile and settings",
+    "ru": "Профиль и настройки"
+  },
+  "TAFE yuklanmoqda…": {
+    "uz": "TAFE yuklanmoqda…",
+    "en": "Loading TAFE…",
+    "ru": "Загрузка TAFE…"
+  },
+  "Salom,": {
+    "uz": "Salom,",
+    "en": "Hello,",
+    "ru": "Здравствуйте,"
+  },
+  "o‘quvchi": {
+    "uz": "o‘quvchi",
+    "en": "student",
+    "ru": "ученик"
+  },
+  "Bugungi harakatingiz.": {
+    "uz": "Bugungi harakatingiz.",
+    "en": "Your effort today.",
+    "ru": "Ваши усилия сегодня."
+  },
+  "Ertangi yutug‘ingiz.": {
+    "uz": "Ertangi yutug‘ingiz.",
+    "en": "Your achievement tomorrow.",
+    "ru": "Ваши достижения завтра."
+  },
+  "Bilimingizni sinang, natijangizni kuzating va": {
+    "uz": "Bilimingizni sinang, natijangizni kuzating va",
+    "en": "Test your knowledge, track your results and",
+    "ru": "Проверяйте знания, следите за результатами и"
+  },
+  "tayyorgarlikni o‘z rejangiz asosida davom ettiring.": {
+    "uz": "tayyorgarlikni o‘z rejangiz asosida davom ettiring.",
+    "en": "continue preparing at your own pace.",
+    "ru": "продолжайте подготовку по своему плану."
+  },
+  "Testlarni ko‘rish": {
+    "uz": "Testlarni ko‘rish",
+    "en": "View tests",
+    "ru": "Посмотреть тесты"
+  },
+  "Davom etayotgan": {
+    "uz": "Davom etayotgan",
+    "en": "In progress",
+    "ru": "В процессе"
+  },
+  "Shaxsiy natijalaringiz asosida": {
+    "uz": "Shaxsiy natijalaringiz asosida",
+    "en": "Based on your results",
+    "ru": "По вашим результатам"
+  },
+  "YOUR GOAL": {
+    "uz": "MAQSADINGIZ",
+    "en": "YOUR GOAL",
+    "ru": "ВАША ЦЕЛЬ"
+  },
+  "Imtihon maqsadingiz": {
+    "uz": "Imtihon maqsadingiz",
+    "en": "Your exam goal",
+    "ru": "Ваша цель на экзамене"
+  },
+  "Maqsadli ball —": {
+    "uz": "Maqsadli ball —",
+    "en": "Target score —",
+    "ru": "Целевой балл —"
+  },
+  "Belgilanmagan": {
+    "uz": "Belgilanmagan",
+    "en": "Not set",
+    "ru": "Не задан"
+  },
+  "Imtihon —": {
+    "uz": "Imtihon —",
+    "en": "Exam —",
+    "ru": "Экзамен —"
+  },
+  "Imtihon sanasi belgilanmagan": {
+    "uz": "Imtihon sanasi belgilanmagan",
+    "en": "Exam date not set",
+    "ru": "Дата экзамена не указана"
+  },
+  "Maqsadni tahrirlash ↗": {
+    "uz": "Maqsadni tahrirlash ↗",
+    "en": "Edit goal ↗",
+    "ru": "Изменить цель ↗"
+  },
+  "YOUR PLAN": {
+    "uz": "TARIFINGIZ",
+    "en": "YOUR PLAN",
+    "ru": "ВАШ ТАРИФ"
+  },
+  "kunlik": {
+    "uz": "kunlik",
+    "en": "daily",
+    "ru": "в день"
+  },
+  "Limitlar va obuna ↗": {
+    "uz": "Limitlar va obuna ↗",
+    "en": "Limits and subscription ↗",
+    "ru": "Лимиты и подписка ↗"
+  },
+  "Imtihon yo‘nalishlari": {
+    "uz": "Imtihon yo‘nalishlari",
+    "en": "Exam categories",
+    "ru": "Категории экзаменов"
+  },
+  "/ EXAM PREPARATION": {
+    "uz": "/ IMTIHONGA TAYYORGARLIK",
+    "en": "/ EXAM PREPARATION",
+    "ru": "/ ПОДГОТОВКА К ЭКЗАМЕНУ"
+  },
+  "Bosqichma-bosqich tayyorgarlik va amaliy testlar.": {
+    "uz": "Bosqichma-bosqich tayyorgarlik va amaliy testlar.",
+    "en": "Step-by-step preparation and practice tests.",
+    "ru": "Пошаговая подготовка и тренировочные тесты."
+  },
+  "Boshlash ↗": {
+    "uz": "Boshlash ↗",
+    "en": "Start ↗",
+    "ru": "Начать ↗"
+  },
+  "PRACTICE WITH PURPOSE": {
+    "uz": "MAQSADLI MASHQ",
+    "en": "PRACTICE WITH PURPOSE",
+    "ru": "ПРАКТИКА С ЦЕЛЬЮ"
+  },
+  "Test qidirish": {
+    "uz": "Test qidirish",
+    "en": "Search tests",
+    "ru": "Поиск тестов"
+  },
+  "Test, yo‘nalish yoki fan…": {
+    "uz": "Test, yo‘nalish yoki fan…",
+    "en": "Test, category or subject…",
+    "ru": "Тест, категория или предмет…"
+  },
+  "Boshlash / davom etish": {
+    "uz": "Boshlash / davom etish",
+    "en": "Start / resume",
+    "ru": "Начать / продолжить"
+  },
+  "Tanlovingizga mos e’lon qilingan testlar yo‘q.": {
+    "uz": "Tanlovingizga mos e’lon qilingan testlar yo‘q.",
+    "en": "No published tests match your selection.",
+    "ru": "Нет опубликованных тестов по вашему запросу."
+  },
+  "So‘rov bajarilmadi.": {
+    "uz": "So‘rov bajarilmadi.",
+    "en": "Request failed.",
+    "ru": "Запрос не выполнен."
+  },
+  "Ulanish xatosi.": {
+    "uz": "Ulanish xatosi.",
+    "en": "Connection error.",
+    "ru": "Ошибка подключения."
+  },
+  "Yuklanmoqda…": {
+    "uz": "Yuklanmoqda…",
+    "en": "Loading…",
+    "ru": "Загрузка…"
+  },
+  "Saqlandi.": {
+    "uz": "Saqlandi.",
+    "en": "Saved.",
+    "ru": "Сохранено."
+  },
+  "Yopish": {
+    "uz": "Yopish",
+    "en": "Close",
+    "ru": "Закрыть"
+  },
+  "Qo‘llab-quvvatlanmagan fayl turi.": {
+    "uz": "Qo‘llab-quvvatlanmagan fayl turi.",
+    "en": "Unsupported file type.",
+    "ru": "Неподдерживаемый тип файла."
+  },
+  "Fayl hajmi": {
+    "uz": "Fayl hajmi",
+    "en": "File size",
+    "ru": "Размер файла"
+  },
+  "MB dan oshmasin.": {
+    "uz": "MB dan oshmasin.",
+    "en": "MB maximum.",
+    "ru": "МБ максимум."
+  },
+  "Multiple Choice": {
+    "uz": "Bitta javob",
+    "en": "Multiple choice",
+    "ru": "Один вариант"
+  },
+  "Multiple Select": {
+    "uz": "Bir nechta javob",
+    "en": "Multiple select",
+    "ru": "Несколько вариантов"
+  },
+  "True / False / Not Given": {
+    "uz": "Rost / Yolg‘on / Berilmagan",
+    "en": "True / False / Not Given",
+    "ru": "Верно / Неверно / Не указано"
+  },
+  "Yes / No / Not Given": {
+    "uz": "Ha / Yo‘q / Berilmagan",
+    "en": "Yes / No / Not Given",
+    "ru": "Да / Нет / Не указано"
+  },
+  "Matching Headings": {
+    "uz": "Sarlavhalarni moslashtirish",
+    "en": "Matching headings",
+    "ru": "Соответствие заголовков"
+  },
+  "Matching Information": {
+    "uz": "Ma’lumotni moslashtirish",
+    "en": "Matching information",
+    "ru": "Соответствие информации"
+  },
+  "Matching Features": {
+    "uz": "Belgilarni moslashtirish",
+    "en": "Matching features",
+    "ru": "Соответствие признаков"
+  },
+  "Matching Sentence Endings": {
+    "uz": "Gap oxirini moslashtirish",
+    "en": "Matching sentence endings",
+    "ru": "Соответствие концов предложений"
+  },
+  "Sentence Completion": {
+    "uz": "Gapni to‘ldirish",
+    "en": "Sentence completion",
+    "ru": "Дополнение предложения"
+  },
+  "Summary Completion": {
+    "uz": "Xulosani to‘ldirish",
+    "en": "Summary completion",
+    "ru": "Дополнение краткого текста"
+  },
+  "Table Completion": {
+    "uz": "Jadvalni to‘ldirish",
+    "en": "Table completion",
+    "ru": "Заполнение таблицы"
+  },
+  "Short Answer": {
+    "uz": "Qisqa javob",
+    "en": "Short answer",
+    "ru": "Краткий ответ"
+  },
+  "Written Answer": {
+    "uz": "Yozma javob",
+    "en": "Written answer",
+    "ru": "Письменный ответ"
+  },
+  "Numeric Answer": {
+    "uz": "Sonli javob",
+    "en": "Numeric answer",
+    "ru": "Числовой ответ"
+  },
+  "Fill in the Blanks": {
+    "uz": "Bo‘shliqlarni to‘ldirish",
+    "en": "Fill in the blanks",
+    "ru": "Заполнение пропусков"
+  },
+  "Javobingizni yozing": {
+    "uz": "Javobingizni yozing",
+    "en": "Write your answer",
+    "ru": "Напишите ответ"
+  },
+  "Javobingiz": {
+    "uz": "Javobingiz",
+    "en": "Your answer",
+    "ru": "Ваш ответ"
+  },
+  "Javob": {
+    "uz": "Javob",
+    "en": "Answer",
+    "ru": "Ответ"
+  },
+  "Tilni tanlang": {
+    "uz": "Tilni tanlang",
+    "en": "Choose language",
+    "ru": "Выберите язык"
+  },
+  "Test haqida": {
+    "uz": "Test haqida",
+    "en": "Details",
+    "ru": "Параметры"
+  },
+  "Tekshirish va saqlash": {
+    "uz": "Tekshirish va saqlash",
+    "en": "Review and save",
+    "ru": "Проверить и сохранить"
+  },
+  "Qo‘shimcha sozlamalar": {
+    "uz": "Qo‘shimcha sozlamalar",
+    "en": "Advanced settings",
+    "ru": "Дополнительные настройки"
+  },
+  "Standart savol": {
+    "uz": "Standart savol",
+    "en": "Standard question",
+    "ru": "Обычный вопрос"
+  },
+  "Testni tekshiring": {
+    "uz": "Testni tekshiring",
+    "en": "Review the test",
+    "ru": "Проверьте тест"
+  },
+  "Savolni kiriting": {
+    "uz": "Savolni kiriting",
+    "en": "Type the question",
+    "ru": "Введите вопрос"
+  },
+  "Variant matni": {
+    "uz": "Variant matni",
+    "en": "Choice text",
+    "ru": "Текст варианта"
+  },
+  "To‘g‘ri javobni chapdagi belgi orqali tanlang.": {
+    "uz": "To‘g‘ri javobni chapdagi belgi orqali tanlang.",
+    "en": "Select the correct answer using the control on the left.",
+    "ru": "Отметьте правильный ответ слева."
+  },
+  "Saqlashdan oldin test nomi, kategoriya va javoblarni tekshiring.": {
+    "uz": "Saqlashdan oldin test nomi, kategoriya va javoblarni tekshiring.",
+    "en": "Check the test name, category and answers before saving.",
+    "ru": "Проверьте название, категорию и ответы перед сохранением."
+  },
+  "Qoralama saqlash": {
+    "uz": "Qoralama saqlash",
+    "en": "Save draft",
+    "ru": "Сохранить черновик"
+  },
+  "Faol obuna": {
+    "uz": "Faol obuna",
+    "en": "Active subscription",
+    "ru": "Активная подписка"
+  },
+  "Passage va material": {
+    "uz": "Matn va materiallar",
+    "en": "Passage and materials",
+    "ru": "Текст и материалы"
+  },
+  "daqiqa": {
+    "uz": "daqiqa",
+    "en": "min",
+    "ru": "мин"
+  },
+  "Ortga": {
+    "uz": "Ortga",
+    "en": "Back",
+    "ru": "Назад"
+  },
+  "Test vaqti 1–240 daqiqa bo‘lishi kerak.": {
+    "uz": "Test vaqti 1–240 daqiqa bo‘lishi kerak.",
+    "en": "Test duration must be between 1 and 240 minutes.",
+    "ru": "Длительность теста должна быть от 1 до 240 минут."
+  },
+  "Kitob havolasi xavfsiz emas.": {
+    "uz": "Kitob havolasi xavfsiz emas.",
+    "en": "The book link is insecure.",
+    "ru": "Ссылка на книгу небезопасна."
+  },
+  "Gemini kaliti qabul qilinmadi. Administratorga murojaat qiling.": {
+    "uz": "Gemini kaliti qabul qilinmadi. Administratorga murojaat qiling.",
+    "en": "The Gemini key was rejected. Contact your administrator.",
+    "ru": "Ключ Gemini отклонён. Обратитесь к администратору."
+  },
+  "Gemini hozir javob bera olmadi. Keyinroq qayta urinib ko‘ring.": {
+    "uz": "Gemini hozir javob bera olmadi. Keyinroq qayta urinib ko‘ring.",
+    "en": "Gemini is unable to respond right now. Try again later.",
+    "ru": "Gemini сейчас недоступен. Повторите попытку позже."
+  },
+  "active": {
+    "uz": "Faol",
+    "en": "Active",
+    "ru": "Активен"
+  },
+  "suspended": {
+    "uz": "To‘xtatilgan",
+    "en": "Suspended",
+    "ru": "Приостановлен"
+  },
+  "deleted": {
+    "uz": "O‘chirilgan",
+    "en": "Deleted",
+    "ru": "Удалён"
+  },
+  "pending": {
+    "uz": "Kutilmoqda",
+    "en": "Pending",
+    "ru": "Ожидает"
+  },
+  "cancelled": {
+    "uz": "Bekor qilingan",
+    "en": "Cancelled",
+    "ru": "Отменён"
+  },
+  "paid": {
+    "uz": "To‘langan",
+    "en": "Paid",
+    "ru": "Оплачен"
+  },
+  "confirmed": {
+    "uz": "Tasdiqlangan",
+    "en": "Confirmed",
+    "ru": "Подтверждён"
+  },
+  "failed": {
+    "uz": "Xato",
+    "en": "Failed",
+    "ru": "Ошибка"
+  },
+  "expired": {
+    "uz": "Muddati tugagan",
+    "en": "Expired",
+    "ru": "Истёк"
+  },
+  "beginner": {
+    "uz": "Boshlang‘ich",
+    "en": "Beginner",
+    "ru": "Начальный"
+  },
+  "intermediate": {
+    "uz": "O‘rta",
+    "en": "Intermediate",
+    "ru": "Средний"
+  },
+  "advanced": {
+    "uz": "Yuqori",
+    "en": "Advanced",
+    "ru": "Продвинутый"
+  },
+  "practice": {
+    "uz": "Mashq",
+    "en": "Practice",
+    "ru": "Практика"
+  },
+  "mock": {
+    "uz": "Sinov imtihoni",
+    "en": "Mock exam",
+    "ru": "Пробный экзамен"
+  },
+  "created at": {
+    "uz": "Yaratilgan sana",
+    "en": "Created at",
+    "ru": "Дата создания"
+  },
+  "updated at": {
+    "uz": "Yangilangan sana",
+    "en": "Updated at",
+    "ru": "Дата изменения"
+  },
+  "last sign in at": {
+    "uz": "Oxirgi kirish",
+    "en": "Last sign-in",
+    "ru": "Последний вход"
+  },
+  "user id": {
+    "uz": "Foydalanuvchi IDsi",
+    "en": "User ID",
+    "ru": "ID пользователя"
+  },
+  "actor id": {
+    "uz": "Bajaruvchi IDsi",
+    "en": "Actor ID",
+    "ru": "ID исполнителя"
+  },
+  "target id": {
+    "uz": "Obyekt IDsi",
+    "en": "Target ID",
+    "ru": "ID объекта"
+  },
+  "status": {
+    "uz": "Holat",
+    "en": "Status",
+    "ru": "Статус"
+  },
+  "feature": {
+    "uz": "Imkoniyat",
+    "en": "Feature",
+    "ru": "Функция"
+  },
+  "mode": {
+    "uz": "Rejim",
+    "en": "Mode",
+    "ru": "Режим"
+  },
+  "tokens": {
+    "uz": "Tokenlar",
+    "en": "Tokens",
+    "ru": "Токены"
+  },
+  "error": {
+    "uz": "Xato",
+    "en": "Error",
+    "ru": "Ошибка"
+  },
+  "amount": {
+    "uz": "Miqdor",
+    "en": "Amount",
+    "ru": "Сумма"
+  },
+  "currency": {
+    "uz": "Valyuta",
+    "en": "Currency",
+    "ru": "Валюта"
+  },
+  "provider": {
+    "uz": "Xizmat ko‘rsatuvchi",
+    "en": "Provider",
+    "ru": "Провайдер"
+  },
+  "action": {
+    "uz": "Amal",
+    "en": "Action",
+    "ru": "Действие"
+  },
+  "metadata": {
+    "uz": "Metama’lumotlar",
+    "en": "Metadata",
+    "ru": "Метаданные"
+  },
+  "Hisobingiz": {
+    "uz": "Hisobingiz",
+    "en": "Your account",
+    "ru": "Ваш аккаунт"
+  },
+  "Kutilmoqda…": {
+    "uz": "Kutilmoqda…",
+    "en": "Please wait…",
+    "ru": "Подождите…"
+  },
+  "Savol {number}: matnni kiriting.": {
+    "uz": "Savol {number}: matnni kiriting.",
+    "en": "Question {number}: enter the question text.",
+    "ru": "Вопрос {number}: введите текст вопроса."
+  },
+  "Savol {number}: variantlarni to‘ldiring.": {
+    "uz": "Savol {number}: variantlarni to‘ldiring.",
+    "en": "Question {number}: fill in the answer options.",
+    "ru": "Вопрос {number}: заполните варианты ответа."
+  },
+  "Savol {number}: variantlar takrorlanmasin.": {
+    "uz": "Savol {number}: variantlar takrorlanmasin.",
+    "en": "Question {number}: use distinct answer options.",
+    "ru": "Вопрос {number}: варианты ответа должны различаться."
+  },
+  "Savol {number}: javobni belgilang.": {
+    "uz": "Savol {number}: javobni belgilang.",
+    "en": "Question {number}: select the correct answer.",
+    "ru": "Вопрос {number}: укажите правильный ответ."
+  },
+  "Savol {number}: barcha qatorlarga javob kiriting.": {
+    "uz": "Savol {number}: barcha qatorlarga javob kiriting.",
+    "en": "Question {number}: enter an answer for every row.",
+    "ru": "Вопрос {number}: укажите ответ для каждой строки."
+  },
+  "Email tasdiqlandi. Hisobga qayta kiring.": {
+    "uz": "Email tasdiqlandi. Hisobga qayta kiring.",
+    "en": "Your email is verified. Sign in to continue.",
+    "ru": "Ваш email подтверждён. Войдите, чтобы продолжить."
+  },
+  "Email yoki parol noto‘g‘ri.": {
+    "uz": "Email yoki parol noto‘g‘ri.",
+    "en": "Incorrect email or password.",
+    "ru": "Неверный email или пароль."
+  },
+  "Email hali tasdiqlanmagan.": {
+    "uz": "Email hali tasdiqlanmagan.",
+    "en": "Your email is still unverified.",
+    "ru": "Ваш email ещё не подтверждён."
+  },
+  "Yangi parol joriy paroldan farq qilishi kerak.": {
+    "uz": "Yangi parol joriy paroldan farq qilishi kerak.",
+    "en": "The new password must differ from your current password.",
+    "ru": "Новый пароль должен отличаться от текущего."
+  },
+  "Parol xavfsizlik talablariga mos kelmadi.": {
+    "uz": "Parol xavfsizlik talablariga mos kelmadi.",
+    "en": "Your password does not meet the security requirements.",
+    "ru": "Пароль не соответствует требованиям безопасности."
+  },
+  "Parolni o‘zgartirish uchun qayta kiring.": {
+    "uz": "Parolni o‘zgartirish uchun qayta kiring.",
+    "en": "Sign in again to change your password.",
+    "ru": "Войдите снова, чтобы изменить пароль."
+  },
+  "So‘rovlar juda ko‘p. Birozdan so‘ng qayta urining.": {
+    "uz": "So‘rovlar juda ko‘p. Birozdan so‘ng qayta urining.",
+    "en": "Too many requests. Try again shortly.",
+    "ru": "Слишком много запросов. Повторите попытку позже."
+  },
+  "entity": {
+    "uz": "Obyekt",
+    "en": "Entity",
+    "ru": "Объект"
+  },
+  "entity id": {
+    "uz": "Obyekt ID",
+    "en": "Entity ID",
+    "ru": "ID объекта"
+  },
+  "plan id": {
+    "uz": "Tarif ID",
+    "en": "Plan ID",
+    "ru": "ID тарифа"
+  },
+  "test id": {
+    "uz": "Test ID",
+    "en": "Test ID",
+    "ru": "ID теста"
+  },
+  "starts at": {
+    "uz": "Boshlanishi",
+    "en": "Starts at",
+    "ru": "Начало"
+  },
+  "expires at": {
+    "uz": "Tugashi",
+    "en": "Expires at",
+    "ru": "Истекает"
+  },
+  "started at": {
+    "uz": "Boshlangan vaqt",
+    "en": "Started at",
+    "ru": "Время начала"
+  },
+  "submitted at": {
+    "uz": "Topshirilgan vaqt",
+    "en": "Submitted at",
+    "ru": "Время сдачи"
+  },
+  "score": {
+    "uz": "Ball",
+    "en": "Score",
+    "ru": "Баллы"
+  },
+  "total": {
+    "uz": "Jami",
+    "en": "Total",
+    "ru": "Всего"
+  },
+  "requests": {
+    "uz": "So‘rovlar",
+    "en": "Requests",
+    "ru": "Запросы"
+  },
+  "INSERT": {
+    "uz": "Yaratildi",
+    "en": "Created",
+    "ru": "Создано"
+  },
+  "UPDATE": {
+    "uz": "Yangilandi",
+    "en": "Updated",
+    "ru": "Обновлено"
+  },
+  "DELETE": {
+    "uz": "O‘chirildi",
+    "en": "Deleted",
+    "ru": "Удалено"
+  },
+  "suspend": {
+    "uz": "To‘xtatildi",
+    "en": "Suspended",
+    "ru": "Приостановлено"
+  },
+  "reactivate": {
+    "uz": "Qayta faollashtirildi",
+    "en": "Reactivated",
+    "ru": "Восстановлено"
+  },
+  "Noto‘g‘ri so‘rov.": {
+    "uz": "Noto‘g‘ri so‘rov.",
+    "en": "Invalid request.",
+    "ru": "Некорректный запрос."
+  },
+  "So‘rov juda uzun.": {
+    "uz": "So‘rov juda uzun.",
+    "en": "The request is too large.",
+    "ru": "Запрос слишком большой."
+  },
+  "Email manzil noto‘g‘ri.": {
+    "uz": "Email manzil noto‘g‘ri.",
+    "en": "Enter a valid email address.",
+    "ru": "Введите корректный email."
+  },
+  "Ism va kamida 8 belgili parol kiriting.": {
+    "uz": "Ism va kamida 8 belgili parol kiriting.",
+    "en": "Enter your name and a password of at least 8 characters.",
+    "ru": "Введите имя и пароль из 8 или более символов."
+  },
+  "Bir daqiqa kuting. Bir email uchun soatiga 5 ta kod yuborish mumkin.": {
+    "uz": "Bir daqiqa kuting. Bir email uchun soatiga 5 ta kod yuborish mumkin.",
+    "en": "Wait one minute. Up to five codes per email can be sent each hour.",
+    "ru": "Подождите минуту. На один email можно отправить до пяти кодов в час."
+  },
+  "Bu email ro‘yxatdan o‘tgan. Parolingiz bilan kiring.": {
+    "uz": "Bu email ro‘yxatdan o‘tgan. Parolingiz bilan kiring.",
+    "en": "This email is registered. Sign in with your password.",
+    "ru": "Этот email уже зарегистрирован. Войдите с паролем."
+  },
+  "Tasdiqlash kodi yaratilmadi. Yangi kod so‘rang.": {
+    "uz": "Tasdiqlash kodi yaratilmadi. Yangi kod so‘rang.",
+    "en": "Could not generate a verification code. Request a new code.",
+    "ru": "Не удалось создать код. Запросите новый код."
+  },
+  "EmailJS xabarni yubora olmadi. Server sozlamalarini tekshiring.": {
+    "uz": "Tasdiqlash xati yuborilmadi. Keyinroq qayta urining.",
+    "en": "Could not send the verification email. Try again later.",
+    "ru": "Не удалось отправить письмо с кодом. Повторите попытку позже."
+  },
+  "Email orqali kelgan kodni to‘liq kiriting (6 yoki 8 raqam).": {
+    "uz": "Email orqali kelgan kodni to‘liq kiriting (6 yoki 8 raqam).",
+    "en": "Enter the full code from the email (6 or 8 digits).",
+    "ru": "Введите весь код из письма (6 или 8 цифр)."
+  },
+  "Yangi kod so‘rang.": {
+    "uz": "Yangi kod so‘rang.",
+    "en": "Request a new code.",
+    "ru": "Запросите новый код."
+  },
+  "Ism va parolni qayta tekshiring.": {
+    "uz": "Ism va parolni qayta tekshiring.",
+    "en": "Check your name and password.",
+    "ru": "Проверьте имя и пароль."
+  },
+  "Kod noto‘g‘ri, muddati tugagan yoki urinishlar soni oshgan. Yangi kod so‘rang.": {
+    "uz": "Kod noto‘g‘ri, muddati tugagan yoki urinishlar soni oshgan. Yangi kod so‘rang.",
+    "en": "The code is incorrect or expired, or there have been too many attempts. Request a new code.",
+    "ru": "Код неверен, истёк или превышено число попыток. Запросите новый код."
+  },
+  "Kod Supabase tomonidan qabul qilinmadi. Yangi kod so‘rang.": {
+    "uz": "Kod qabul qilinmadi. Yangi kod so‘rang.",
+    "en": "The code was rejected. Request a new code.",
+    "ru": "Код отклонён. Запросите новый код."
+  },
+  "Email tasdiqlandi, ammo parol saqlanmadi. Parolni tiklash orqali davom eting.": {
+    "uz": "Email tasdiqlandi, ammo parol saqlanmadi. Parolni tiklash orqali davom eting.",
+    "en": "Your email is verified, but the password could not be saved. Use password recovery to continue.",
+    "ru": "Email подтверждён, но пароль не сохранён. Восстановите пароль для продолжения."
+  },
+  "Noto‘g‘ri amal.": {
+    "uz": "Noto‘g‘ri amal.",
+    "en": "Invalid action.",
+    "ru": "Недопустимое действие."
+  },
+  "So‘rov bajarilmadi. Qayta urinib ko‘ring.": {
+    "uz": "So‘rov bajarilmadi. Qayta urinib ko‘ring.",
+    "en": "The request failed. Try again.",
+    "ru": "Запрос не выполнен. Повторите попытку."
+  },
+  "Hisobga kiring.": {
+    "uz": "Hisobga kiring.",
+    "en": "Sign in to your account.",
+    "ru": "Войдите в аккаунт."
+  },
+  "Sessiya tugagan. Qayta kiring.": {
+    "uz": "Sessiya tugagan. Qayta kiring.",
+    "en": "Your session expired. Sign in again.",
+    "ru": "Сессия истекла. Войдите снова."
+  },
+  "Savol, suhbat va Gemini’ga yuborish roziligi kerak.": {
+    "uz": "Savol, suhbat va Gemini’ga yuborish roziligi kerak.",
+    "en": "Enter a question, select a conversation and consent to sending it to Gemini.",
+    "ru": "Введите вопрос, выберите чат и разрешите отправку в Gemini."
+  },
+  "AI xizmati hali sozlanmagan.": {
+    "uz": "AI xizmati hali sozlanmagan.",
+    "en": "The AI service has yet to be configured.",
+    "ru": "Сервис ИИ пока не настроен."
+  },
+  "TAFE AI vaqtincha o‘chirilgan.": {
+    "uz": "TAFE AI vaqtincha o‘chirilgan.",
+    "en": "TAFE AI is temporarily disabled.",
+    "ru": "TAFE AI временно отключён."
+  },
+  "Bu so‘rov avval yuborilgan. Yangi so‘rov yuboring.": {
+    "uz": "Bu so‘rov avval yuborilgan. Yangi so‘rov yuboring.",
+    "en": "This request has already been sent. Send a new request.",
+    "ru": "Этот запрос уже отправлен. Создайте новый запрос."
+  },
+  "Agar bu email tasdiqlangan hisobga tegishli bo‘lsa, tiklash kodi yuboriladi. Spam papkasini ham tekshiring.": {
+    "uz": "Agar bu email tasdiqlangan hisobga tegishli bo‘lsa, tiklash kodi yuboriladi. Spam papkasini ham tekshiring.",
+    "en": "If this email belongs to a verified account, a recovery code will be sent. Check your spam folder too.",
+    "ru": "Если email привязан к подтверждённому аккаунту, мы отправим код. Проверьте также папку «Спам»."
+  },
+  "Yangi kodni emailingizdan tekshiring.": {
+    "uz": "Yangi kodni emailingizdan tekshiring.",
+    "en": "Check your email for the new code.",
+    "ru": "Проверьте почту для получения нового кода."
+  },
+  "Tasdiqlash kodi": {
+    "uz": "Tasdiqlash kodi",
+    "en": "Verification code",
+    "ru": "Код подтверждения"
+  },
+  "Another administrator changed this test. Reload it.": {
+    "uz": "Boshqa administrator testni o‘zgartirdi. Uni qayta yuklang.",
+    "en": "Another administrator changed this test. Reload it.",
+    "ru": "Другой администратор изменил тест. Загрузите его снова."
+  },
+  "Add answer options": {
+    "uz": "Javob variantlarini qo‘shing.",
+    "en": "Add answer options.",
+    "ru": "Добавьте варианты ответа."
+  },
+  "Numeric answer must be a finite number": {
+    "uz": "Javob chekli son bo‘lishi kerak.",
+    "en": "Enter a finite number as the answer.",
+    "ru": "Введите конечное число в качестве ответа."
+  },
+  "Add matching rows or answer slots": {
+    "uz": "Moslashtirish qatorlari yoki javob maydonlarini qo‘shing.",
+    "en": "Add matching rows or answer slots.",
+    "ru": "Добавьте строки сопоставления или поля для ответов."
+  },
+  "Complete every matching row or slot": {
+    "uz": "Har bir moslashtirish qatori yoki javob maydonini to‘ldiring.",
+    "en": "Complete every matching row or answer slot.",
+    "ru": "Заполните каждую строку сопоставления или поле ответа."
+  }
+}
