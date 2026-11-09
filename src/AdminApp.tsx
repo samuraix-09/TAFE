@@ -829,22 +829,31 @@ function TestsManager() {
               <button onClick={() => setEdit(test.id)}>
                 {t("Savollarni tahrirlash")}
               </button>
-              <button
-                disabled={a.busy}
-                onClick={() =>
-                  void a.run(async () => {
-                    checked(
-                      await db
-                        .from("tests")
-                        .update({ published: false })
-                        .eq("id", test.id),
-                    );
-                    tests.reload();
-                  })
-                }
-              >
-                {t("Qoralamaga olish")}
-              </button>
+              {test.published && (
+                <button
+                  disabled={a.busy}
+                  onClick={() =>
+                    void a.run(async () => {
+                      const updated = checked(
+                        await db
+                          .from("tests")
+                          .update({ published: false })
+                          .eq("id", test.id)
+                          .eq("version", test.version)
+                          .select("id")
+                          .maybeSingle(),
+                      );
+                      tests.reload();
+                      if (!updated)
+                        throw Error(
+                          "Another administrator changed this test. Reload it.",
+                        );
+                    })
+                  }
+                >
+                  {t("Qoralamaga olish")}
+                </button>
+              )}
             </div>
           </section>
         ))}

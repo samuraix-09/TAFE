@@ -1,5 +1,31 @@
 -- Temporary fixtures. The final ROLLBACK removes all test users, content and usage.
 begin;
+do $$
+declare item record;
+begin
+  for item in select * from (values
+    ('sat', 'SAT Reading and Writing · Module 1', 32, 27),
+    ('sat', 'SAT Reading and Writing · Module 2', 32, 27),
+    ('sat', 'SAT Math · Module 1', 35, 22),
+    ('sat', 'SAT Math · Module 2', 35, 22),
+    ('ielts', 'IELTS Academic Reading · Practice Set 1', 60, 40)
+  ) as expected(slug, title, minutes, questions) loop
+    if not exists (
+      select 1 from public.tests t
+      join public.exam_categories c on c.id = t.category_id
+      join public.questions q on q.test_id = t.id
+      join public.answer_keys k on k.question_id = q.id
+      where t.title = item.title and c.slug = item.slug
+        and t.duration = item.minutes and t.published
+      group by t.id
+      having count(*) = item.questions and bool_and(
+        case when q.type = 'numeric_answer' then jsonb_typeof(k.accepted) = 'array'
+        else q.options @> jsonb_build_array(k.accepted) end
+      )
+    ) then raise exception 'Invalid practice set: %', item.title;
+    end if;
+  end loop;
+end $$;
 insert into auth.users(id,raw_user_meta_data) values
  ('c1000000-0000-4000-8000-000000000001','{"display_name":"Transaction admin"}'),
  ('c1000000-0000-4000-8000-000000000002','{"display_name":"Transaction student"}'),
