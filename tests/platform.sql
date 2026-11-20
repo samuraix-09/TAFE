@@ -249,7 +249,8 @@ begin
   raise exception 'Full SAT scoring failed: %',a;
  end if;
  r:=public.attempt_review(id);
- if jsonb_array_length(r->'questions')<>98 or exists(
+ if r->'sat_scores'->>'correct'<>'98' or r->'sat_scores'->>'unanswered'<>'0'
+   or (r->'sat_scores'->>'accuracy')::numeric<>100 or jsonb_array_length(r->'questions')<>98 or exists(
   select 1 from jsonb_array_elements(r->'questions') x where not (x->>'correct')::boolean
  ) then raise exception 'SAT review omitted answers or sections'; end if;
  a:=public.start_exam_session('fe816150-8c12-4b3a-b04a-000000000002');
@@ -320,5 +321,127 @@ begin
  ) then raise exception 'CEFR Reading practice fixture is incomplete'; end if;
 end
 $$;
+-- SAT scoring revisions are authorized, pinned, and stable across finish retries and history reads.
+update public.plans set tests_daily=4,tests_monthly=4 where id='c2000000-0000-4000-8000-000000000001';
+insert into auth.users(id,raw_user_meta_data) values
+ ('c1000000-0000-4000-8000-000000000005','{"display_name":"SAT score QA"}');
+insert into public.subscriptions(user_id,plan_id,expires_at) values
+ ('c1000000-0000-4000-8000-000000000005','c2000000-0000-4000-8000-000000000001',now()+interval '1 day');
+set local role authenticated;
+select set_config('request.jwt.claim.sub','c1000000-0000-4000-8000-000000000005',true);
+do $$
+declare t uuid:='fe816150-8c12-4b3a-b04a-000000000001'; a jsonb; id uuid; r jsonb;
+begin
+  begin perform public.admin_sat_scoring(t); raise exception 'Student read model';
+  exception when raise_exception then if sqlerrm<>'Administrator required' then raise; end if; end;
+  begin perform public.admin_save_sat_scoring(t,1,'Invalid',array[200,800],array[200,800]);
+  exception when raise_exception then if sqlerrm<>'Administrator required' then raise; end if; end;
+  if has_table_privilege('public.sat_scoring_models','SELECT')
+    or has_column_privilege('public.test_attempts','sat_question_results','SELECT') then
+    raise exception 'Private scoring data exposed by table grants';
+  end if;
+
+  a:=public.start_exam_session(t);
+  id:=(a->>'id')::uuid;
+  if a ? 'sat_scoring' or a->'questions'->0 ? 'accepted' then raise exception 'Private payload leaked'; end if;
+  for i in 0..3 loop
+    select jsonb_object_agg(q->>'id','"not an answer"'::jsonb) into r from jsonb_array_elements(a->'questions') q;
+    a:=public.exam_session_action(id,r,'advance',i);
+  end loop;
+  r:=a->'sat_scores';
+  if r->>'total'<>'400' or r->>'correct'<>'0' or r->>'incorrect'<>'98' or r->>'unanswered'<>'0'
+    or r->>'model_revision'<>'1' or (r->>'accuracy')::numeric<>0 then
+    raise exception 'All-incorrect SAT aggregate is wrong: %', r;
+  end if;
+
+  a:=public.start_exam_session(t);
+  perform set_config('qa.scored_attempt',a->>'id',true);
+  begin perform public.attempt_review((a->>'id')::uuid); raise exception 'Active SAT result readable';
+  exception when raise_exception then if sqlerrm<>'Completed attempt required' then raise; end if; end;
+end $$;
+
+select set_config('request.jwt.claim.sub','c1000000-0000-4000-8000-000000000001',true);
+do $$
+declare t uuid:='fe816150-8c12-4b3a-b04a-000000000001'; s jsonb; c1 int[]; c2 int[];
+begin
+  s:=public.admin_sat_scoring(t);
+  if s->'counts' <> '{"reading_writing":54,"math":44}'::jsonb then raise exception 'Incorrect table dimensions'; end if;
+  if s->'model'->'reading_writing'->>20<>'410' or s->'model'->'math'->>35<>'650' then
+    raise exception 'Unexpected nonlinear conversions';
+  end if;
+  begin perform public.admin_save_sat_scoring(t,1,'Invalid',array[200,800],array[200,800]);
+    raise exception 'Invalid conversion accepted';
+  exception when raise_exception then if sqlerrm not like 'Each scoring table%' then raise; end if; end;
+  select array_agg(case when i=1 then 200 when i=55 then 800 else 500 end order by i) into c1 from generate_series(1,55) i;
+  select array_agg(case when i=1 then 200 when i=45 then 800 else 600 end order by i) into c2 from generate_series(1,45) i;
+  s:=public.admin_save_sat_scoring(t,1,'QA alternative curve',c1,c2);
+  if s->'model'->>'revision'<>'2' then raise exception 'Admin did not save revision'; end if;
+  if public.admin_sat_scoring('fe816150-8c12-4b3a-b04a-000000000002')->'model'<>'null'::jsonb then
+    raise exception 'One form affected another';
+  end if;
+  begin perform public.admin_save_sat_scoring(t,1,'Stale edit',c1,c2);
+    raise exception 'Stale model revision was accepted';
+  exception when raise_exception then if sqlerrm<>'Scoring revision changed. Reload the form.' then raise; end if; end;
+end $$;
+
+reset role;
+update public.test_attempts set started_at=clock_timestamp()-interval '90 seconds',
+ paused_duration=interval '60 seconds' where id=current_setting('qa.scored_attempt')::uuid;
+set local role authenticated;
+select set_config('request.jwt.claim.sub','c1000000-0000-4000-8000-000000000005',true);
+do $$
+declare t uuid:='fe816150-8c12-4b3a-b04a-000000000001'; id uuid:=current_setting('qa.scored_attempt')::uuid;
+  a jsonb; review jsonb; retry jsonb; results jsonb; answer_map jsonb;
+  expected jsonb:=current_setting('qa.sat_correct')::jsonb;
+begin
+  a:=public.start_exam_session(t);
+  if (a->>'id')::uuid<>id then raise exception 'Active attempt was recreated'; end if;
+  for i in 0..3 loop
+    select coalesce(jsonb_object_agg(q->>'id',case
+      when i=0 and ord=21 then '"   "'::jsonb
+      else expected->(q->>'id') end),'{}'::jsonb) into answer_map
+    from jsonb_array_elements(a->'questions') with ordinality as e(q,ord)
+    where (i=0 and ord<=21) or i=2 or (i=3 and ord<=13);
+    a:=public.exam_session_action(id,answer_map,'advance',i);
+  end loop;
+  results:=a->'sat_scores';
+  if results->>'model_revision'<>'1' or results->>'total'<>'1060' or results->>'correct'<>'55'
+    or results->>'unanswered'<>'43' or results->>'incorrect'<>'0' or (results->>'accuracy')::numeric<>56.1
+    or results->'reading_writing'->>'scaled'<>'410' or results->'math'->>'scaled'<>'650'
+    or (results->>'duration_seconds')::int not between 29 and 40 then
+    raise exception 'Pinned mixed SAT results are wrong: %',results;
+  end if;
+  review:=public.attempt_review(id);
+  retry:=public.exam_session_action(id,'{}','advance',3);
+  perform public.settle_exam_sessions();
+  if retry->'sat_scores' is distinct from results or review is distinct from public.attempt_review(id)
+    or (select count(*) from public.test_attempts where test_id=t and submitted_at is not null)<>2
+    or jsonb_array_length(review->'questions')<>98 or
+       (select count(*) from jsonb_array_elements(review->'questions') q where q->>'status'='missing')<>43
+    or (select sum((item->>'questions')::int) from jsonb_array_elements(results->'breakdown') item)<>98
+    or exists(select 1 from jsonb_array_elements(results->'breakdown') item where item->>'topic' is null) then
+    raise exception 'SAT history, question details, or topic breakdown inconsistent';
+  end if;
+end $$;
+select set_config('request.jwt.claim.sub','c1000000-0000-4000-8000-000000000004',true);
+do $$
+declare a jsonb; id uuid; t uuid:='fe816150-8c12-4b3a-b04a-000000000001';
+  expected jsonb:=current_setting('qa.sat_correct')::jsonb; item jsonb;
+begin
+  begin perform public.attempt_review(current_setting('qa.scored_attempt')::uuid);
+    raise exception 'Cross-user SAT report readable';
+  exception when raise_exception then if sqlerrm<>'Completed attempt required' then raise; end if; end;
+  a:=public.start_exam_session(t);
+  id:=(a->>'id')::uuid;
+  for i in 0..3 loop
+    item:=a->'questions'->0;
+    a:=public.exam_session_action(id,jsonb_build_object(item->>'id',expected->(item->>'id')),'advance',i);
+  end loop;
+  if a->'sat_scores'->>'total'<>'1100' or a->'sat_scores'->>'model_revision'<>'2' then
+    raise exception 'New attempt ignored the assigned conversion revision';
+  end if;
+end $$;
+reset role;
+
 select 'platform transaction assertions passed' as result;
 rollback;

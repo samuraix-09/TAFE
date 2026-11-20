@@ -90,7 +90,6 @@ function App() {
     ),
     [dark, setDark] = useState(localStorage.theme === "dark"),
     [attempt, setAttempt] = useState<Row | null>(null),
-    [completedAttemptId, setCompletedAttemptId] = useState<string | null>(null),
     [aiPrompt, setAiPrompt] = useState("");
   const go = (v: VisitorPage) => {
     setVisitor(v);
@@ -112,7 +111,6 @@ function App() {
       setSession(next);
       if (!next) {
         setAttempt(null);
-        setCompletedAttemptId(null);
       }
       if (event === "PASSWORD_RECOVERY") go("reset");
     });
@@ -177,9 +175,8 @@ function App() {
         .eq("id", session.user.id);
   };
   const done = (id: string) => {
-    setCompletedAttemptId(id);
     setAttempt(null);
-    location.hash = "/student/results";
+    location.hash = "/student/results/" + id;
     if (document.fullscreenElement)
       void document.exitFullscreen().catch(() => {});
   };
@@ -377,8 +374,7 @@ function App() {
                     title={t("Natijalarim")}
                   />
                   <ResultsPage
-                    completedAttemptId={completedAttemptId}
-                    onReviewOpened={() => setCompletedAttemptId(null)}
+                    key={session.user.id}
                     onResume={start}
                     onExplain={(prompt) => {
                       setAiPrompt(prompt);

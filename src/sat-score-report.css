@@ -1,0 +1,295 @@
+.sat-score-report {
+  --sat-card: var(--paper, var(--card));
+  --sat-border: var(--stroke, var(--line));
+  --sat-accent: #2658c7;
+  --sat-math: #087a6b;
+  --sat-track: #dce5f4;
+  display: grid;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+[data-theme="dark"] .sat-score-report {
+  --sat-accent: #92b6ff;
+  --sat-math: #5fdbbb;
+  --sat-track: #2e405a;
+}
+
+.sat-result-page {
+  max-width: 1130px;
+  margin-inline: auto;
+  min-width: 0;
+}
+
+.sat-report-back {
+  padding-inline-start: 0;
+  margin-bottom: 0.5rem;
+}
+.sat-result-page > h2 {
+  margin-block: 0 1rem;
+}
+
+.sat-score-overall {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(1rem, 4vw, 3rem);
+  align-items: end;
+  padding: clamp(1.25rem, 5vw, 3.2rem);
+  background: linear-gradient(122deg, #112c58, #19438e);
+  border-radius: 1.3rem;
+  color: #fff;
+}
+
+.sat-score-overall-main {
+  min-width: 0;
+}
+.sat-score-label {
+  margin: 0 0 0.35rem;
+  color: #cfdeff;
+  font-weight: 700;
+}
+.sat-score-number {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.65rem;
+}
+.sat-score-number strong {
+  font:
+    800 clamp(3rem, 8vw, 6.8rem)/1 "Manrope",
+    sans-serif;
+  letter-spacing: -0.055em;
+  font-variant-numeric: tabular-nums;
+  animation: sat-score-reveal 0.42s ease-out both;
+}
+@keyframes sat-score-reveal {
+  from {
+    opacity: 0.25;
+    transform: translateY(0.25em);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.sat-score-number span {
+  color: #d8e4ff;
+  font-size: clamp(0.9rem, 2vw, 1.2rem);
+}
+.sat-score-level {
+  display: inline-block;
+  margin: 0.9rem 0 0;
+  padding: 0.3rem 0.72rem;
+  border-radius: 2rem;
+  background: #ffffff22;
+  color: #fff;
+  font-weight: 700;
+}
+.sat-score-overall-meta {
+  color: #e2ebff;
+}
+.sat-score-overall-meta p {
+  color: inherit;
+  margin: 0.9rem 0 0.4rem;
+}
+.sat-score-overall .sat-score-scale {
+  --sat-track: #ffffff30;
+  --sat-accent: #c6dbff;
+}
+.sat-score-scale {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  row-gap: 0.2rem;
+  font-size: 0.8rem;
+  font-variant-numeric: tabular-nums;
+}
+.sat-score-scale :last-child {
+  text-align: end;
+}
+.sat-score-report meter,
+.sat-score-report progress {
+  width: 100%;
+  height: 0.65rem;
+  display: block;
+  border: 0;
+  border-radius: 1rem;
+  background: var(--sat-track);
+  accent-color: var(--sat-accent);
+}
+.sat-score-report meter {
+  grid-column: 1/-1;
+}
+.sat-score-report meter::-webkit-meter-bar {
+  background: var(--sat-track);
+  border: 0;
+  border-radius: 1rem;
+}
+.sat-score-report progress::-webkit-progress-bar {
+  background: var(--sat-track);
+  border: 0;
+  border-radius: 1rem;
+}
+.sat-score-report meter::-webkit-meter-optimum-value {
+  background: var(--sat-accent);
+  border-radius: 1rem;
+}
+.sat-score-report progress::-webkit-progress-value {
+  background: var(--sat-accent);
+  border-radius: 1rem;
+}
+.sat-score-report meter::-moz-meter-bar {
+  background: var(--sat-accent);
+  border-radius: 1rem;
+}
+.sat-score-report progress::-moz-progress-bar {
+  background: var(--sat-accent);
+  border-radius: 1rem;
+}
+.sat-score-sections,
+.sat-skill-columns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+.sat-skill-columns {
+  column-gap: clamp(1.25rem, 4vw, 3.2rem);
+}
+.sat-score-report [data-section="math"] {
+  --sat-accent: var(--sat-math);
+}
+.sat-score-card {
+  padding: clamp(1rem, 3vw, 1.65rem);
+  border: 1px solid var(--sat-border);
+  border-radius: 1rem;
+  background: var(--sat-card);
+  min-width: 0;
+}
+.sat-score-card h3,
+.sat-score-card h4 {
+  margin: 0 0 0.75rem;
+}
+.sat-section-score p {
+  margin: 0.3rem 0 0.7rem;
+  color: var(--muted);
+}
+.sat-section-score strong {
+  color: var(--sat-accent);
+  font-size: 2.3rem;
+}
+.sat-section-score small {
+  display: block;
+  margin-top: 0.55rem;
+  color: var(--muted);
+}
+.sat-score-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.65rem;
+  margin: 0;
+}
+.sat-score-stats div {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 0.75rem;
+  border: 1px solid var(--sat-border);
+  border-radius: 0.75rem;
+}
+.sat-score-stats dt {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--muted);
+  font-size: 0.86rem;
+}
+.sat-score-stats dd {
+  margin: 0.25rem 0 0;
+  font-size: 1.15rem;
+  font-weight: 800;
+}
+.sat-score-stats [data-stat="correct"] dd {
+  color: var(--sat-math);
+}
+.sat-score-stats [data-stat="wrong"] dd {
+  color: #ab324b;
+}
+[data-theme="dark"] .sat-score-stats [data-stat="wrong"] dd {
+  color: #ff9db0;
+}
+.sat-topic {
+  margin-bottom: 1.15rem;
+}
+.sat-topic:last-child {
+  margin-bottom: 0;
+}
+.sat-topic details {
+  padding-left: 0.75rem;
+  margin-top: 0.35rem;
+  border-left: 1px solid var(--sat-border);
+}
+.sat-topic summary {
+  cursor: pointer;
+  color: var(--muted);
+  font-size: 0.85rem;
+  margin-bottom: 0.55rem;
+}
+.sat-skill-columns h4 {
+  padding-top: 0.6rem;
+}
+.sat-skill {
+  margin: 0 0 0.9rem;
+}
+.sat-skill:last-child {
+  margin-bottom: 0;
+}
+.sat-skill > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.35rem;
+  font-size: 0.88rem;
+}
+.sat-skill > div > span:last-child {
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.sat-skill small {
+  display: block;
+  color: var(--muted);
+}
+.sat-curve-table {
+  display: grid;
+  gap: 0.75rem;
+}
+.sat-curve-table textarea {
+  width: 100%;
+  min-height: 6rem;
+  font-variant-numeric: tabular-nums;
+}
+.sat-curve-table p {
+  margin-block: 0.25rem 0.5rem;
+}
+
+@media (max-width: 640px) {
+  .sat-score-overall,
+  .sat-skill-columns {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .sat-score-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .sat-score-sections {
+    gap: 0.6rem;
+  }
+}
+@media (max-width: 390px) {
+  .sat-score-sections {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sat-score-number strong {
+    animation: none;
+  }
+}
