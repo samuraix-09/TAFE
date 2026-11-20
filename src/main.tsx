@@ -190,7 +190,13 @@ function App() {
     await action.run(async () => {
       await fullscreen;
       try {
-        const result = await rpc("start_exam_session", { t: id });
+        let result;
+        if (id === "fe816150-8c12-4b3a-b04a-000000000031") {
+          result = checked(
+            await db.functions.invoke("opensat-start", { body: {} }),
+          );
+          if (result.error) throw Error(result.error);
+        } else result = await rpc("start_exam_session", { t: id });
         if (result.submitted) done(result.id);
         else setAttempt({ ...result, category, section });
       } catch (error) {

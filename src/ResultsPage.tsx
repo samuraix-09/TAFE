@@ -224,6 +224,27 @@ function AttemptReview({
             : "missing"),
     }),
   );
+  const adaptive = entries.some(({ question }) => question.config?.opensat);
+  const modules = [0, 1, 2, 3].map((stage) => {
+    const items = entries.filter(({ question }) => question.stage === stage);
+    return {
+      answered: items.filter((item) => item.state === "correct").length,
+      total: items.length,
+      difficulty: items[0]?.question.difficulty,
+    };
+  });
+  const topics = new Map<string, { correct: number; total: number }>();
+  if (adaptive)
+    for (const { question, state } of entries) {
+      const name = question.group_name;
+      const item = topics.get(name) ?? { correct: 0, total: 0 };
+      item.total++;
+      if (state === "correct") item.correct++;
+      topics.set(name, item);
+    }
+  const ranked = [...topics].sort(
+    ([, a], [, b]) => a.correct / a.total - b.correct / b.total,
+  );
   const mistakes = entries.filter((entry) => entry.state !== "correct");
   const [filter, setFilter] = useState(
     scaled || !mistakes.length ? "all" : "mistakes",
@@ -311,6 +332,33 @@ function AttemptReview({
                   <li key={skill}>{t(skill)}</li>
                 ))}
               </ul>
+            </section>
+          )}
+          {adaptive && (
+            <section className="sat-score-card">
+              <h3>Modullar natijasi</h3>
+              <ul>
+                {modules.map((m, i) => (
+                  <li key={i}>
+                    {satSectionLabel(i < 2 ? "reading_writing" : "math")} ·{" "}
+                    {(i % 2) + 1}-modul · {m.answered}/{m.total}{" "}
+                    {t("to‘g‘ri javob")} · {m.difficulty}
+                  </li>
+                ))}
+              </ul>
+              {ranked.length > 0 && (
+                <p>
+                  {ranked[0][1].correct < ranked[0][1].total ? (
+                    <>
+                      Keyingi mashq uchun tavsiya —{" "}
+                      <strong>{t(ranked[0][0])}</strong> mavzusini takrorlang va
+                      xato javoblarni qayta ishlang.
+                    </>
+                  ) : (
+                    "Barcha mavzulardagi javoblar to‘g‘ri. Keyingi mashqda tezlik va vaqt taqsimotini kuzating."
+                  )}
+                </p>
+              )}
             </section>
           )}
           {scaled && <h3>{t("Savollar tahlili")}</h3>}

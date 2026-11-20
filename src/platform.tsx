@@ -1,3 +1,4 @@
+import { SatNotation } from "./SatNotation";
 import { t } from "./i18n";
 import {
   useEffect,
@@ -311,9 +312,15 @@ export function QuestionInput({
                 </span>
               )}
               <span>
-                {["true_false_not_given", "yes_no_not_given"].includes(q.type)
-                  ? t(o)
-                  : o}
+                {["true_false_not_given", "yes_no_not_given"].includes(
+                  q.type,
+                ) ? (
+                  t(o)
+                ) : q.config?.opensat ? (
+                  <SatNotation text={o} />
+                ) : (
+                  o
+                )}
               </span>
             </label>
             {onEliminate && (

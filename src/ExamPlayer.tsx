@@ -1,3 +1,4 @@
+import { SatNotation } from "./SatNotation";
 import { t } from "./i18n";
 import { useEffect, useRef, useState } from "react";
 import { Check, Circle, Flag, Maximize, ShieldCheck } from "lucide-react";
@@ -58,6 +59,8 @@ export function ExamPlayer({
   const [hideClock, setHideClock] = useState(false);
   const [eliminated, setEliminated] = useState<Record<string, number[]>>({});
   const [largePassage, setLargePassage] = useState(false);
+  const [zoom, setZoom] = useState(1);
+  const [moduleNotice, setModuleNotice] = useState(false);
   const [questionMenu, setQuestionMenu] = useState(false);
   const retryAfter = useRef(0);
   const [flags, setFlags] = useState<string[]>(() => {
@@ -65,9 +68,14 @@ export function ExamPlayer({
       const saved: unknown = JSON.parse(
         localStorage.getItem("tafe-flags-" + attempt.id) || "[]",
       );
-      return Array.isArray(saved)
-        ? saved.filter((id): id is string => typeof id === "string")
-        : [];
+      return [
+        ...new Set<string>([
+          ...(attempt.review_flags ?? []),
+          ...(Array.isArray(saved)
+            ? saved.filter((id): id is string => typeof id === "string")
+            : []),
+        ]),
+      ];
     } catch {
       return [];
     }
@@ -208,6 +216,7 @@ export function ExamPlayer({
           latest.current = approvedAnswers.current;
           setAnswers(approvedAnswers.current);
           needsSave.current = false;
+          if (result.adaptive && result.route) setModuleNotice(true);
           setIndex(0);
           setQuestionMenu(false);
           setHideClock(false);
@@ -426,7 +435,11 @@ export function ExamPlayer({
   const attemptQuestions: Row[] = current.questions;
   const q = attemptQuestions[index] ?? attemptQuestions[0];
   const [stimulus, prompt] = sat ? splitSatPrompt(q.prompt) : ["", q.prompt];
-  const passageText = attempt.passage_text || stimulus;
+  const passageText = q.config?.passage || attempt.passage_text || stimulus;
+  const svg =
+    q.config?.opensat && q.config.svg
+      ? "data:image/svg+xml," + encodeURIComponent(q.config.svg)
+      : null;
   const passageTitle =
     attempt.passage_title || t(sat ? "Savol matni" : "Test materiali");
   const sectionTitle =
@@ -454,7 +467,36 @@ export function ExamPlayer({
 
   return (
     <main className="exam-view" data-exam={presentation}>
-      <div className="exam-content" inert={blocked}>
+      <div
+        className="exam-content"
+        inert={blocked || moduleNotice}
+        onKeyDown={(event) => {
+          if (
+            !current.adaptive ||
+            blocked ||
+            moduleNotice ||
+            event.altKey ||
+            event.ctrlKey ||
+            event.metaKey ||
+            (event.target as HTMLElement).closest(
+              "input,textarea,select,button,[contenteditable]",
+            )
+          )
+            return;
+          if (event.key === "ArrowRight" || event.key === "ArrowLeft") {
+            event.preventDefault();
+            goToQuestion(
+              Math.max(
+                0,
+                Math.min(
+                  attemptQuestions.length - 1,
+                  index + (event.key === "ArrowRight" ? 1 : -1),
+                ),
+              ),
+            );
+          }
+        }}
+      >
         <div className="exam-toolbar">
           <div>
             <p className="eyebrow exam-kind">
@@ -518,6 +560,25 @@ export function ExamPlayer({
         {attempt.instructions && (
           <p className="muted exam-instructions">{t(attempt.instructions)}</p>
         )}
+        {current.adaptive && (
+          <div className="opensat-tools">
+            <small>OpenSAT · TAFE moslashuvchan simulyatsiyasi</small>
+            <button
+              disabled={zoom <= 1}
+              onClick={() => setZoom(zoom - 0.15)}
+              aria-label="Kichraytirish"
+            >
+              A−
+            </button>
+            <button
+              disabled={zoom >= 1.45}
+              onClick={() => setZoom(zoom + 0.15)}
+              aria-label="Kattalashtirish"
+            >
+              A+
+            </button>
+          </div>
+        )}
         {satMath && <SatMathTools />}
         {!fullScreenEnabled() && (
           <p className="muted">
@@ -526,7 +587,10 @@ export function ExamPlayer({
             )}
           </p>
         )}
-        <div className="exam-layout">
+        <div
+          className="exam-layout"
+          style={current.adaptive ? { zoom } : undefined}
+        >
           <div
             className="exam-question-area"
             data-split={Boolean((sat || ielts) && (passageText || image))}
@@ -551,9 +615,12 @@ export function ExamPlayer({
                     </button>
                   )}
                 </div>
-                {ieltsReading && passageText ? (
+                {(ieltsReading || current.adaptive) && passageText ? (
                   <ReadingPassage
-                    attemptId={attempt.id}
+                    key={current.adaptive ? q.id : attempt.id}
+                    attemptId={
+                      current.adaptive ? attempt.id + "-" + q.id : attempt.id
+                    }
                     text={passageText}
                     activePart={/\bPassage\s+([A-Z])\b/i
                       .exec(q.group_name || q.prompt)?.[1]
@@ -591,13 +658,21 @@ export function ExamPlayer({
                 <button
                   className="flag-button"
                   aria-pressed={flags.includes(q.id)}
-                  onClick={() =>
-                    setFlags((previous) =>
-                      previous.includes(q.id)
-                        ? previous.filter((id) => id !== q.id)
-                        : [...previous, q.id],
-                    )
-                  }
+                  onClick={() => {
+                    const next = flags.includes(q.id)
+                      ? flags.filter((id) => id !== q.id)
+                      : [...flags, q.id];
+                    setFlags(next);
+                    if (current.adaptive)
+                      queue.current = queue.current
+                        .then(async () => {
+                          await rpc("opensat_review_flags", {
+                            attempt: attempt.id,
+                            flags: next,
+                          });
+                        })
+                        .catch((e) => setError(e.message));
+                  }}
                 >
                   <Flag size={16} aria-hidden="true" />
                   {flags.includes(q.id) ? t("Belgilangan") : t("Belgilash")}
@@ -617,8 +692,15 @@ export function ExamPlayer({
                 </button>
               )}
               <h2 ref={qHeading} tabIndex={-1} className="exam-question-prompt">
-                {prompt}
+                {current.adaptive ? <SatNotation text={q.prompt} /> : prompt}
               </h2>
+              {svg && (
+                <img
+                  className="exam-passage-image"
+                  src={svg}
+                  alt="Savol diagrammasi"
+                />
+              )}
               <QuestionInput
                 question={q}
                 value={answers[q.id]}
@@ -782,6 +864,30 @@ export function ExamPlayer({
           </section>
         </div>
       </div>
+      {moduleNotice && !waitingToReturn && (
+        <div className="exam-screen-overlay">
+          <section
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="route-title"
+          >
+            <h2 id="route-title">1-modul yakunlandi</h2>
+            <p>
+              2-modul yo‘nalishi:{" "}
+              {current.route === "Hard" ? "murakkab" : "yengil"}. Bu TAFE mashq
+              simulyatsiyasi.
+            </p>
+            <p>2-modul majburiy va uning taymeri ishga tushgan.</p>
+            <button
+              autoFocus
+              className="primary"
+              onClick={() => setModuleNotice(false)}
+            >
+              2-modulni ochish
+            </button>
+          </section>
+        </div>
+      )}
       {confirming && !waitingToReturn && (
         <div className="exam-screen-overlay">
           <section

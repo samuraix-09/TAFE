@@ -48,14 +48,32 @@ export function SatMathTools() {
             const a = Number(data.get("first")),
               b = Number(data.get("second"));
             const operation = data.get("operation");
-            const value =
-              operation === "add"
-                ? a + b
-                : operation === "subtract"
-                  ? a - b
-                  : operation === "multiply"
-                    ? a * b
-                    : a / b;
+            if (
+              ["add", "subtract", "multiply", "divide", "power"].includes(
+                String(operation),
+              ) &&
+              data.get("second") === ""
+            ) {
+              setResult(t("Ikkinchi son"));
+              return;
+            }
+            const radians =
+              data.get("angle") === "deg" ? (a * Math.PI) / 180 : a;
+            const operations: Record<string, () => number> = {
+              add: () => a + b,
+              subtract: () => a - b,
+              multiply: () => a * b,
+              divide: () => a / b,
+              power: () => a ** b,
+              root: () => Math.sqrt(a),
+              log: () => Math.log10(a),
+              ln: () => Math.log(a),
+              sin: () => Math.sin(radians),
+              cos: () => Math.cos(radians),
+              tan: () => Math.tan(radians),
+              abs: () => Math.abs(a),
+            };
+            const value = operations[String(operation)]?.();
             setResult(
               Number.isFinite(value)
                 ? String(Number(value.toPrecision(12)))
@@ -75,14 +93,25 @@ export function SatMathTools() {
             <option value="subtract">−</option>
             <option value="multiply">×</option>
             <option value="divide">÷</option>
+            <option value="power">xʸ</option>
+            <option value="root">√x</option>
+            <option value="log">log₁₀ x</option>
+            <option value="ln">ln x</option>
+            <option value="sin">sin x</option>
+            <option value="cos">cos x</option>
+            <option value="tan">tan x</option>
+            <option value="abs">|x|</option>
           </select>
           <input
             type="number"
             step="any"
             name="second"
-            required
             aria-label={t("Ikkinchi son")}
           />
+          <select name="angle" aria-label="Burchak birligi">
+            <option value="deg">DEG</option>
+            <option value="rad">RAD</option>
+          </select>
           <button aria-label={t("Hisoblash")}>=</button>
           <output aria-live="polite">{result}</output>
         </form>

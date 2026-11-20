@@ -688,3 +688,13 @@ html:fullscreen {
     font-size: 15px;
   }
 }
+.opensat-tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-block: 0.75rem;
+}
+.opensat-tools small {
+  margin-inline-end: auto;
+}

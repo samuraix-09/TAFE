@@ -33,6 +33,7 @@ export function SatScoringEditor({
         <strong>{t(title)}</strong>
       </p>
       <Feedback error={settings.error} loading={settings.loading} />
+      {testId.endsWith("000031") && <OpenSatRouting />}
       {settings.data && (
         <ScoringForm testId={testId} settings={settings.data} />
       )}
@@ -143,5 +144,78 @@ function ScoringForm({
         </button>
       </div>
     </form>
+  );
+}
+
+function OpenSatRouting() {
+  const settings = useData(() => rpc("admin_opensat_settings"), []);
+  const action = useAction();
+  return (
+    <section>
+      <h3>OpenSAT yo‘naltirish va taymer</h3>
+      <Feedback
+        error={settings.error || action.error}
+        notice={action.notice}
+        loading={settings.loading}
+      />
+      {settings.data && (
+        <form
+          className="sat-curve-table"
+          onSubmit={(event) => {
+            event.preventDefault();
+            const fields = new FormData(event.currentTarget);
+            void action.run(async () => {
+              await rpc("admin_opensat_settings", {
+                rw: Number(fields.get("rw")),
+                m: Number(fields.get("math")),
+                timings: [0, 1, 2, 3].map((i) =>
+                  Number(fields.get("module" + i)),
+                ),
+              });
+            });
+          }}
+        >
+          <label>
+            Reading and Writing · murakkab yo‘nalish chegarasi (%)
+            <input
+              name="rw"
+              type="number"
+              required
+              min={0}
+              max={100}
+              defaultValue={settings.data.reading_threshold}
+            />
+          </label>
+          <label>
+            Math · murakkab yo‘nalish chegarasi (%)
+            <input
+              name="math"
+              type="number"
+              required
+              min={0}
+              max={100}
+              defaultValue={settings.data.math_threshold}
+            />
+          </label>
+          {[0, 1, 2, 3].map((i) => (
+            <label key={i}>
+              {i < 2 ? "Reading and Writing" : "Math"} · {(i % 2) + 1}-modul
+              (daqiqa)
+              <input
+                name={"module" + i}
+                type="number"
+                required
+                min={1}
+                max={60}
+                defaultValue={settings.data.minutes[i]}
+              />
+            </label>
+          ))}
+          <button type="submit" disabled={action.busy}>
+            Yo‘naltirish sozlamalarini saqlash
+          </button>
+        </form>
+      )}
+    </section>
   );
 }
