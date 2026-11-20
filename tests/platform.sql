@@ -165,5 +165,97 @@ set local role authenticated;
 select public.delete_conversation('c6000000-0000-4000-8000-000000000001');
 do $$begin if exists(select 1 from public.ai_conversations where id='c6000000-0000-4000-8000-000000000001') then raise exception 'Conversation not deleted';end if;end$$;
 reset role;
+insert into auth.users(id,raw_user_meta_data) values
+ ('c1000000-0000-4000-8000-000000000004','{"display_name":"SAT transaction QA"}');
+insert into public.subscriptions(user_id,plan_id,expires_at) values
+ ('c1000000-0000-4000-8000-000000000004','c2000000-0000-4000-8000-000000000001',now()+interval '1 day');
+
+-- Keep expected content in this transaction only.
+select set_config('qa.sat_correct',(
+ select jsonb_object_agg(q.id,
+  case when q.type='numeric_answer' then k.accepted->0 else k.accepted end)::text
+ from public.sat_exam_modules m
+ join public.questions q on q.test_id=m.source_id
+ join public.answer_keys k on k.question_id=q.id
+),true);
+do $$begin
+ if public.sat_numeric_answer(' 3/4 ')<>0.75 or public.sat_numeric_answer('−.25')<>-0.25
+    or public.sat_numeric_answer('3/0') is not null then raise exception 'SAT numeric parsing failed'; end if;
+end$$;
+
+set local role authenticated;
+select set_config('request.jwt.claim.sub','c1000000-0000-4000-8000-000000000004',true);
+do $$
+declare test uuid:='fe816150-8c12-4b3a-b04a-000000000001'; a jsonb; r jsonb; id uuid;
+ expected jsonb:=current_setting('qa.sat_correct')::jsonb; answer_map jsonb; i int; item jsonb;
+begin
+ if jsonb_array_length(jsonb_path_query_array(public.web_exam_catalog(),'$[*] ? (@.exam_categories.name == "SAT")'))<>2 then
+  raise exception 'SAT catalog did not hide stand-alone modules';
+ end if;
+ if exists(select 1 from public.tests where public.tests.id=test) then raise exception 'Legacy catalog exposed web-only SAT form'; end if;
+ begin perform public.start_exam_session('e4b994df-8f8f-582a-bba2-e53c002d825a');raise exception 'Standalone module access allowed';
+ exception when raise_exception then if SQLERRM='Standalone module access allowed' then raise;end if; end;
+ a:=public.start_exam_session(test);
+ id:=(a->>'id')::uuid;
+ if (a->>'stage')::int<>0 or (a->>'stage_count')::int<>4 or jsonb_array_length(a->'questions')<>27
+    or (a->'questions'->0)?'accepted' then raise exception 'Invalid initial module'; end if;
+ if (public.start_exam_session(test)->>'id')::uuid<>id then raise exception 'Resume opened a duplicate'; end if;
+ for i in 0..3 loop
+  if (a->>'stage')::int<>i or jsonb_array_length(a->'questions')<>(case when i<2 then 27 else 22 end) then
+    raise exception 'Incorrect module %',i;
+  end if;
+  select jsonb_object_agg(q->>'id',expected->(q->>'id')) into answer_map from jsonb_array_elements(a->'questions') q;
+  if i=0 then
+   r:=public.exam_session_action(id,answer_map,'leave',i);
+   if (r->>'fullscreen_deadline')::timestamptz<(r->>'server_time')::timestamptz+interval '9 seconds' then raise exception 'Grace deadline missing'; end if;
+   r:=public.exam_session_action(id,'{}','advance',i);
+   if (r->>'stage')::int<>i or (select count(*) from jsonb_object_keys(r->'answers'))<>27 then raise exception 'Outside screen advanced the attempt'; end if;
+   r:=public.exam_session_action(id,'{}','return',i);
+   if r->>'fullscreen_deadline' is not null then raise exception 'Returning did not clear grace'; end if;
+  end if;
+  a:=public.exam_session_action(id,answer_map,'advance',i);
+  if i<3 then
+   r:=public.exam_session_action(id,'{}','advance',i);
+   if (r->>'stage')::int<>i+1 then raise exception 'A repeated request skipped a module'; end if;
+   if r->'answers'<>'{}'::jsonb then raise exception 'Answers from a locked module exposed'; end if;
+  end if;
+ end loop;
+ if (a->>'submitted')::boolean is not true or (a->>'score')::int<>98 or (a->'sat_scores'->>'total')::int<>1600 then
+  raise exception 'Full SAT scoring failed: %',a;
+ end if;
+ r:=public.attempt_review(id);
+ if jsonb_array_length(r->'questions')<>98 or exists(
+  select 1 from jsonb_array_elements(r->'questions') x where not (x->>'correct')::boolean
+ ) then raise exception 'SAT review omitted answers or sections'; end if;
+ a:=public.start_exam_session('fe816150-8c12-4b3a-b04a-000000000002');
+ id:=(a->>'id')::uuid;
+ perform set_config('qa.diagnostic_id',id::text,true);
+ item:=a->'questions'->0;
+ r:=public.exam_session_action(id,jsonb_build_object(item->>'id',expected->(item->>'id')),'leave',0);
+ r:=public.exam_session_action(id,jsonb_build_object(item->>'id','wrong'),'save',0);
+ if r->'answers'->(item->>'id')<>expected->(item->>'id') then raise exception 'Answers changed outside fullscreen'; end if;
+end$$;
+reset role;
+update public.test_attempts set fullscreen_deadline=clock_timestamp()-interval '1 second'
+where id=current_setting('qa.diagnostic_id')::uuid;
+set local role authenticated;
+do $$
+declare id uuid:=current_setting('qa.diagnostic_id')::uuid; r jsonb;
+begin
+ perform public.settle_exam_sessions();
+ r:=public.exam_session_action(id,'{}','return',0);
+ if (r->>'submitted')::boolean is not true or r->>'finish_reason'<>'fullscreen'
+   or (r->>'score')::int<>1 or (r->>'total')::int<>16 or (r->'sat_scores')?'total' then
+  raise exception 'Expired fullscreen did not keep the partial diagnostic result: %',r;
+ end if;
+end$$;
+select set_config('request.jwt.claim.sub','c1000000-0000-4000-8000-000000000003',true);
+do $$begin
+ begin perform public.exam_session_action(current_setting('qa.diagnostic_id')::uuid,'{}','status',0);
+ raise exception 'Cross-user session access allowed';
+ exception when raise_exception then if SQLERRM='Cross-user session access allowed' then raise;end if; end;
+end$$;
+reset role;
+
 select 'platform transaction assertions passed' as result;
 rollback;

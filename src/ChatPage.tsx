@@ -17,7 +17,7 @@ import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 import "katex/dist/katex.min.css";
-import { db } from "./db";
+import { tafeAiFunction, db } from "./db";
 import {
   checked,
   rpc,
@@ -103,7 +103,7 @@ export function ChatPage({
     setLastFailed(message);
     setDraft("");
     try {
-      const response = await db.functions.invoke("tafe-ai", {
+      const response = await db.functions.invoke(tafeAiFunction, {
         body: {
           locale: getLocale(),
           conversationId,

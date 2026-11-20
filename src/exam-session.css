@@ -1,0 +1,105 @@
+html:fullscreen {
+  overflow: auto;
+  background: var(--surface);
+}
+.exam-view {
+  min-height: 100dvh;
+  max-width: none;
+  padding: 0;
+  color: var(--ink);
+  background: var(--surface);
+}
+.exam-content {
+  max-width: 1300px;
+  margin-inline: auto;
+  padding: clamp(16px, 4vw, 52px);
+}
+.exam-view .exam-toolbar {
+  align-items: center;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--stroke);
+}
+.exam-view .exam-layout {
+  grid-template-columns: minmax(0, 1fr) minmax(210px, 260px);
+}
+.exam-view .exam-question-area > section,
+.exam-view .exam-navigation {
+  background: var(--paper);
+  border: 1px solid var(--stroke);
+  border-radius: 16px;
+  padding: clamp(16px, 3vw, 28px);
+}
+.exam-view .exam-question-area > section + section {
+  margin-top: 16px;
+}
+.exam-view .exam-question-prompt {
+  margin-block: 16px 22px;
+  white-space: pre-wrap;
+}
+.exam-view .question-numbers {
+  grid-template-columns: repeat(auto-fit, minmax(36px, 1fr));
+}
+.exam-view .exam-clock {
+  min-width: 108px;
+  text-align: center;
+}
+.exam-screen-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  overflow: auto;
+  padding: 20px;
+  background: rgba(9, 18, 37, 0.7);
+  backdrop-filter: blur(5px);
+}
+.exam-screen-overlay > section {
+  width: min(100%, 440px);
+  padding: clamp(20px, 5vw, 36px);
+  background: var(--paper);
+  border: 1px solid var(--stroke);
+  border-radius: 20px;
+  text-align: center;
+}
+.exam-screen-overlay h2 {
+  margin-block: 12px;
+}
+.exam-grace {
+  display: block;
+  color: var(--blue);
+  font-size: 2rem;
+  font-variant-numeric: tabular-nums;
+  margin-block: 16px;
+}
+.sat-section-results {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+  gap: 12px;
+  margin-block: 16px;
+}
+.sat-section-results > section {
+  padding: 12px 16px;
+  border: 1px solid var(--stroke);
+  border-radius: 12px;
+}
+@media (max-width: 750px) {
+  .exam-view .exam-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .exam-view .exam-navigation {
+    position: static;
+  }
+  .exam-view .exam-clock {
+    font-size: 21px;
+    min-width: 74px;
+    padding: 8px;
+  }
+}
+
+.exam-diagnostic-card {
+  border-color: var(--blue);
+}
+.sat-review-correct {
+  color: var(--blue);
+}

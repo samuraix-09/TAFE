@@ -3653,5 +3653,140 @@
     "uz": "Yuklab olishda xatolik. Qayta urinib ko‘ring.",
     "en": "Download failed. Please try again.",
     "ru": "Не удалось скачать файл. Попробуйте ещё раз."
+  },
+  "Test sessiyasi": {
+    "uz": "Test sessiyasi",
+    "en": "Test session",
+    "ru": "Экзаменационная сессия"
+  },
+  "Reading and Writing": {
+    "uz": "Reading and Writing",
+    "en": "Reading and Writing",
+    "ru": "Чтение и письмо"
+  },
+  "Math": {
+    "uz": "Math",
+    "en": "Math",
+    "ru": "Математика"
+  },
+  "Modul": {
+    "uz": "Modul",
+    "en": "Module",
+    "ru": "Модуль"
+  },
+  "Keyingi modulga o‘tish": {
+    "uz": "Keyingi modulga o‘tish",
+    "en": "Continue to the next module",
+    "ru": "Перейти к следующему модулю"
+  },
+  "Keyingi modulga o‘tasizmi? Bu modulga qaytib bo‘lmaydi.": {
+    "uz": "Keyingi modulga o‘tasizmi? Bu modulga qaytib bo‘lmaydi.",
+    "en": "Continue to the next module? You cannot return to this module.",
+    "ru": "Перейти к следующему модулю? Вернуться к этому модулю будет нельзя."
+  },
+  "To‘liq ekran rejimi": {
+    "uz": "To‘liq ekran rejimi",
+    "en": "Full-screen mode",
+    "ru": "Полноэкранный режим"
+  },
+  "Vaqt tugasa, saqlangan javoblar bilan test avtomatik yakunlanadi.": {
+    "uz": "Vaqt tugasa, saqlangan javoblar bilan test avtomatik yakunlanadi.",
+    "en": "When time runs out, the test will submit your saved answers.",
+    "ru": "Когда время истечёт, сохранённые ответы будут отправлены автоматически."
+  },
+  "Testni davom ettirish uchun to‘liq ekranga o‘ting.": {
+    "uz": "Testni davom ettirish uchun to‘liq ekranga o‘ting.",
+    "en": "Enter full screen to continue the test.",
+    "ru": "Перейдите в полноэкранный режим, чтобы продолжить тест."
+  },
+  "To‘liq ekranga qaytish": {
+    "uz": "To‘liq ekranga qaytish",
+    "en": "Return to full screen",
+    "ru": "Вернуться в полноэкранный режим"
+  },
+  "Brauzer to‘liq ekranga o‘tishga ruxsat bermadi.": {
+    "uz": "Brauzer to‘liq ekranga o‘tishga ruxsat bermadi.",
+    "en": "Your browser did not allow full-screen mode.",
+    "ru": "Браузер не разрешил полноэкранный режим."
+  },
+  "Testni davom ettirish uchun ushbu sahifaga qayting.": {
+    "uz": "Testni davom ettirish uchun ushbu sahifaga qayting.",
+    "en": "Return to this page to continue the test.",
+    "ru": "Вернитесь на эту страницу, чтобы продолжить тест."
+  },
+  "Bu brauzerda to‘liq ekran mavjud emas. Test vaqtida sahifada qoling.": {
+    "uz": "Bu brauzerda to‘liq ekran mavjud emas. Test vaqtida sahifada qoling.",
+    "en": "Full screen is unavailable in this browser. Stay on this page during the test.",
+    "ru": "Этот браузер не поддерживает полноэкранный режим. Оставайтесь на странице во время теста."
+  },
+  "Natijani tekshirish": {
+    "uz": "Natijani tekshirish",
+    "en": "Check result",
+    "ru": "Проверить результат"
+  },
+  "SAT taxminiy balli": {
+    "uz": "SAT taxminiy balli",
+    "en": "Estimated SAT score",
+    "ru": "Ориентировочный балл SAT"
+  },
+  "Bu TAFE mashq bahosi. Rasmiy SAT balli test shakli va savol kalibratsiyasiga bog‘liq.": {
+    "uz": "Bu TAFE mashq bahosi. Rasmiy SAT balli test shakli va savol kalibratsiyasiga bog‘liq.",
+    "en": "This is a TAFE practice estimate. Official SAT scores depend on the form and item calibration.",
+    "ru": "Это тренировочная оценка TAFE. Официальный балл SAT зависит от формы теста и калибровки заданий."
+  },
+  "To‘liq ekranga qaytish vaqti tugagani uchun yakunlandi.": {
+    "uz": "To‘liq ekranga qaytish vaqti tugagani uchun yakunlandi.",
+    "en": "Submitted after the full-screen grace period expired.",
+    "ru": "Тест завершён после истечения времени на возврат в полноэкранный режим."
+  },
+  "to‘g‘ri javob": {
+    "uz": "to‘g‘ri javob",
+    "en": "correct answers",
+    "ru": "правильных ответов"
+  },
+  "Quyidagi izohlar orqali qaysi mavzularni takrorlash kerakligini aniqlang.": {
+    "uz": "Quyidagi izohlar orqali qaysi mavzularni takrorlash kerakligini aniqlang.",
+    "en": "Use the explanations below to identify skills to practise.",
+    "ru": "Используйте пояснения ниже, чтобы определить темы для повторения."
+  },
+  "Takrorlash kerak bo‘lgan mavzular": {
+    "uz": "Takrorlash kerak bo‘lgan mavzular",
+    "en": "Skills to review",
+    "ru": "Темы для повторения"
+  },
+  "SAT · Full Practice": {
+    "uz": "SAT · To‘liq sinov",
+    "en": "SAT · Full Practice",
+    "ru": "SAT · Полный тренировочный тест"
+  },
+  "SAT · Boshlang‘ich sinov": {
+    "uz": "SAT · Boshlang‘ich sinov",
+    "en": "SAT · Diagnostic",
+    "ru": "SAT · Стартовый тест"
+  },
+  "98 questions across four timed modules. One result for the entire test.": {
+    "uz": "To‘rtta vaqtli modulda 98 ta savol. Butun test uchun bitta natija.",
+    "en": "98 questions across four timed modules. One result for the entire test.",
+    "ru": "98 заданий в четырёх модулях с таймером. Один результат за весь тест."
+  },
+  "16 original questions across four short modules. Review skills and answers to plan your preparation.": {
+    "uz": "To‘rtta qisqa modulda 16 ta original savol. Javoblar tahlili tayyorgarlik rejasini tuzishga yordam beradi.",
+    "en": "16 original questions across four short modules. Review skills and answers to plan your preparation.",
+    "ru": "16 оригинальных заданий в четырёх коротких модулях. Разбор ответов поможет спланировать подготовку."
+  },
+  "Complete both Reading and Writing modules, then both Math modules. Earlier modules lock when you move on.": {
+    "uz": "Avval o‘qish va yozishning ikki modulini, keyin matematikaning ikki modulini ishlang. Keyingi modulga o‘tgach ortga qaytib bo‘lmaydi.",
+    "en": "Complete both Reading and Writing modules, then both Math modules. Earlier modules lock when you move on.",
+    "ru": "Пройдите оба модуля чтения и письма, затем оба модуля математики. Возврат к прошлым модулям закрывается."
+  },
+  "Complete the modules in order. Use the answer explanations to identify skills to practise.": {
+    "uz": "Modullarni ketma-ket ishlang. Javob izohlaridan takrorlash kerak bo‘lgan mavzularni aniqlang.",
+    "en": "Complete the modules in order. Use the answer explanations to identify skills to practise.",
+    "ru": "Выполните модули по порядку. Пояснения к ответам подскажут, что стоит повторить."
+  },
+  "soniya": {
+    "uz": "soniya",
+    "en": "seconds",
+    "ru": "секунд"
   }
 }

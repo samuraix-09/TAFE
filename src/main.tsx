@@ -30,7 +30,7 @@ import { EmailAuth } from "./EmailAuth";
 import { Onboarding } from "./Onboarding";
 import { LibraryPage } from "./LibraryPage";
 import { ProfilePage } from "./ProfilePage";
-import { ExamPlayer } from "./ExamPlayer";
+import { ExamPlayer, fullScreenEnabled } from "./ExamPlayer";
 import { ResultsPage } from "./ResultsPage";
 import {
   checked,
@@ -176,25 +176,41 @@ function App() {
         .update({ theme: next ? "dark" : "light" })
         .eq("id", session.user.id);
   };
-  const done = () => {
-    setCompletedAttemptId(attempt?.id ?? null);
+  const done = (id: string) => {
+    setCompletedAttemptId(id);
     setAttempt(null);
     location.hash = "/student/results";
+    if (document.fullscreenElement)
+      void document.exitFullscreen().catch(() => {});
   };
   const action = useAction();
   async function start(id: string) {
-    await action.run(
-      async () => setAttempt(await rpc("start_test", { t: id })),
-      "",
-    );
+    if (action.busy) return;
+    const fullscreen =
+      fullScreenEnabled() && !document.fullscreenElement
+        ? document.documentElement.requestFullscreen().catch(() => {})
+        : Promise.resolve();
+    await action.run(async () => {
+      await fullscreen;
+      try {
+        const result = await rpc("start_exam_session", { t: id });
+        if (result.submitted) done(result.id);
+        else setAttempt(result);
+      } catch (error) {
+        if (document.fullscreenElement)
+          void document.exitFullscreen().catch(() => {});
+        throw error;
+      }
+    }, "");
   }
   const infoPage = ["privacy", "terms", "contact"].includes(visitor);
   useStartupReady(
     ready && (!session || visitor === "reset" || infoPage || !account.loading),
   );
   if (!ready) return <Loading />;
-  if (infoPage) return <InfoPage kind={visitor} back={() => go("home")} />;
-  if (!session || visitor === "reset") {
+  if (!attempt && infoPage)
+    return <InfoPage kind={visitor} back={() => go("home")} />;
+  if (!session || (!attempt && visitor === "reset")) {
     if (visitor === "home" && !adminRoute)
       return <Landing go={go} dark={dark} toggle={toggle} />;
     return (
@@ -239,13 +255,22 @@ function App() {
         </button>
       </main>
     );
+  if (attempt)
+    return (
+      <ExamPlayer
+        key={attempt.id}
+        attempt={attempt}
+        accessToken={session.access_token}
+        onDone={done}
+      />
+    );
   if (adminRoute)
     return (
       <Suspense fallback={<Loading />}>
         <AdminApp onLanguageChange={changeLanguage} />
       </Suspense>
     );
-  const fullChat = page === "ai" && !!profile.onboarded_at && !attempt;
+  const fullChat = page === "ai" && !!profile.onboarded_at;
   return (
     <>
       <aside className="student-sidebar">
@@ -260,18 +285,6 @@ function App() {
               aria-current={page === key ? "page" : undefined}
               key={key}
               href={"#/student/" + key}
-              onClick={(e) => {
-                if (
-                  attempt &&
-                  !confirm(
-                    t(
-                      "Testdan chiqasizmi? Saqlangan javoblar bilan keyin davom etishingiz mumkin.",
-                    ),
-                  )
-                )
-                  e.preventDefault();
-                else setAttempt(null);
-              }}
             >
               <Icon size={19} />
               <span>{t(name)}</span>
@@ -339,7 +352,7 @@ function App() {
         </header>
         <main
           className={fullChat ? "chat-workspace-main" : "motion-view"}
-          key={attempt?.id || page}
+          key={page}
         >
           <Feedback {...action} />
           {!profile.onboarded_at ? (
@@ -349,14 +362,14 @@ function App() {
               profile={profile}
               onComplete={async () => account.reload()}
             />
-          ) : attempt ? (
-            <ExamPlayer attempt={attempt} onDone={done} />
           ) : (
             <>
               {page === "dashboard" && (
                 <Dashboard profile={profile} categories={categories} />
               )}
-              {page === "tests" && <TestsList onStart={start} />}
+              {page === "tests" && (
+                <TestsList onStart={start} busy={action.busy} />
+              )}
               {page === "results" && (
                 <>
                   <PageTitle
@@ -429,16 +442,15 @@ function Dashboard({
   profile: Row;
   categories: Row[];
 }) {
-  const result = useData(
-    async () =>
-      checked(
-        await db
-          .from("test_attempts")
-          .select("id,submitted_at,score,total")
-          .order("started_at", { ascending: false }),
-      ),
-    [],
-  );
+  const result = useData(async () => {
+    await rpc("settle_exam_sessions");
+    return checked(
+      await db
+        .from("test_attempts")
+        .select("id,submitted_at,score,total")
+        .order("started_at", { ascending: false }),
+    );
+  }, []);
   const ent = useData(() => rpc("my_entitlements"), []);
   const completed = result.data?.filter((r) => r.submitted_at) || [],
     average = completed.length
@@ -547,17 +559,14 @@ function Dashboard({
     </>
   );
 }
-function TestsList({ onStart }: { onStart: (id: string) => void }) {
-  const data = useData(
-    async () =>
-      checked(
-        await db
-          .from("tests")
-          .select("*,exam_categories(name)")
-          .order("created_at", { ascending: false }),
-      ),
-    [],
-  );
+function TestsList({
+  onStart,
+  busy,
+}: {
+  onStart: (id: string) => void;
+  busy: boolean;
+}) {
+  const data = useData<Row[]>(() => rpc("web_exam_catalog"));
   const [search, setSearch] = useState("");
   const rows = (data.data || []).filter((t) =>
     (t.title + " " + t.exam_categories?.name + " " + t.section)
@@ -578,18 +587,26 @@ function TestsList({ onStart }: { onStart: (id: string) => void }) {
       </div>
       <div className="grid">
         {rows.map((test) => (
-          <section key={test.id}>
+          <section
+            key={test.id}
+            className={test.diagnostic ? "exam-diagnostic-card" : undefined}
+          >
             <span className="badge">
-              {t(test.exam_categories?.name || "")} · {t(test.kind)}
+              {t(test.exam_categories?.name || "")} ·{" "}
+              {t(test.diagnostic ? "Diagnostika" : test.kind)}
             </span>
-            <h2>{test.title}</h2>
-            <p className="muted">{test.description}</p>
+            <h2>{t(test.title)}</h2>
+            <p className="muted">{t(test.description)}</p>
             <p>
               {test.section} · {test.duration}
               {t(" daqiqa · ")}
               {t(test.difficulty)}
             </p>
-            <button className="primary" onClick={() => onStart(test.id)}>
+            <button
+              className="primary"
+              disabled={busy}
+              onClick={() => onStart(test.id)}
+            >
               {t("Boshlash / davom etish")}
             </button>
           </section>
