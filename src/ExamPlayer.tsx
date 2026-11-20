@@ -4,6 +4,12 @@ import { Check, Circle, Flag, Maximize, ShieldCheck } from "lucide-react";
 import { supabaseUrl, supabasePublicKey } from "./db";
 import { Feedback, QuestionInput, rpc, signed, type Row } from "./platform";
 import { examPresentation, SatMathTools, splitSatPrompt } from "./ExamTools";
+import {
+  hasExamAnswer,
+  readExamDraft,
+  storeExamDraft,
+  sameExamAnswer,
+} from "./exam-draft";
 import "./exam-session.css";
 
 type Action = "save" | "finish" | "advance" | "leave" | "return" | "status";
@@ -13,14 +19,6 @@ export function fullScreenEnabled() {
     !!document.fullscreenEnabled &&
     typeof document.documentElement.requestFullscreen === "function"
   );
-}
-
-function hasAnswer(value: unknown): boolean {
-  if (value == null) return false;
-  if (typeof value === "string") return value.trim() !== "";
-  if (Array.isArray(value)) return value.some(hasAnswer);
-  if (typeof value === "object") return Object.values(value).some(hasAnswer);
-  return true;
 }
 
 export function ExamPlayer({
@@ -33,7 +31,21 @@ export function ExamPlayer({
   accessToken: string;
 }) {
   const [current, setCurrent] = useState(attempt);
-  const [answers, setAnswers] = useState<Row>(attempt.answers || {});
+  const [restored] = useState(() =>
+    readExamDraft(
+      attempt.id,
+      attempt.stage ?? null,
+      attempt.answers ?? {},
+      attempt.questions.map((q: Row) => q.id),
+    ),
+  );
+  const [answers, setAnswers] = useState<Row>(() => ({
+    ...attempt.answers,
+    ...restored,
+  }));
+  const [online, setOnline] = useState(navigator.onLine);
+  const approvedAnswers = useRef<Row>(attempt.answers ?? {});
+  const needsSave = useRef(Object.keys(restored).length > 0);
   const [index, setIndex] = useState(0);
   const [hideClock, setHideClock] = useState(false);
   const [eliminated, setEliminated] = useState<Record<string, number[]>>({});
@@ -132,7 +144,12 @@ export function ExamPlayer({
         });
         if (result.submitted) {
           done.current = true;
-          localStorage.removeItem("tafe-flags-" + attempt.id);
+          storeExamDraft(attempt.id, stage, {}, {});
+          try {
+            localStorage.removeItem("tafe-flags-" + attempt.id);
+          } catch {
+            /* Browser storage is optional. */
+          }
           if (active.current) onDone(attempt.id);
           return;
         }
@@ -141,6 +158,12 @@ export function ExamPlayer({
         setClock(Date.now());
         session.current = result;
         setCurrent(result);
+        approvedAnswers.current = result.answers ?? {};
+        if (action === "save" || action === "leave")
+          needsSave.current = Object.entries(latest.current).some(
+            ([key, value]) =>
+              !sameExamAnswer(value, approvedAnswers.current[key]),
+          );
         setError("");
         if (action === "leave" || action === "return")
           retryScreenAction.current = null;
@@ -153,17 +176,30 @@ export function ExamPlayer({
           setLeaveAt(null);
         }
         if ((result.stage ?? null) !== stage) {
-          latest.current = result.answers;
-          setAnswers(result.answers);
+          latest.current = approvedAnswers.current;
+          setAnswers(approvedAnswers.current);
+          needsSave.current = false;
           setIndex(0);
           setQuestionMenu(false);
           setHideClock(false);
         }
+        storeExamDraft(
+          attempt.id,
+          result.stage ?? null,
+          approvedAnswers.current,
+          latest.current,
+        );
       })
       .catch((e) => {
         retryAfter.current = Date.now() + 1500;
         if (action === "leave" || action === "return")
           retryScreenAction.current = action;
+        if (action === "save") {
+          needsSave.current =
+            !navigator.onLine ||
+            /fetch|network|timeout|connection|offline/i.test(e.message);
+          if (needsSave.current) retryAfter.current = Date.now() + 2500;
+        }
         if (active.current) setError(e.message);
       })
       .finally(() => {
@@ -204,6 +240,9 @@ export function ExamPlayer({
   useEffect(() => {
     active.current = true;
     const interval = setInterval(() => setClock(Date.now()), 250);
+    const updateConnection = () => setOnline(navigator.onLine);
+    window.addEventListener("online", updateConnection);
+    window.addEventListener("offline", updateConnection);
     document.addEventListener("fullscreenchange", changeScreen);
     document.addEventListener("visibilitychange", changeScreen);
     const leavePage = () => {
@@ -241,6 +280,8 @@ export function ExamPlayer({
       active.current = false;
       clearInterval(interval);
       flushTimer();
+      window.removeEventListener("online", updateConnection);
+      window.removeEventListener("offline", updateConnection);
       document.removeEventListener("fullscreenchange", changeScreen);
       document.removeEventListener("visibilitychange", changeScreen);
       window.removeEventListener("pagehide", leavePage);
@@ -250,6 +291,7 @@ export function ExamPlayer({
   useEffect(() => {
     if (
       done.current ||
+      !online ||
       pending.current ||
       transition.current ||
       Date.now() < retryAfter.current
@@ -270,8 +312,15 @@ export function ExamPlayer({
       send("status", {});
       return;
     }
-    if (!seconds && !waitingToReturn) finish();
-  }, [clock, deadline, seconds, waitingToReturn]);
+    if (!seconds && !waitingToReturn) {
+      finish();
+      return;
+    }
+    if (needsSave.current && !waitingToReturn && !timer.current) {
+      needsSave.current = false;
+      send("save");
+    }
+  }, [clock, deadline, seconds, waitingToReturn, online]);
 
   useEffect(() => {
     let live = true;
@@ -289,7 +338,11 @@ export function ExamPlayer({
   }, [attempt.passage_image]);
 
   useEffect(() => {
-    localStorage.setItem("tafe-flags-" + attempt.id, JSON.stringify(flags));
+    try {
+      localStorage.setItem("tafe-flags-" + attempt.id, JSON.stringify(flags));
+    } catch {
+      /* Browser storage is optional. */
+    }
   }, [flags, attempt.id]);
 
   function enterFullscreen() {
@@ -336,13 +389,15 @@ export function ExamPlayer({
       ? `${t(satMath ? "Math" : "Reading and Writing")} · ${t("Modul")} ${(stage % 2) + 1}/2`
       : attempt.section || t("Test sessiyasi");
   const answered = attemptQuestions.filter((item) =>
-    hasAnswer(answers[item.id]),
+    hasExamAnswer(answers[item.id]),
   ).length;
 
   function update(value: unknown) {
     if (blocked || done.current || transition.current) return;
     const next = { ...latest.current, [q.id]: value };
     latest.current = next;
+    needsSave.current = true;
+    storeExamDraft(attempt.id, stage, approvedAnswers.current, next);
     setAnswers(next);
     setSaving(true);
     flushTimer();
@@ -363,13 +418,15 @@ export function ExamPlayer({
                 : `${presentation.toUpperCase()} · ${sectionTitle}`}
             </p>
             <h1>{t(attempt.title || "Test topshirish")}</h1>
-            <small>
-              <ShieldCheck size={13} />{" "}
-              {saving
-                ? t("Saqlanmoqda…")
-                : error
-                  ? t("Qayta saqlash")
-                  : t("Javoblar saqlandi")}
+            <small role="status">
+              <ShieldCheck size={13} aria-hidden="true" />{" "}
+              {!online
+                ? t("Aloqa uzildi. Javoblar ushbu oynada saqlanmoqda.")
+                : saving
+                  ? t("Saqlanmoqda…")
+                  : error
+                    ? t("Qayta saqlash")
+                    : t("Javoblar saqlandi")}
             </small>
           </div>
           <div className="exam-timer-group">
@@ -565,7 +622,7 @@ export function ExamPlayer({
             </div>
             <div className="question-numbers" id="exam-question-list">
               {attemptQuestions.map((item, i) => {
-                const isAnswered = hasAnswer(answers[item.id]);
+                const isAnswered = hasExamAnswer(answers[item.id]);
                 const isFlagged = flags.includes(item.id);
                 const state = isAnswered ? "answered" : "unanswered";
                 const optionIndex =
@@ -626,6 +683,25 @@ export function ExamPlayer({
                 {t("Joriy savol")}
               </li>
             </ul>
+            {answered < attemptQuestions.length && (!sat || questionMenu) && (
+              <button
+                className="exam-next-empty"
+                onClick={() => {
+                  const next = attemptQuestions.findIndex(
+                    (item, i) => i > index && !hasExamAnswer(answers[item.id]),
+                  );
+                  goToQuestion(
+                    next >= 0
+                      ? next
+                      : attemptQuestions.findIndex(
+                          (item) => !hasExamAnswer(answers[item.id]),
+                        ),
+                  );
+                }}
+              >
+                {t("Javobsiz savolga o‘tish")}
+              </button>
+            )}
             <button
               className="primary exam-finish-button"
               disabled={finishing}
@@ -660,6 +736,12 @@ export function ExamPlayer({
                   : "Testni yakunlaysizmi? Javoblarni keyin o‘zgartirib bo‘lmaydi.",
               )}
             </p>
+            {answered < attemptQuestions.length && (
+              <p className="exam-unanswered-summary">
+                <strong>{attemptQuestions.length - answered}</strong>{" "}
+                {t("ta savol javobsiz qoldi.")}
+              </p>
+            )}
             <div className="button-row">
               <button autoFocus onClick={() => setConfirming(false)}>
                 {t("Bekor qilish")}

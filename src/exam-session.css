@@ -464,3 +464,72 @@ html:fullscreen {
     display: none;
   }
 }
+
+.exam-unanswered-summary {
+  padding: 10px 14px;
+  border: 1px solid var(--flag-border);
+  border-radius: 10px;
+  color: var(--flag-fg);
+  background: var(--flag-fill);
+}
+.exam-next-empty {
+  margin-block: 0 8px;
+}
+.review-controls,
+.review-filter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+.review-controls {
+  justify-content: space-between;
+  margin-block: 20px 12px;
+}
+.review-filter button[aria-pressed="true"] {
+  border-color: var(--blue);
+  color: var(--blue);
+}
+.review-filter span {
+  font-weight: 700;
+}
+.review-question,
+.mistake-practice {
+  padding: clamp(14px, 3vw, 24px);
+  margin-block: 12px;
+  border: 1px solid var(--stroke);
+  border-radius: 14px;
+  background: var(--paper);
+}
+.mistake-practice-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.mistake-practice-top strong {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.mistake-practice > .primary {
+  margin-top: 10px;
+}
+.review-status {
+  font-weight: 700;
+}
+.review-status[data-state="correct"] {
+  color: #13754b;
+}
+.review-status[data-state="wrong"] {
+  color: #a33132;
+}
+.review-status[data-state="missing"] {
+  color: var(--subtle);
+}
+[data-theme="dark"] .review-status[data-state="correct"] {
+  color: #8ae0ad;
+}
+[data-theme="dark"] .review-status[data-state="wrong"] {
+  color: #ffacab;
+}

@@ -82,6 +82,13 @@ a:=public.start_test('c3000000-0000-4000-8000-000000000001');
 if (a->'questions'->0)?'accepted' or (a->'questions'->0)?'answer' then raise exception 'Keys exposed';end if;
 if (a->'questions'->0)?'explanation' or (a->'questions'->0)?'evidence' then raise exception 'Explanation leaked before grading';end if;
 begin perform public.attempt_review((a->>'id')::uuid);raise exception 'Active review allowed';exception when raise_exception then if SQLERRM='Active review allowed' then raise;end if;end;
+begin
+ perform public.practice_attempt_question((a->>'id')::uuid,'c4000000-0000-4000-8000-000000000001','"A"');
+ raise exception 'Active attempt could be graded as practice';
+exception when raise_exception then
+ if sqlerrm<>'Question unavailable' then raise; end if;
+end;
+
 r:=public.save_attempt((a->>'id')::uuid,'{
 "c4000000-0000-4000-8000-000000000001":"A",
 "c4000000-0000-4000-8000-000000000002":["B","A"],
@@ -92,6 +99,11 @@ r:=public.save_attempt((a->>'id')::uuid,'{
 if (r->>'score')::int<>13 or (r->>'total')::int<>13 then raise exception 'Advanced grading failed: %',r;end if;
 r:=public.save_attempt((a->>'id')::uuid,'{}',true);if (r->>'score')::int<>13 then raise exception 'Idempotent submit failed';end if;
 r:=public.attempt_review((a->>'id')::uuid);if r->'questions'->0->'accepted' is null then raise exception 'Completed review missing';end if;
+if public.practice_attempt_question((a->>'id')::uuid,'c4000000-0000-4000-8000-000000000001','"B"')->>'correct'<>'false'
+  or public.practice_attempt_question((a->>'id')::uuid,'c4000000-0000-4000-8000-000000000001','"A"')->>'correct'<>'true'
+then raise exception 'Retry verdict did not use exam grader'; end if;
+perform set_config('qa.review_attempt',(a->>'id'),true);
+
 if r->'questions'->0->>'evidence' is distinct from 'The passage states A.' then raise exception 'Completed review evidence missing';end if;
 a:=public.start_test('c3000000-0000-4000-8000-000000000001');
 r:=public.start_test('c3000000-0000-4000-8000-000000000001');if r->>'id'<>a->>'id' then raise exception 'Resume duplicate attempt';end if;
@@ -101,6 +113,15 @@ r:=public.my_entitlements();if (r->>'daily_test')::int<>2 then raise exception '
 end$$;
 select set_config('request.jwt.claim.sub','c1000000-0000-4000-8000-000000000003',true);
 do $$begin if exists(select 1 from public.test_attempts where user_id='c1000000-0000-4000-8000-000000000002') then raise exception 'Cross-user attempts exposed';end if;end$$;
+do $$begin
+ begin
+  perform public.practice_attempt_question(current_setting('qa.review_attempt')::uuid,'c4000000-0000-4000-8000-000000000001','"A"');
+  raise exception 'Practice allowed on another account';
+ exception when raise_exception then
+  if sqlerrm<>'Question unavailable' then raise; end if;
+ end;
+end$$;
+
 reset role;
 select set_config('request.jwt.claim.sub','c1000000-0000-4000-8000-000000000001',true);
 select public.admin_account_action('c1000000-0000-4000-8000-000000000002','suspend');

@@ -3933,5 +3933,65 @@
     "uz": "Ikkala matnni o‘qing va har bir savolga bitta javob tanlang.",
     "en": "Read both texts and choose one answer for each question.",
     "ru": "Прочитайте оба текста и выберите по одному ответу на каждый вопрос."
+  },
+  "Takrorlash tugadi": {
+    "uz": "Takrorlash tugadi",
+    "en": "Practice complete",
+    "ru": "Повторение завершено"
+  },
+  "Tahlilga qaytish": {
+    "uz": "Tahlilga qaytish",
+    "en": "Back to review",
+    "ru": "Вернуться к разбору"
+  },
+  "Takrorlash jarayoni": {
+    "uz": "Takrorlash jarayoni",
+    "en": "Review practice progress",
+    "ru": "Прогресс повторения"
+  },
+  "Javobni tekshirish": {
+    "uz": "Javobni tekshirish",
+    "en": "Check answer",
+    "ru": "Проверить ответ"
+  },
+  "Takrorlashni yakunlash": {
+    "uz": "Takrorlashni yakunlash",
+    "en": "Finish practice",
+    "ru": "Завершить повторение"
+  },
+  "Xatolarni qayta ishlash": {
+    "uz": "Xatolarni qayta ishlash",
+    "en": "Retry mistakes",
+    "ru": "Повторить ошибки"
+  },
+  "Xatolar va bo‘sh javoblar": {
+    "uz": "Xatolar va bo‘sh javoblar",
+    "en": "Mistakes and unanswered",
+    "ru": "Ошибки и пропуски"
+  },
+  "Xato javob": {
+    "uz": "Xato javob",
+    "en": "Incorrect",
+    "ru": "Неверный ответ"
+  },
+  "Bu turdagi savollar yo‘q.": {
+    "uz": "Bu turdagi savollar yo‘q.",
+    "en": "No questions match this filter.",
+    "ru": "Нет вопросов этого типа."
+  },
+  "Aloqa uzildi. Javoblar ushbu oynada saqlanmoqda.": {
+    "uz": "Aloqa uzildi. Javoblar ushbu oynada saqlanmoqda.",
+    "en": "Connection lost. Answers are kept in this window.",
+    "ru": "Соединение прервано. Ответы сохраняются в этом окне."
+  },
+  "Javobsiz savolga o‘tish": {
+    "uz": "Javobsiz savolga o‘tish",
+    "en": "Go to an unanswered question",
+    "ru": "Перейти к вопросу без ответа"
+  },
+  "ta savol javobsiz qoldi.": {
+    "uz": "ta savol javobsiz qoldi.",
+    "en": "questions are unanswered.",
+    "ru": "вопросов осталось без ответа."
   }
 }
