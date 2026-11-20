@@ -6,7 +6,7 @@
   "scripts": {
     "build": "node node_modules/typescript/bin/tsc --noEmit && node node_modules/vite/bin/vite.js build",
     "typecheck": "node node_modules/typescript/bin/tsc --noEmit",
-    "test": "node --test tests/email-auth.test.mjs tests/exam-draft.test.mjs && node scripts/test-database.mjs",
+    "test": "node --test tests/email-auth.test.mjs tests/exam-draft.test.mjs tests/reading-highlights.test.mjs && node scripts/test-database.mjs",
     "db:test": "node scripts/test-database.mjs",
     "verify": "npm test && npm run build"
   },

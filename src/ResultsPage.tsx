@@ -31,7 +31,7 @@ export function ResultsPage({
       await db
         .from("test_attempts")
         .select(
-          "id,test_id,score,total,started_at,submitted_at,finish_reason,sat_scores,tests(title,section,exam_categories(name))",
+          "id,test_id,score,total,started_at,submitted_at,paused_at,finish_reason,sat_scores,tests(title,section,exam_categories(name))",
         )
         .order("started_at", { ascending: false }),
     ) as unknown as Row[];
@@ -133,6 +133,11 @@ export function ResultsPage({
           <div className="result" key={r.id}>
             <div>
               <strong>{t(r.tests?.title || "Test")}</strong>
+              {r.paused_at && !r.submitted_at && (
+                <span className="badge result-pause-badge">
+                  {t("Test pauzada")}
+                </span>
+              )}
               <p className="muted">
                 {r.tests?.exam_categories?.name} · {r.tests?.section} ·{" "}
                 {new Date(r.started_at).toLocaleString(localeTag())}

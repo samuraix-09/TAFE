@@ -261,18 +261,45 @@ begin
  if r->'answers'->(item->>'id')<>expected->(item->>'id') then raise exception 'Answers changed outside fullscreen'; end if;
 end$$;
 reset role;
-update public.test_attempts set fullscreen_deadline=clock_timestamp()-interval '1 second'
+update public.test_attempts set fullscreen_deadline=clock_timestamp()-interval '1 hour',
+ expires_at=clock_timestamp()-interval '40 minutes',
+ module_expires_at=clock_timestamp()-interval '55 minutes'
 where id=current_setting('qa.diagnostic_id')::uuid;
 set local role authenticated;
 do $$
-declare id uuid:=current_setting('qa.diagnostic_id')::uuid; r jsonb;
+declare id uuid:=current_setting('qa.diagnostic_id')::uuid;
+ r jsonb; saved jsonb; paused timestamptz; old_end timestamptz; old_module_end timestamptz;
 begin
  perform public.settle_exam_sessions();
  r:=public.exam_session_action(id,'{}','return',0);
- if (r->>'submitted')::boolean is not true or r->>'finish_reason'<>'fullscreen'
-   or (r->>'score')::int<>1 or (r->>'total')::int<>16 or (r->'sat_scores')?'total' then
-  raise exception 'Expired fullscreen did not keep the partial diagnostic result: %',r;
+ paused:=(r->>'paused_at')::timestamptz;
+ old_end:=(r->>'expires_at')::timestamptz;
+ old_module_end:=(r->>'module_expires_at')::timestamptz;
+ saved:=r->'answers';
+ if paused is null or (r->>'submitted')::boolean is not false
+   or r->>'finish_reason' is not null or (select count(*) from jsonb_object_keys(saved))<>1 then
+  raise exception 'Expired fullscreen should pause with saved answers: %',r;
  end if;
+ r:=public.start_exam_session('fe816150-8c12-4b3a-b04a-000000000002');
+ if r->>'id'<>id::text or (r->>'paused_at')::timestamptz<>paused then
+  raise exception 'Resuming from the catalogue lost the paused attempt';
+ end if;
+ r:=public.exam_session_action(id,'{}','advance',0);
+ if (r->>'stage')::int<>0 or r->'answers'<>saved or r->>'paused_at' is null then
+  raise exception 'Paused session can still advance';
+ end if;
+ r:=public.exam_session_action(id,'{}','resume',0);
+ if r->>'paused_at' is not null or r->'answers'<>saved
+   or abs(extract(epoch from ((r->>'expires_at')::timestamptz-(r->>'server_time')::timestamptz)-(old_end-paused)))>1
+   or abs(extract(epoch from ((r->>'module_expires_at')::timestamptz-(r->>'server_time')::timestamptz)-(old_module_end-paused)))>1 then
+  raise exception 'Resume did not restore the frozen timers and answers';
+ end if;
+ perform public.exam_session_action(id,'{}','advance',0);
+ perform public.exam_session_action(id,'{}','advance',1);
+ perform public.exam_session_action(id,'{}','advance',2);
+ r:=public.exam_session_action(id,'{}','advance',3);
+ if (r->>'submitted')::boolean is not true or r->>'finish_reason'<>'submitted'
+    or (r->>'score')::int<>1 then raise exception 'Completed attempt lost its pre-pause result'; end if;
 end$$;
 select set_config('request.jwt.claim.sub','c1000000-0000-4000-8000-000000000003',true);
 do $$begin

@@ -10,9 +10,17 @@ import {
   storeExamDraft,
   sameExamAnswer,
 } from "./exam-draft";
+import { ReadingPassage } from "./ReadingPassage";
 import "./exam-session.css";
 
-type Action = "save" | "finish" | "advance" | "leave" | "return" | "status";
+type Action =
+  | "save"
+  | "finish"
+  | "advance"
+  | "leave"
+  | "return"
+  | "resume"
+  | "status";
 
 export function fullScreenEnabled() {
   return (
@@ -76,6 +84,8 @@ export function ExamPlayer({
   const [image, setImage] = useState<string | null>(null);
   const qHeading = useRef<HTMLHeadingElement>(null);
   const passagePanel = useRef<HTMLElement>(null);
+  const questionPanel = useRef<HTMLElement>(null);
+  const questionRail = useRef<HTMLDivElement>(null);
   const latest = useRef(answers);
   const session = useRef(current);
   const queue = useRef(Promise.resolve());
@@ -98,6 +108,8 @@ export function ExamPlayer({
   );
   const sat = presentation === "sat";
   const ielts = presentation === "ielts";
+  const ieltsReading =
+    ielts && !/listening|writing|speaking/i.test(attempt.section ?? "");
   const cefr = presentation === "cefr";
   const satMath =
     sat &&
@@ -109,6 +121,7 @@ export function ExamPlayer({
     ? Date.parse(current.fullscreen_deadline)
     : null;
   const now = clock + offset.current;
+  const pausedAt = current.paused_at ? Date.parse(current.paused_at) : null;
   const grace =
     leaveAt !== null
       ? Math.min(10, Math.max(0, Math.ceil((leaveAt + 10000 - clock) / 1000)))
@@ -118,11 +131,13 @@ export function ExamPlayer({
   const seconds = Math.max(
     0,
     Math.ceil(
-      (Date.parse(current.module_expires_at || current.expires_at) - now) /
+      (Date.parse(current.module_expires_at || current.expires_at) -
+        (pausedAt ?? now)) /
         1000,
     ),
   );
-  const waitingToReturn = outside || deadline !== null || leaveAt !== null;
+  const waitingToReturn =
+    outside || deadline !== null || leaveAt !== null || pausedAt !== null;
   const blocked = waitingToReturn || confirming;
 
   function send(action: Action, snapshot = latest.current) {
@@ -134,7 +149,10 @@ export function ExamPlayer({
         if (done.current) return;
         const stage = session.current.stage ?? null;
         const screenAction =
-          action === "leave" || action === "return" || action === "status";
+          action === "leave" ||
+          action === "return" ||
+          action === "resume" ||
+          action === "status";
         if (stage !== expectedStage && !screenAction) return;
         const result = await rpc("exam_session_action", {
           attempt: attempt.id,
@@ -165,15 +183,26 @@ export function ExamPlayer({
               !sameExamAnswer(value, approvedAnswers.current[key]),
           );
         setError("");
-        if (action === "leave" || action === "return")
+        if (
+          action === "leave" ||
+          action === "return" ||
+          action === "resume" ||
+          result.paused_at
+        )
           retryScreenAction.current = null;
         if (
-          action === "return" &&
+          (action === "return" || action === "resume") &&
           !result.fullscreen_deadline &&
+          !result.paused_at &&
           !lastOutside.current
         ) {
           screenLeftAt.current = null;
           setLeaveAt(null);
+        }
+        if (action === "resume" && !result.paused_at && lastOutside.current) {
+          screenLeftAt.current = Date.now();
+          setLeaveAt(screenLeftAt.current);
+          send("leave");
         }
         if ((result.stage ?? null) !== stage) {
           latest.current = approvedAnswers.current;
@@ -224,6 +253,7 @@ export function ExamPlayer({
     lastOutside.current = nextOutside;
     setOutside(nextOutside);
     flushTimer();
+    if (session.current.paused_at) return;
     if (nextOutside) {
       setConfirming(false);
       screenLeftAt.current ??= Date.now();
@@ -246,7 +276,7 @@ export function ExamPlayer({
     document.addEventListener("fullscreenchange", changeScreen);
     document.addEventListener("visibilitychange", changeScreen);
     const leavePage = () => {
-      if (done.current) return;
+      if (done.current || session.current.paused_at) return;
       const payload = JSON.stringify({
         attempt: attempt.id,
         response: latest.current,
@@ -345,14 +375,28 @@ export function ExamPlayer({
     }
   }, [flags, attempt.id]);
 
-  function enterFullscreen() {
-    if (document.fullscreenElement) {
-      changeScreen();
-      return;
-    }
-    void document.documentElement
-      .requestFullscreen()
-      .then(changeScreen)
+  useEffect(() => {
+    const rail = questionRail.current;
+    const button = rail?.querySelector('[aria-current="step"]');
+    if (!ielts || !rail || !button) return;
+    const bounds = rail.getBoundingClientRect();
+    const activeButton = button.getBoundingClientRect();
+    if (activeButton.right > bounds.right)
+      rail.scrollLeft += activeButton.right - bounds.right + 6;
+    else if (activeButton.left < bounds.left)
+      rail.scrollLeft -= bounds.left - activeButton.left + 6;
+  }, [ielts, index]);
+
+  function enterFullscreen(resume = false) {
+    const enter =
+      fullScreenEnabled() && !document.fullscreenElement
+        ? document.documentElement.requestFullscreen()
+        : Promise.resolve();
+    void enter
+      .then(() => {
+        changeScreen();
+        if (resume && !document.hidden) send("resume", {});
+      })
       .catch(() =>
         setError(t("Brauzer to‘liq ekranga o‘tishga ruxsat bermadi.")),
       );
@@ -374,7 +418,8 @@ export function ExamPlayer({
     setIndex(next);
     requestAnimationFrame(() => {
       qHeading.current?.focus({ preventScroll: true });
-      qHeading.current?.scrollIntoView({ block: "nearest" });
+      if (ielts && questionPanel.current) questionPanel.current.scrollTop = 0;
+      else qHeading.current?.scrollIntoView({ block: "nearest" });
     });
   }
 
@@ -506,7 +551,17 @@ export function ExamPlayer({
                     </button>
                   )}
                 </div>
-                <p>{passageText}</p>
+                {ieltsReading && passageText ? (
+                  <ReadingPassage
+                    attemptId={attempt.id}
+                    text={passageText}
+                    activePart={/\bPassage\s+([A-Z])\b/i
+                      .exec(q.group_name || q.prompt)?.[1]
+                      ?.toUpperCase()}
+                  />
+                ) : (
+                  <p>{passageText}</p>
+                )}
                 {image && (
                   <img
                     className="exam-passage-image"
@@ -516,7 +571,11 @@ export function ExamPlayer({
                 )}
               </section>
             )}
-            <section className="exam-question-panel">
+            <section
+              className="exam-question-panel"
+              ref={questionPanel}
+              aria-label={t("Savol va javob")}
+            >
               <div className="question-heading">
                 <span className="badge">
                   {index + 1}
@@ -620,7 +679,11 @@ export function ExamPlayer({
                 <h3>{t(cefr ? "Javoblar varaqasi" : "Savollar")}</h3>
               )}
             </div>
-            <div className="question-numbers" id="exam-question-list">
+            <div
+              className="question-numbers"
+              id="exam-question-list"
+              ref={questionRail}
+            >
               {attemptQuestions.map((item, i) => {
                 const isAnswered = hasExamAnswer(answers[item.id]);
                 const isFlagged = flags.includes(item.id);
@@ -761,35 +824,54 @@ export function ExamPlayer({
             aria-labelledby="exam-screen-title"
           >
             <Maximize size={28} aria-hidden="true" />
-            <h2 id="exam-screen-title">{t("To‘liq ekran rejimi")}</h2>
+            <h2 id="exam-screen-title">
+              {t(pausedAt !== null ? "Test pauzada" : "To‘liq ekran rejimi")}
+            </h2>
             <p>
-              {leaveAt !== null || deadline !== null
-                ? t(
-                    "Vaqt tugasa, saqlangan javoblar bilan test avtomatik yakunlanadi.",
-                  )
-                : t("Testni davom ettirish uchun to‘liq ekranga o‘ting.")}
+              {t(
+                pausedAt !== null
+                  ? "Qolgan vaqt va saqlangan javoblar bilan testni davom ettiring."
+                  : leaveAt !== null || deadline !== null
+                    ? "10 soniyada qaytmasangiz, test pauzaga o‘tadi."
+                    : "Testni davom ettirish uchun to‘liq ekranga o‘ting.",
+              )}
             </p>
-            {(leaveAt !== null || deadline !== null) && (
-              <strong className="exam-grace" role="timer">
-                {grace} {t("soniya")}
-              </strong>
-            )}
+            {pausedAt === null &&
+              grace > 0 &&
+              (leaveAt !== null || deadline !== null) && (
+                <strong className="exam-grace" role="timer">
+                  {grace} {t("soniya")}
+                </strong>
+              )}
             <Feedback error={error} />
-            {grace === 0 ? (
+            {pausedAt !== null ? (
+              <button
+                autoFocus
+                className="primary"
+                disabled={saving || !online}
+                onClick={() => enterFullscreen(true)}
+              >
+                {t("Testni davom ettirish")}
+              </button>
+            ) : grace === 0 ? (
               <button
                 className="primary"
+                disabled={saving || !online}
                 onClick={() =>
                   send(
                     retryScreenAction.current === "leave" ? "leave" : "status",
                     retryScreenAction.current === "leave" ? latest.current : {},
                   )
                 }
-                disabled={saving}
               >
-                {t("Natijani tekshirish")}
+                {t("Pauza holatini tekshirish")}
               </button>
             ) : fullScreenEnabled() ? (
-              <button autoFocus className="primary" onClick={enterFullscreen}>
+              <button
+                autoFocus
+                className="primary"
+                onClick={() => enterFullscreen()}
+              >
                 {t("To‘liq ekranga qaytish")}
               </button>
             ) : (

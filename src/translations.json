@@ -3993,5 +3993,55 @@
     "uz": "ta savol javobsiz qoldi.",
     "en": "questions are unanswered.",
     "ru": "вопросов осталось без ответа."
+  },
+  "Test pauzada": {
+    "uz": "Test pauzada",
+    "en": "Test paused",
+    "ru": "Тест на паузе"
+  },
+  "Qolgan vaqt va saqlangan javoblar bilan testni davom ettiring.": {
+    "uz": "Qolgan vaqt va saqlangan javoblar bilan testni davom ettiring.",
+    "en": "Resume with your remaining time and saved answers.",
+    "ru": "Продолжите тест с оставшимся временем и сохранёнными ответами."
+  },
+  "10 soniyada qaytmasangiz, test pauzaga o‘tadi.": {
+    "uz": "10 soniyada qaytmasangiz, test pauzaga o‘tadi.",
+    "en": "The test pauses if you do not return within 10 seconds.",
+    "ru": "Тест приостановится, если вы не вернётесь за 10 секунд."
+  },
+  "Testni davom ettirish": {
+    "uz": "Testni davom ettirish",
+    "en": "Resume test",
+    "ru": "Продолжить тест"
+  },
+  "Pauza holatini tekshirish": {
+    "uz": "Pauza holatini tekshirish",
+    "en": "Check paused status",
+    "ru": "Проверить состояние паузы"
+  },
+  "Savol va javob": {
+    "uz": "Savol va javob",
+    "en": "Question and answer",
+    "ru": "Вопрос и ответ"
+  },
+  "Matnni belgilash": {
+    "uz": "Matnni belgilash",
+    "en": "Highlight text",
+    "ru": "Выделить текст"
+  },
+  "Belgini olib tashlash": {
+    "uz": "Belgini olib tashlash",
+    "en": "Remove highlight",
+    "ru": "Убрать выделение"
+  },
+  "Belgi olib tashlandi": {
+    "uz": "Belgi olib tashlandi",
+    "en": "Highlight removed",
+    "ru": "Выделение снято"
+  },
+  "Matn belgilandi": {
+    "uz": "Matn belgilandi",
+    "en": "Text highlighted",
+    "ru": "Текст выделен"
   }
 }
