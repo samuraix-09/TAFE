@@ -261,5 +261,16 @@ do $$begin
 end$$;
 reset role;
 
+do $$
+begin
+ if not exists (
+  select 1 from public.tests t join public.exam_categories c on c.id=t.category_id
+  join public.questions q on q.test_id=t.id join public.answer_keys k on k.question_id=q.id
+  where t.id='fe816150-8c12-4b3a-b04a-000000000011' and t.published and c.slug='cefr' and t.duration=20
+  group by t.id having count(*)=12 and count(distinct q.group_name)=2
+    and bool_and(q.options @> jsonb_build_array(k.accepted))
+ ) then raise exception 'CEFR Reading practice fixture is incomplete'; end if;
+end
+$$;
 select 'platform transaction assertions passed' as result;
 rollback;

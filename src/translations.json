@@ -3823,5 +3823,115 @@
     "uz": "IELTS namunaviy testlari",
     "en": "IELTS sample tests",
     "ru": "Пробные тесты IELTS"
+  },
+  "Javoblar varaqasi": {
+    "uz": "Javoblar varaqasi",
+    "en": "Answer sheet",
+    "ru": "Бланк ответов"
+  },
+  "Qolgan vaqt": {
+    "uz": "Qolgan vaqt",
+    "en": "Time remaining",
+    "ru": "Оставшееся время"
+  },
+  "Katta matn": {
+    "uz": "Katta matn",
+    "en": "Larger text",
+    "ru": "Крупный текст"
+  },
+  "Taymerni ko‘rsatish": {
+    "uz": "Taymerni ko‘rsatish",
+    "en": "Show timer",
+    "ru": "Показать таймер"
+  },
+  "Taymerni yashirish": {
+    "uz": "Taymerni yashirish",
+    "en": "Hide timer",
+    "ru": "Скрыть таймер"
+  },
+  "Modullar": {
+    "uz": "Modullar",
+    "en": "Modules",
+    "ru": "Модули"
+  },
+  "Variantni chiqarish": {
+    "uz": "Variantni chiqarish",
+    "en": "Cross out option",
+    "ru": "Вычеркнуть вариант"
+  },
+  "so‘z": {
+    "uz": "so‘z",
+    "en": "words",
+    "ru": "слов"
+  },
+  "Kalkulyator": {
+    "uz": "Kalkulyator",
+    "en": "Calculator",
+    "ru": "Калькулятор"
+  },
+  "Formulalar": {
+    "uz": "Formulalar",
+    "en": "Reference formulas",
+    "ru": "Формулы"
+  },
+  "Hisoblab bo‘lmadi": {
+    "uz": "Hisoblab bo‘lmadi",
+    "en": "Cannot calculate",
+    "ru": "Не удалось вычислить"
+  },
+  "Birinchi son": {
+    "uz": "Birinchi son",
+    "en": "First number",
+    "ru": "Первое число"
+  },
+  "Ikkinchi son": {
+    "uz": "Ikkinchi son",
+    "en": "Second number",
+    "ru": "Второе число"
+  },
+  "Amal": {
+    "uz": "Amal",
+    "en": "Operation",
+    "ru": "Действие"
+  },
+  "Hisoblash": {
+    "uz": "Hisoblash",
+    "en": "Calculate",
+    "ru": "Вычислить"
+  },
+  "Doira yuzi": {
+    "uz": "Doira yuzi",
+    "en": "Area of a circle",
+    "ru": "Площадь круга"
+  },
+  "Uchburchak yuzi": {
+    "uz": "Uchburchak yuzi",
+    "en": "Area of a triangle",
+    "ru": "Площадь треугольника"
+  },
+  "Pifagor teoremasi": {
+    "uz": "Pifagor teoremasi",
+    "en": "Pythagorean theorem",
+    "ru": "Теорема Пифагора"
+  },
+  "Silindr hajmi": {
+    "uz": "Silindr hajmi",
+    "en": "Volume of a cylinder",
+    "ru": "Объём цилиндра"
+  },
+  "CEFR · Multilevel Reading": {
+    "uz": "CEFR · Multilevel o‘qish",
+    "en": "CEFR · Multilevel Reading",
+    "ru": "CEFR · Чтение Multilevel"
+  },
+  "Two original reading texts with twelve practice questions.": {
+    "uz": "Ikki original matn va 12 ta mashq savoli.",
+    "en": "Two original reading texts with twelve practice questions.",
+    "ru": "Два оригинальных текста и двенадцать тренировочных заданий."
+  },
+  "Read both texts and choose one answer for each question.": {
+    "uz": "Ikkala matnni o‘qing va har bir savolga bitta javob tanlang.",
+    "en": "Read both texts and choose one answer for each question.",
+    "ru": "Прочитайте оба текста и выберите по одному ответу на каждый вопрос."
   }
 }

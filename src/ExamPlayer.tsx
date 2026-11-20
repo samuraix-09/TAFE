@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { Check, Circle, Flag, Maximize, ShieldCheck } from "lucide-react";
 import { supabaseUrl, supabasePublicKey } from "./db";
 import { Feedback, QuestionInput, rpc, signed, type Row } from "./platform";
+import { examPresentation, SatMathTools, splitSatPrompt } from "./ExamTools";
 import "./exam-session.css";
 
 type Action = "save" | "finish" | "advance" | "leave" | "return" | "status";
@@ -34,6 +35,10 @@ export function ExamPlayer({
   const [current, setCurrent] = useState(attempt);
   const [answers, setAnswers] = useState<Row>(attempt.answers || {});
   const [index, setIndex] = useState(0);
+  const [hideClock, setHideClock] = useState(false);
+  const [eliminated, setEliminated] = useState<Record<string, number[]>>({});
+  const [largePassage, setLargePassage] = useState(false);
+  const [questionMenu, setQuestionMenu] = useState(false);
   const retryAfter = useRef(0);
   const [flags, setFlags] = useState<string[]>(() => {
     try {
@@ -58,6 +63,7 @@ export function ExamPlayer({
   const [finishing, setFinishing] = useState(false);
   const [image, setImage] = useState<string | null>(null);
   const qHeading = useRef<HTMLHeadingElement>(null);
+  const passagePanel = useRef<HTMLElement>(null);
   const latest = useRef(answers);
   const session = useRef(current);
   const queue = useRef(Promise.resolve());
@@ -73,6 +79,19 @@ export function ExamPlayer({
     attempt.server_time ? Date.parse(attempt.server_time) - Date.now() : 0,
   );
   const stage: number | null = current.stage ?? null;
+  const presentation = examPresentation(
+    attempt.category ?? "",
+    attempt.title ?? "",
+    stage,
+  );
+  const sat = presentation === "sat";
+  const ielts = presentation === "ielts";
+  const cefr = presentation === "cefr";
+  const satMath =
+    sat &&
+    (stage !== null
+      ? stage >= 2
+      : /math/i.test(attempt.section ?? attempt.title ?? ""));
   const nextModule = stage !== null && stage + 1 < (current.stage_count ?? 0);
   const deadline = current.fullscreen_deadline
     ? Date.parse(current.fullscreen_deadline)
@@ -137,6 +156,8 @@ export function ExamPlayer({
           latest.current = result.answers;
           setAnswers(result.answers);
           setIndex(0);
+          setQuestionMenu(false);
+          setHideClock(false);
         }
       })
       .catch((e) => {
@@ -294,18 +315,26 @@ export function ExamPlayer({
   }
 
   function goToQuestion(next: number) {
-    if (blocked || next === index) return;
+    if (blocked) return;
+    setQuestionMenu(false);
+    if (next === index) return;
     setIndex(next);
-    if (matchMedia("(max-width: 700px)").matches) {
-      requestAnimationFrame(() => {
-        qHeading.current?.focus({ preventScroll: true });
-        qHeading.current?.scrollIntoView({ block: "start" });
-      });
-    }
+    requestAnimationFrame(() => {
+      qHeading.current?.focus({ preventScroll: true });
+      qHeading.current?.scrollIntoView({ block: "nearest" });
+    });
   }
 
   const attemptQuestions: Row[] = current.questions;
   const q = attemptQuestions[index] ?? attemptQuestions[0];
+  const [stimulus, prompt] = sat ? splitSatPrompt(q.prompt) : ["", q.prompt];
+  const passageText = attempt.passage_text || stimulus;
+  const passageTitle =
+    attempt.passage_title || t(sat ? "Savol matni" : "Test materiali");
+  const sectionTitle =
+    stage !== null
+      ? `${t(satMath ? "Math" : "Reading and Writing")} · ${t("Modul")} ${(stage % 2) + 1}/2`
+      : attempt.section || t("Test sessiyasi");
   const answered = attemptQuestions.filter((item) =>
     hasAnswer(answers[item.id]),
   ).length;
@@ -324,16 +353,16 @@ export function ExamPlayer({
   }
 
   return (
-    <main className="exam-view">
+    <main className="exam-view" data-exam={presentation}>
       <div className="exam-content" inert={blocked}>
         <div className="exam-toolbar">
           <div>
-            <p className="eyebrow">
-              {stage === null
-                ? t("Test sessiyasi")
-                : `${stage < 2 ? t("Reading and Writing") : t("Math")} · ${t("Modul")} ${(stage % 2) + 1}/2`}
+            <p className="eyebrow exam-kind">
+              {presentation === "standard"
+                ? sectionTitle
+                : `${presentation.toUpperCase()} · ${sectionTitle}`}
             </p>
-            <h1>{attempt.title || t("Test topshirish")}</h1>
+            <h1>{t(attempt.title || "Test topshirish")}</h1>
             <small>
               <ShieldCheck size={13} />{" "}
               {saving
@@ -343,8 +372,24 @@ export function ExamPlayer({
                   : t("Javoblar saqlandi")}
             </small>
           </div>
-          <div className={seconds < 60 ? "exam-clock urgent" : "exam-clock"}>
-            {Math.floor(seconds / 60)}:{String(seconds % 60).padStart(2, "0")}
+          <div className="exam-timer-group">
+            {(!sat || !hideClock || seconds <= 300) && (
+              <div
+                className={seconds < 60 ? "exam-clock urgent" : "exam-clock"}
+                aria-label={t("Qolgan vaqt")}
+              >
+                {Math.floor(seconds / 60)}:
+                {String(seconds % 60).padStart(2, "0")}
+              </div>
+            )}
+            {sat && seconds > 300 && (
+              <button
+                type="button"
+                onClick={() => setHideClock((value) => !value)}
+              >
+                {t(hideClock ? "Taymerni ko‘rsatish" : "Taymerni yashirish")}
+              </button>
+            )}
           </div>
         </div>
         <Feedback error={error} />
@@ -355,7 +400,23 @@ export function ExamPlayer({
           </span>
           <progress value={answered} max={attemptQuestions.length} />
         </div>
-        <p className="muted">{t(attempt.instructions || "")}</p>
+        {sat && stage !== null && (
+          <ol className="exam-module-track" aria-label={t("Modullar")}>
+            {Array.from({ length: current.stage_count ?? 4 }, (_, i) => (
+              <li
+                key={i}
+                data-complete={i < stage}
+                aria-current={i === stage ? "step" : undefined}
+              >
+                {t(i < 2 ? "Reading and Writing" : "Math")} {(i % 2) + 1}
+              </li>
+            ))}
+          </ol>
+        )}
+        {attempt.instructions && (
+          <p className="muted exam-instructions">{t(attempt.instructions)}</p>
+        )}
+        {satMath && <SatMathTools />}
         {!fullScreenEnabled() && (
           <p className="muted">
             {t(
@@ -364,11 +425,31 @@ export function ExamPlayer({
           </p>
         )}
         <div className="exam-layout">
-          <div className="exam-question-area">
-            {attempt.passage_text && (
-              <section className="exam-passage">
-                <h2>{attempt.passage_title || t("Test materiali")}</h2>
-                <p>{attempt.passage_text}</p>
+          <div
+            className="exam-question-area"
+            data-split={Boolean((sat || ielts) && (passageText || image))}
+          >
+            {(passageText || image) && (
+              <section
+                className="exam-passage"
+                data-large={largePassage}
+                aria-label={passageTitle}
+                ref={passagePanel}
+                tabIndex={-1}
+              >
+                <div className="exam-passage-toolbar">
+                  <h2>{passageTitle}</h2>
+                  {ielts && (
+                    <button
+                      type="button"
+                      aria-pressed={largePassage}
+                      onClick={() => setLargePassage((value) => !value)}
+                    >
+                      {t("Katta matn")}
+                    </button>
+                  )}
+                </div>
+                <p>{passageText}</p>
                 {image && (
                   <img
                     className="exam-passage-image"
@@ -378,7 +459,7 @@ export function ExamPlayer({
                 )}
               </section>
             )}
-            <section>
+            <section className="exam-question-panel">
               <div className="question-heading">
                 <span className="badge">
                   {index + 1}
@@ -407,15 +488,50 @@ export function ExamPlayer({
                 </button>
               </div>
               {q.group_name && <p className="eyebrow">{q.group_name}</p>}
+              {(ielts || cefr) && passageText && (
+                <button
+                  className="exam-show-passage"
+                  type="button"
+                  onClick={() => {
+                    passagePanel.current?.focus({ preventScroll: true });
+                    passagePanel.current?.scrollIntoView({ block: "start" });
+                  }}
+                >
+                  {t("Test materiali")}
+                </button>
+              )}
               <h2 ref={qHeading} tabIndex={-1} className="exam-question-prompt">
-                {q.prompt}
+                {prompt}
               </h2>
               <QuestionInput
                 question={q}
                 value={answers[q.id]}
                 onChange={update}
                 disabled={blocked || finishing || seconds === 0}
+                eliminatedOptions={sat ? eliminated[q.id] || [] : undefined}
+                onEliminate={
+                  sat
+                    ? (option) =>
+                        setEliminated((previous) => {
+                          const list = previous[q.id] || [];
+                          return {
+                            ...previous,
+                            [q.id]: list.includes(option)
+                              ? list.filter((i) => i !== option)
+                              : [...list, option],
+                          };
+                        })
+                    : undefined
+                }
               />
+              {(ielts || cefr) && q.type === "written_answer" && (
+                <p className="exam-word-count">
+                  {typeof answers[q.id] === "string"
+                    ? answers[q.id].trim().split(/\s+/).filter(Boolean).length
+                    : 0}{" "}
+                  {t("so‘z")}
+                </p>
+              )}
               <div className="exam-pagination">
                 <button
                   disabled={index === 0}
@@ -432,13 +548,30 @@ export function ExamPlayer({
               </div>
             </section>
           </div>
-          <section className="exam-navigation">
-            <h3>{t("Savollar")}</h3>
-            <div className="question-numbers">
+          <section className="exam-navigation" data-menu-open={questionMenu}>
+            <div className="exam-navigation-heading">
+              {sat ? (
+                <button
+                  type="button"
+                  aria-expanded={questionMenu}
+                  aria-controls="exam-question-list"
+                  onClick={() => setQuestionMenu((value) => !value)}
+                >
+                  {t("Savollar")} · {index + 1}/{attemptQuestions.length}
+                </button>
+              ) : (
+                <h3>{t(cefr ? "Javoblar varaqasi" : "Savollar")}</h3>
+              )}
+            </div>
+            <div className="question-numbers" id="exam-question-list">
               {attemptQuestions.map((item, i) => {
                 const isAnswered = hasAnswer(answers[item.id]);
                 const isFlagged = flags.includes(item.id);
                 const state = isAnswered ? "answered" : "unanswered";
+                const optionIndex =
+                  cefr && Array.isArray(item.options)
+                    ? item.options.indexOf(answers[item.id])
+                    : -1;
                 const status = t(
                   isAnswered ? "Javob berilgan" : "Javob berilmagan",
                 );
@@ -452,6 +585,11 @@ export function ExamPlayer({
                     onClick={() => goToQuestion(i)}
                   >
                     {i + 1}
+                    {optionIndex >= 0 && (
+                      <span className="exam-sheet-letter" aria-hidden="true">
+                        {String.fromCharCode(65 + optionIndex)}
+                      </span>
+                    )}
                     {isAnswered && (
                       <Check
                         className="exam-number-check"
@@ -489,7 +627,7 @@ export function ExamPlayer({
               </li>
             </ul>
             <button
-              className="primary"
+              className="primary exam-finish-button"
               disabled={finishing}
               onClick={() => setConfirming(true)}
             >

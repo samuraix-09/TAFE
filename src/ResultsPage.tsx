@@ -20,7 +20,7 @@ export function ResultsPage({
 }: {
   completedAttemptId: string | null;
   onReviewOpened: () => void;
-  onResume: (id: string) => void;
+  onResume: (id: string, category: string, section: string) => void;
   onExplain: (prompt: string) => void;
 }) {
   const results = useData<Row[]>(async () => {
@@ -131,7 +131,15 @@ export function ResultsPage({
                 </button>
               </div>
             ) : (
-              <button onClick={() => onResume(r.test_id)}>
+              <button
+                onClick={() =>
+                  onResume(
+                    r.test_id,
+                    r.tests?.exam_categories?.name ?? "",
+                    r.tests?.section ?? "",
+                  )
+                }
+              >
                 {t("Davom etish")}
               </button>
             )}

@@ -184,7 +184,7 @@ function App() {
       void document.exitFullscreen().catch(() => {});
   };
   const action = useAction();
-  async function start(id: string) {
+  async function start(id: string, category = "", section = "") {
     if (action.busy) return;
     const fullscreen =
       fullScreenEnabled() && !document.fullscreenElement
@@ -195,7 +195,7 @@ function App() {
       try {
         const result = await rpc("start_exam_session", { t: id });
         if (result.submitted) done(result.id);
-        else setAttempt(result);
+        else setAttempt({ ...result, category, section });
       } catch (error) {
         if (document.fullscreenElement)
           void document.exitFullscreen().catch(() => {});
@@ -563,7 +563,7 @@ function TestsList({
   onStart,
   busy,
 }: {
-  onStart: (id: string) => void;
+  onStart: (id: string, category: string, section: string) => void;
   busy: boolean;
 }) {
   const data = useData<Row[]>(() => rpc("web_exam_catalog"));
@@ -605,7 +605,13 @@ function TestsList({
             <button
               className="primary"
               disabled={busy}
-              onClick={() => onStart(test.id)}
+              onClick={() =>
+                onStart(
+                  test.id,
+                  test.exam_categories?.name ?? "",
+                  test.section ?? "",
+                )
+              }
             >
               {t("Boshlash / davom etish")}
             </button>
