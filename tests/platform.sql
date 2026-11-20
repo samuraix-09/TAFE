@@ -189,7 +189,11 @@ do $$
 declare test uuid:='fe816150-8c12-4b3a-b04a-000000000001'; a jsonb; r jsonb; id uuid;
  expected jsonb:=current_setting('qa.sat_correct')::jsonb; answer_map jsonb; i int; item jsonb;
 begin
- if jsonb_array_length(jsonb_path_query_array(public.web_exam_catalog(),'$[*] ? (@.exam_categories.name == "SAT")'))<>2 then
+ if (select count(*) from jsonb_array_elements(public.web_exam_catalog()) entry
+     where entry->>'id' in ('fe816150-8c12-4b3a-b04a-000000000001','fe816150-8c12-4b3a-b04a-000000000002'))<>2
+    or exists(select 1 from jsonb_array_elements(public.web_exam_catalog()) entry
+     where entry->>'id' in ('e4b994df-8f8f-582a-bba2-e53c002d825a','9c4d7708-f642-5cca-9458-57c66aa2f1b7',
+      'e74e5cb0-f8b8-5c37-bf33-7026c247b906','2b07157d-ac83-5713-9ee9-ea7e0329dc2d')) then
   raise exception 'SAT catalog did not hide stand-alone modules';
  end if;
  if exists(select 1 from public.tests where public.tests.id=test) then raise exception 'Legacy catalog exposed web-only SAT form'; end if;

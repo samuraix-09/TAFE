@@ -103,3 +103,102 @@ html:fullscreen {
 .sat-review-correct {
   color: var(--blue);
 }
+
+.exam-view {
+  --answer-fg: #11623c;
+  --answer-fill: #e5f6eb;
+  --answer-border: #77ba91;
+  --empty-fg: #475569;
+  --empty-fill: #f1f5f9;
+  --flag-fg: #8b4606;
+  --flag-fill: #fff2d5;
+  --flag-border: #cc9440;
+  --current-ring: #2563eb;
+}
+[data-theme="dark"] .exam-view {
+  --answer-fg: #b0f1c7;
+  --answer-fill: #153b2c;
+  --answer-border: #5bb884;
+  --empty-fg: #c0cedf;
+  --empty-fill: #14253b;
+  --flag-fg: #ffd690;
+  --flag-fill: #473117;
+  --flag-border: #dca658;
+  --current-ring: #85b1ff;
+}
+.exam-view .question-numbers {
+  grid-template-columns: repeat(auto-fit, minmax(44px, 1fr));
+  gap: 7px;
+}
+.exam-view .question-numbers > button {
+  min-width: 0;
+  min-height: 44px;
+  padding: 8px 4px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--empty-fg);
+  background: var(--empty-fill);
+}
+.exam-view .question-numbers > [data-answer="answered"] {
+  color: var(--answer-fg);
+  background: var(--answer-fill);
+  border-color: var(--answer-border);
+}
+.exam-view .question-numbers > [data-flagged="true"],
+.exam-view .flag-button[aria-pressed="true"] {
+  color: var(--flag-fg);
+  background: var(--flag-fill);
+  border-color: var(--flag-border);
+}
+.exam-view .question-numbers > [aria-current="step"] {
+  outline: 2px solid var(--current-ring);
+  outline-offset: 1px;
+}
+.exam-view .question-numbers > :focus-visible {
+  outline: 2px dashed var(--current-ring);
+  outline-offset: 2px;
+}
+.exam-number-check,
+.exam-number-flag {
+  position: absolute;
+  bottom: 3px;
+  right: 3px;
+}
+.exam-number-flag {
+  top: 3px;
+  bottom: auto;
+}
+.exam-legend {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  padding: 0;
+  margin: 0 0 18px;
+  list-style: none;
+  font-size: 11px;
+}
+.exam-legend > li {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--empty-fg);
+}
+.exam-legend > li > svg {
+  flex: 0 0 14px;
+}
+.exam-legend [data-state="answered"] {
+  color: var(--answer-fg);
+}
+.exam-legend [data-state="flagged"] {
+  color: var(--flag-fg);
+}
+.exam-legend [data-state="current"] > span {
+  width: 12px;
+  height: 12px;
+  flex: 0 0 12px;
+  border: 2px solid var(--current-ring);
+  border-radius: 3px;
+}
+.exam-practice-sources {
+  margin-top: 24px;
+}

@@ -3788,5 +3788,40 @@
     "uz": "soniya",
     "en": "seconds",
     "ru": "секунд"
+  },
+  "Sotib olish": {
+    "uz": "Sotib olish",
+    "en": "Buy",
+    "ru": "Купить"
+  },
+  "Telegram orqali sotib olish": {
+    "uz": "Telegram orqali sotib olish",
+    "en": "Buy via Telegram",
+    "ru": "Купить через Telegram"
+  },
+  "Javob berilgan": {
+    "uz": "Javob berilgan",
+    "en": "Answered",
+    "ru": "Ответ дан"
+  },
+  "Joriy savol": {
+    "uz": "Joriy savol",
+    "en": "Current question",
+    "ru": "Текущий вопрос"
+  },
+  "Rasmiy mashq manbalari": {
+    "uz": "Rasmiy mashq manbalari",
+    "en": "Official practice resources",
+    "ru": "Официальные материалы для подготовки"
+  },
+  "College Board SAT savollar banki": {
+    "uz": "College Board SAT savollar banki",
+    "en": "College Board SAT Question Bank",
+    "ru": "Банк заданий SAT College Board"
+  },
+  "IELTS namunaviy testlari": {
+    "uz": "IELTS namunaviy testlari",
+    "en": "IELTS sample tests",
+    "ru": "Пробные тесты IELTS"
   }
 }

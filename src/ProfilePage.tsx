@@ -12,6 +12,7 @@ import {
   User,
 } from "lucide-react";
 import type { Session } from "@supabase/supabase-js";
+import { PlanPurchaseLink } from "./PlanPurchaseLink";
 import { db, authErrorMessage } from "./db";
 import { signOutWithMotion } from "./motion";
 import {
@@ -498,18 +499,18 @@ export function ProfilePage({
                   <p>
                     {p.monthly_price === null
                       ? t("Narx e’lon qilinmagan")
-                      : p.monthly_price + " " + p.currency + t(" / oy")}
+                      : p.monthly_price === 0
+                        ? t("Bepul")
+                        : p.monthly_price + " " + p.currency + t(" / oy")}
                   </p>
                   <ul>
                     {p.features.map((f: string, i: number) => (
                       <li key={i}>{t(f)}</li>
                     ))}
                   </ul>
-                  <small>
-                    {t(
-                      "Tarifni o‘zgartirish uchun administratorga murojaat qiling. Jonli to‘lov hali ulanmagan.",
-                    )}
-                  </small>
+                  {p.monthly_price !== 0 && (
+                    <PlanPurchaseLink planName={p.name} />
+                  )}
                 </div>
               ))}
             </div>

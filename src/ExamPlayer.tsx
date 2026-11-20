@@ -1,6 +1,6 @@
 import { t } from "./i18n";
 import { useEffect, useRef, useState } from "react";
-import { Flag, Maximize, ShieldCheck } from "lucide-react";
+import { Check, Circle, Flag, Maximize, ShieldCheck } from "lucide-react";
 import { supabaseUrl, supabasePublicKey } from "./db";
 import { Feedback, QuestionInput, rpc, signed, type Row } from "./platform";
 import "./exam-session.css";
@@ -15,8 +15,9 @@ export function fullScreenEnabled() {
 }
 
 function hasAnswer(value: unknown): boolean {
-  if (value == null || value === "") return false;
-  if (Array.isArray(value)) return value.length > 0;
+  if (value == null) return false;
+  if (typeof value === "string") return value.trim() !== "";
+  if (Array.isArray(value)) return value.some(hasAnswer);
   if (typeof value === "object") return Object.values(value).some(hasAnswer);
   return true;
 }
@@ -391,18 +392,17 @@ export function ExamPlayer({
                   {q.required ? t("majburiy") : t("ixtiyoriy")}
                 </span>
                 <button
-                  className={
-                    flags.includes(q.id) ? "flag-button flagged" : "flag-button"
-                  }
+                  className="flag-button"
+                  aria-pressed={flags.includes(q.id)}
                   onClick={() =>
-                    setFlags(
-                      flags.includes(q.id)
-                        ? flags.filter((x) => x !== q.id)
-                        : [...flags, q.id],
+                    setFlags((previous) =>
+                      previous.includes(q.id)
+                        ? previous.filter((id) => id !== q.id)
+                        : [...previous, q.id],
                     )
                   }
                 >
-                  <Flag size={16} />
+                  <Flag size={16} aria-hidden="true" />
                   {flags.includes(q.id) ? t("Belgilangan") : t("Belgilash")}
                 </button>
               </div>
@@ -435,27 +435,59 @@ export function ExamPlayer({
           <section className="exam-navigation">
             <h3>{t("Savollar")}</h3>
             <div className="question-numbers">
-              {attemptQuestions.map((item: Row, i: number) => (
-                <button
-                  aria-label={i + 1 + t("-savol")}
-                  key={item.id}
-                  className={[
-                    index === i ? "current" : "",
-                    hasAnswer(answers[item.id]) ? "answered" : "",
-                    flags.includes(item.id) ? "flagged" : "",
-                  ].join(" ")}
-                  aria-current={index === i ? "step" : undefined}
-                  onClick={() => goToQuestion(i)}
-                >
-                  {i + 1}
-                </button>
-              ))}
+              {attemptQuestions.map((item, i) => {
+                const isAnswered = hasAnswer(answers[item.id]);
+                const isFlagged = flags.includes(item.id);
+                const state = isAnswered ? "answered" : "unanswered";
+                const status = t(
+                  isAnswered ? "Javob berilgan" : "Javob berilmagan",
+                );
+                return (
+                  <button
+                    aria-label={`${i + 1}${t("-savol").trimEnd()} · ${status}${isFlagged ? ` · ${t("Belgilangan")}` : ""}`}
+                    key={item.id}
+                    data-answer={state}
+                    data-flagged={isFlagged}
+                    aria-current={index === i ? "step" : undefined}
+                    onClick={() => goToQuestion(i)}
+                  >
+                    {i + 1}
+                    {isAnswered && (
+                      <Check
+                        className="exam-number-check"
+                        size={11}
+                        aria-hidden="true"
+                      />
+                    )}
+                    {isFlagged && (
+                      <Flag
+                        className="exam-number-flag"
+                        size={11}
+                        aria-hidden="true"
+                      />
+                    )}
+                  </button>
+                );
+              })}
             </div>
-            <p className="muted">
-              {t("Ko‘k — javob berilgan")}
-              <br />
-              {t("Belgi — qayta ko‘rib chiqish uchun")}
-            </p>
+            <ul className="exam-legend">
+              <li data-state="answered">
+                <Check size={14} aria-hidden="true" />
+                {t("Javob berilgan")}
+              </li>
+              <li data-state="unanswered">
+                <Circle size={14} aria-hidden="true" />
+                {t("Javob berilmagan")}
+              </li>
+              <li data-state="flagged">
+                <Flag size={14} aria-hidden="true" />
+                {t("Belgilangan")}
+              </li>
+              <li data-state="current">
+                <span aria-hidden="true" />
+                {t("Joriy savol")}
+              </li>
+            </ul>
             <button
               className="primary"
               disabled={finishing}

@@ -615,6 +615,29 @@ function TestsList({
       {!data.loading && !rows.length && (
         <Empty text={t("Tanlovingizga mos e’lon qilingan testlar yo‘q.")} />
       )}
+      <section className="exam-practice-sources">
+        <h2>{t("Rasmiy mashq manbalari")}</h2>
+        <div className="button-row">
+          <a
+            className="button-link"
+            href="https://satsuite.collegeboard.org/practice/student-question-bank"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {t("College Board SAT savollar banki")}{" "}
+            <ArrowUpRight size={16} aria-hidden="true" />
+          </a>
+          <a
+            className="button-link"
+            href="https://ielts.org/take-a-test/preparation-resources/sample-test-questions"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {t("IELTS namunaviy testlari")}{" "}
+            <ArrowUpRight size={16} aria-hidden="true" />
+          </a>
+        </div>
+      </section>
     </>
   );
 }
