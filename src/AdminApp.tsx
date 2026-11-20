@@ -1,3 +1,5 @@
+import { IeltsAdmin } from "./IeltsAdmin";
+import { ieltsFormId } from "./IeltsTools";
 import { Brand } from "./Landing";
 import { t, LanguagePicker, localeTag, type Locale } from "./i18n";
 import { useEffect, useState } from "react";
@@ -787,6 +789,7 @@ function TestsManager() {
       ),
     [],
   );
+  const [ielts, setIelts] = useState(false);
   const [edit, setEdit] = useState<string | null>(null);
   const [scoring, setScoring] = useState<{ id: string; title: string } | null>(
     null,
@@ -815,56 +818,69 @@ function TestsManager() {
           {t("Vizual test yaratish")}
         </button>
       </div>
+      <button onClick={() => setIelts(true)}>IELTS Academic boshqaruvi</button>
+      {ielts && (
+        <IeltsAdmin
+          tests={tests.data ?? []}
+          onClose={() => setIelts(false)}
+          onChange={tests.reload}
+        />
+      )}
       <Feedback error={tests.error || a.error} loading={tests.loading} />
       <div className="management-grid">
-        {tests.data?.map((test) => (
-          <section key={test.id}>
-            <span className="badge">{test.exam_categories?.name}</span>
-            <h2>{test.title}</h2>
-            <p>
-              {test.section} · {test.duration}
-              {t(" daqiqa ·")}{" "}
-              {test.published ? t("E’lon qilingan") : t("Qoralama")}
-            </p>
-            <div className="button-row">
-              <button onClick={() => setEdit(test.id)}>
-                {t("Savollarni tahrirlash")}
-              </button>
-              {test.sat_session_form && (
-                <button
-                  onClick={() => setScoring({ id: test.id, title: test.title })}
-                >
-                  {t("SAT ball jadvali")}
+        {tests.data
+          ?.filter((test) => test.id !== ieltsFormId)
+          .map((test) => (
+            <section key={test.id}>
+              <span className="badge">{test.exam_categories?.name}</span>
+              {test.exam_archived && <p>Arxiv · katalogda ko‘rinmaydi</p>}
+              <h2>{test.title}</h2>
+              <p>
+                {test.section} · {test.duration}
+                {t(" daqiqa ·")}{" "}
+                {test.published ? t("E’lon qilingan") : t("Qoralama")}
+              </p>
+              <div className="button-row">
+                <button onClick={() => setEdit(test.id)}>
+                  {t("Savollarni tahrirlash")}
                 </button>
-              )}
-              {test.published && (
-                <button
-                  disabled={a.busy}
-                  onClick={() =>
-                    void a.run(async () => {
-                      const updated = checked(
-                        await db
-                          .from("tests")
-                          .update({ published: false })
-                          .eq("id", test.id)
-                          .eq("version", test.version)
-                          .select("id")
-                          .maybeSingle(),
-                      );
-                      tests.reload();
-                      if (!updated)
-                        throw Error(
-                          "Another administrator changed this test. Reload it.",
+                {test.sat_session_form && (
+                  <button
+                    onClick={() =>
+                      setScoring({ id: test.id, title: test.title })
+                    }
+                  >
+                    {t("SAT ball jadvali")}
+                  </button>
+                )}
+                {test.published && (
+                  <button
+                    disabled={a.busy}
+                    onClick={() =>
+                      void a.run(async () => {
+                        const updated = checked(
+                          await db
+                            .from("tests")
+                            .update({ published: false })
+                            .eq("id", test.id)
+                            .eq("version", test.version)
+                            .select("id")
+                            .maybeSingle(),
                         );
-                    })
-                  }
-                >
-                  {t("Qoralamaga olish")}
-                </button>
-              )}
-            </div>
-          </section>
-        ))}
+                        tests.reload();
+                        if (!updated)
+                          throw Error(
+                            "Another administrator changed this test. Reload it.",
+                          );
+                      })
+                    }
+                  >
+                    {t("Qoralamaga olish")}
+                  </button>
+                )}
+              </div>
+            </section>
+          ))}
       </div>
       {scoring && (
         <SatScoringEditor

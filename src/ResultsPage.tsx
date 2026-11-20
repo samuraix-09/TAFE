@@ -210,6 +210,56 @@ function AttemptReview({
   attemptId: string;
   onExplain: (prompt: string) => void;
 }) {
+  if (review.questions?.some((q: Row) => q.type === "speaking_prompt"))
+    return <IeltsResult attempt={attemptId} />;
+  return (
+    <RegularReview
+      review={review}
+      attemptId={attemptId}
+      onExplain={onExplain}
+    />
+  );
+}
+function IeltsResult({ attempt }: { attempt: string }) {
+  const r = useData(() => rpc("ielts_report", { attempt }), [attempt]);
+  return (
+    <section className="sat-score-card">
+      <h2>IELTS Academic · Taxminiy natija</h2>
+      <Feedback error={r.error} loading={r.loading} />
+      {r.data && (
+        <>
+          <h3>Overall · {r.data.overall ?? "Baholash kutilmoqda"}</h3>
+          <dl>
+            <dt>Listening · avtomatik</dt>
+            <dd>
+              {r.data.listening} · {r.data.listening_correct}/40
+            </dd>
+            <dt>Reading · avtomatik</dt>
+            <dd>
+              {r.data.reading} · {r.data.reading_correct}/40
+            </dd>
+            <dt>Writing · qo‘lda baholanadi</dt>
+            <dd>{r.data.writing ?? "Baholash kutilmoqda"}</dd>
+            <dt>Speaking · qo‘lda baholanadi</dt>
+            <dd>{r.data.speaking ?? "Baholash kutilmoqda"}</dd>
+          </dl>
+          {r.data.feedback && (
+            <p style={{ whiteSpace: "pre-wrap" }}>{r.data.feedback}</p>
+          )}
+        </>
+      )}
+    </section>
+  );
+}
+function RegularReview({
+  review,
+  attemptId,
+  onExplain,
+}: {
+  review: Row;
+  attemptId: string;
+  onExplain: (prompt: string) => void;
+}) {
   const scaled = review.sat_scores?.total != null;
   const entries = ((review.questions ?? []) as Row[]).map(
     (question, index) => ({

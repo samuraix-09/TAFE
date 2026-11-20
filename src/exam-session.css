@@ -698,3 +698,74 @@ html:fullscreen {
 .opensat-tools small {
   margin-inline-end: auto;
 }
+.ielts-media {
+  display: grid;
+  gap: 0.75rem;
+  padding: 1rem;
+  border: 1px solid var(--stroke);
+}
+.ielts-media audio {
+  width: 100%;
+}
+.ielts-split {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  margin-block: 0.5rem;
+}
+.exam-view[data-exam="ielts"] .exam-question-panel textarea {
+  width: 100%;
+  min-height: min(45vh, 28rem);
+  resize: vertical;
+  line-height: 1.65;
+}
+@media (min-width: 900px) {
+  .exam-view[data-exam="ielts"] .exam-question-area[data-split="true"] {
+    grid-template-columns: minmax(0, var(--ielts-passage-width, 50%)) minmax(
+        0,
+        1fr
+      );
+  }
+}
+.exam-view .ielts-reading-tools[data-context="true"] {
+  position: fixed;
+  z-index: 25;
+  width: 236px;
+  padding: 0.45rem;
+  border: 1px solid var(--stroke);
+  border-radius: 10px;
+  background: var(--paper);
+  animation: highlight-in 0.14s ease-out;
+}
+@keyframes highlight-in {
+  from {
+    opacity: 0;
+    transform: translateY(3px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.exam-view .ielts-reading-text mark,
+.exam-highlight-swatch {
+  color: #172334;
+  background: #ffeb99;
+}
+.exam-view .ielts-reading-text mark[data-color="mint"],
+.exam-highlight-swatch[data-color="mint"] {
+  background: #b7efce;
+}
+.exam-view .ielts-reading-text mark[data-color="lavender"],
+.exam-highlight-swatch[data-color="lavender"] {
+  background: #e0cfff;
+}
+.exam-highlight-swatch[aria-pressed="true"] {
+  outline: 2px solid currentColor;
+  outline-offset: -3px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .exam-view .ielts-reading-tools[data-context="true"] {
+    animation: none;
+  }
+}

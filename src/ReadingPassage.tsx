@@ -1,3 +1,4 @@
+import { rpc } from "./platform";
 import { useEffect, useRef, useState } from "react";
 import { Eraser, Highlighter } from "lucide-react";
 import { t } from "./i18n";
@@ -12,14 +13,21 @@ export function ReadingPassage({
   attemptId,
   text,
   activePart,
+  sessionId,
 }: {
   attemptId: string;
   text: string;
   activePart?: string;
+  sessionId?: string;
 }) {
   const body = useRef<HTMLDivElement>(null);
   const tools = useRef<HTMLDivElement>(null);
   const [selection, setSelection] = useState<MarkRange | null>(null);
+  const [position, setPosition] = useState<{
+    left: number;
+    top: number;
+  } | null>(null);
+  const [color, setColor] = useState("yellow");
   const [notice, setNotice] = useState("");
   const key = "tafe-reading-marks-" + attemptId;
   const [marks, setMarks] = useState<MarkRange[]>(() => {
@@ -32,6 +40,21 @@ export function ReadingPassage({
       return [];
     }
   });
+  const edited = useRef(false);
+  const saves = useRef(Promise.resolve());
+  useEffect(() => {
+    if (!sessionId) return;
+    let active = true;
+    void rpc("exam_passage_marks", { attempt: sessionId, scope_key: attemptId })
+      .then((value) => {
+        if (active && !edited.current && Array.isArray(value))
+          setMarks(normalizeReadingMarks(value, text.length));
+      })
+      .catch(() => {});
+    return () => {
+      active = false;
+    };
+  }, [attemptId, sessionId, text.length]);
   const headings = Array.from(
     text.matchAll(/^([A-Z])[.)]\s+[^\n]{1,105}$/gm),
     (match) => ({
@@ -45,6 +68,19 @@ export function ReadingPassage({
     const read = () => {
       if (!body.current) return;
       const selected = readingSelection(body.current, document.getSelection());
+      if (selected) {
+        const rect = document
+          .getSelection()!
+          .getRangeAt(0)
+          .getBoundingClientRect();
+        setPosition({
+          left: Math.max(8, Math.min(rect.left, window.innerWidth - 244)),
+          top:
+            rect.top > 126
+              ? rect.top - 116
+              : Math.min(window.innerHeight - 116, rect.bottom + 6),
+        });
+      }
       if (selected || !tools.current?.contains(document.activeElement))
         setSelection(selected);
     };
@@ -63,8 +99,21 @@ export function ReadingPassage({
     if (!selection) return;
     const updated = remove
       ? removeReadingMark(marks, selection)
-      : normalizeReadingMarks([...marks, selection], text.length);
+      : [...removeReadingMark(marks, selection), { ...selection, color }].sort(
+          (a, b) => a.start - b.start,
+        );
+    edited.current = true;
     setMarks(updated);
+    if (sessionId)
+      saves.current = saves.current
+        .then(async () => {
+          await rpc("exam_passage_marks", {
+            attempt: sessionId,
+            scope_key: attemptId,
+            saved_marks: updated,
+          });
+        })
+        .catch(() => setNotice("Belgilar qurilmada saqlandi."));
     try {
       localStorage.setItem(key, JSON.stringify({ text, marks: updated }));
     } catch {
@@ -84,7 +133,9 @@ export function ReadingPassage({
       const right = Math.min(end, mark.end);
       parts.push(
         text.slice(cursor, left),
-        <mark key={left}>{text.slice(left, right)}</mark>,
+        <mark key={left} data-color={mark.color ?? "yellow"}>
+          {text.slice(left, right)}
+        </mark>,
       );
       cursor = right;
     }
@@ -114,7 +165,32 @@ export function ReadingPassage({
     );
   return (
     <>
-      <div className="ielts-reading-tools" ref={tools}>
+      <div
+        className="ielts-reading-tools"
+        ref={tools}
+        data-context={Boolean(selection && position)}
+        style={selection && position ? position : undefined}
+        onKeyDown={(e) => {
+          if (e.key === "Escape") {
+            setSelection(null);
+            document.getSelection()?.removeAllRanges();
+          }
+        }}
+      >
+        {selection &&
+          ["yellow", "mint", "lavender"].map((tone, i) => (
+            <button
+              type="button"
+              key={tone}
+              className="exam-highlight-swatch"
+              data-color={tone}
+              aria-pressed={color === tone}
+              onMouseDown={(e) => e.preventDefault()}
+              onClick={() => setColor(tone)}
+            >
+              {["Sariq", "Yashil", "Binafsha"][i]}
+            </button>
+          ))}
         <button
           type="button"
           disabled={!selection}

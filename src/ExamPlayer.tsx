@@ -1,3 +1,4 @@
+import { IeltsAudio, IeltsRecorder, ieltsSkills } from "./IeltsTools";
 import { SatNotation } from "./SatNotation";
 import { t } from "./i18n";
 import { useEffect, useRef, useState } from "react";
@@ -59,6 +60,8 @@ export function ExamPlayer({
   const [hideClock, setHideClock] = useState(false);
   const [eliminated, setEliminated] = useState<Record<string, number[]>>({});
   const [largePassage, setLargePassage] = useState(false);
+  const [split, setSplit] = useState(50);
+  const [recordingBusy, setRecordingBusy] = useState(false);
   const [zoom, setZoom] = useState(1);
   const [moduleNotice, setModuleNotice] = useState(false);
   const [questionMenu, setQuestionMenu] = useState(false);
@@ -109,15 +112,14 @@ export function ExamPlayer({
     attempt.server_time ? Date.parse(attempt.server_time) - Date.now() : 0,
   );
   const stage: number | null = current.stage ?? null;
-  const presentation = examPresentation(
-    attempt.category ?? "",
-    attempt.title ?? "",
-    stage,
-  );
+  const presentation = current.ielts
+    ? "ielts"
+    : examPresentation(attempt.category ?? "", attempt.title ?? "", stage);
   const sat = presentation === "sat";
   const ielts = presentation === "ielts";
-  const ieltsReading =
-    ielts && !/listening|writing|speaking/i.test(attempt.section ?? "");
+  const ieltsReading = current.ielts
+    ? stage === 1
+    : ielts && !/listening|writing|speaking/i.test(attempt.section ?? "");
   const cefr = presentation === "cefr";
   const satMath =
     sat &&
@@ -421,7 +423,7 @@ export function ExamPlayer({
   }
 
   function goToQuestion(next: number) {
-    if (blocked) return;
+    if (blocked || recordingBusy) return;
     setQuestionMenu(false);
     if (next === index) return;
     setIndex(next);
@@ -435,17 +437,19 @@ export function ExamPlayer({
   const attemptQuestions: Row[] = current.questions;
   const q = attemptQuestions[index] ?? attemptQuestions[0];
   const [stimulus, prompt] = sat ? splitSatPrompt(q.prompt) : ["", q.prompt];
-  const passageText = q.config?.passage || attempt.passage_text || stimulus;
+  const passageText = q.config?.passage || current.passage_text || stimulus;
   const svg =
     q.config?.opensat && q.config.svg
       ? "data:image/svg+xml," + encodeURIComponent(q.config.svg)
       : null;
   const passageTitle =
-    attempt.passage_title || t(sat ? "Savol matni" : "Test materiali");
+    current.passage_title || t(sat ? "Savol matni" : "Test materiali");
   const sectionTitle =
-    stage !== null
-      ? `${t(satMath ? "Math" : "Reading and Writing")} · ${t("Modul")} ${(stage % 2) + 1}/2`
-      : attempt.section || t("Test sessiyasi");
+    current.ielts && stage !== null
+      ? ieltsSkills[stage]
+      : stage !== null
+        ? `${t(satMath ? "Math" : "Reading and Writing")} · ${t("Modul")} ${(stage % 2) + 1}/2`
+        : attempt.section || t("Test sessiyasi");
   const answered = attemptQuestions.filter((item) =>
     hasExamAnswer(answers[item.id]),
   ).length;
@@ -580,6 +584,34 @@ export function ExamPlayer({
           </div>
         )}
         {satMath && <SatMathTools />}
+        {current.ielts && (
+          <ol className="exam-module-track" aria-label="IELTS bo‘limlari">
+            {ieltsSkills.map((skill, i) => (
+              <li
+                key={skill}
+                aria-current={i === stage ? "step" : undefined}
+                data-complete={i < (stage ?? 0)}
+              >
+                {skill}
+              </li>
+            ))}
+          </ol>
+        )}
+        {current.ielts && stage === 0 && current.audio_path && (
+          <IeltsAudio path={current.audio_path} />
+        )}
+        {ieltsReading && passageText && (
+          <label className="ielts-split">
+            Matn paneli{" "}
+            <input
+              type="range"
+              min={35}
+              max={65}
+              value={split}
+              onChange={(e) => setSplit(Number(e.target.value))}
+            />
+          </label>
+        )}
         {!fullScreenEnabled() && (
           <p className="muted">
             {t(
@@ -593,6 +625,13 @@ export function ExamPlayer({
         >
           <div
             className="exam-question-area"
+            style={
+              ieltsReading
+                ? ({
+                    "--ielts-passage-width": split + "%",
+                  } as React.CSSProperties)
+                : undefined
+            }
             data-split={Boolean((sat || ielts) && (passageText || image))}
           >
             {(passageText || image) && (
@@ -622,6 +661,7 @@ export function ExamPlayer({
                       current.adaptive ? attempt.id + "-" + q.id : attempt.id
                     }
                     text={passageText}
+                    sessionId={attempt.id}
                     activePart={/\bPassage\s+([A-Z])\b/i
                       .exec(q.group_name || q.prompt)?.[1]
                       ?.toUpperCase()}
@@ -701,27 +741,46 @@ export function ExamPlayer({
                   alt="Savol diagrammasi"
                 />
               )}
-              <QuestionInput
-                question={q}
-                value={answers[q.id]}
-                onChange={update}
-                disabled={blocked || finishing || seconds === 0}
-                eliminatedOptions={sat ? eliminated[q.id] || [] : undefined}
-                onEliminate={
-                  sat
-                    ? (option) =>
-                        setEliminated((previous) => {
-                          const list = previous[q.id] || [];
-                          return {
-                            ...previous,
-                            [q.id]: list.includes(option)
-                              ? list.filter((i) => i !== option)
-                              : [...list, option],
-                          };
-                        })
-                    : undefined
-                }
-              />
+              {current.ielts && stage === 2 && (
+                <p>
+                  Writing Task {index + 1} · kamida {index === 0 ? 150 : 250}{" "}
+                  so‘z
+                </p>
+              )}
+              {current.ielts && stage === 3 ? (
+                <IeltsRecorder
+                  key={q.id}
+                  attempt={attempt.id}
+                  question={q.id}
+                  part={index}
+                  disabled={blocked || finishing || !seconds}
+                  value={answers[q.id]}
+                  onSave={update}
+                  onBusy={setRecordingBusy}
+                />
+              ) : (
+                <QuestionInput
+                  question={q}
+                  value={answers[q.id]}
+                  onChange={update}
+                  disabled={blocked || finishing || seconds === 0}
+                  eliminatedOptions={sat ? eliminated[q.id] || [] : undefined}
+                  onEliminate={
+                    sat
+                      ? (option) =>
+                          setEliminated((previous) => {
+                            const list = previous[q.id] || [];
+                            return {
+                              ...previous,
+                              [q.id]: list.includes(option)
+                                ? list.filter((i) => i !== option)
+                                : [...list, option],
+                            };
+                          })
+                      : undefined
+                  }
+                />
+              )}
               {(ielts || cefr) && q.type === "written_answer" && (
                 <p className="exam-word-count">
                   {typeof answers[q.id] === "string"
@@ -849,7 +908,7 @@ export function ExamPlayer({
             )}
             <button
               className="primary exam-finish-button"
-              disabled={finishing}
+              disabled={finishing || recordingBusy}
               onClick={() => setConfirming(true)}
             >
               {finishing

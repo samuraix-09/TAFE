@@ -1,4 +1,4 @@
-export type MarkRange = { start: number; end: number };
+export type MarkRange = { start: number; end: number; color?: string };
 
 export function normalizeReadingMarks(
   value: unknown,
@@ -19,7 +19,7 @@ export function normalizeReadingMarks(
     .sort((a, b) => a.start - b.start);
   for (const range of ranges) {
     const last = result.at(-1);
-    if (last && range.start <= last.end)
+    if (last && range.start <= last.end && last.color === range.color)
       last.end = Math.max(last.end, range.end);
     else result.push({ ...range });
   }
@@ -34,9 +34,8 @@ export function removeReadingMark(
     if (mark.end <= selected.start || mark.start >= selected.end) return [mark];
     const next: MarkRange[] = [];
     if (mark.start < selected.start)
-      next.push({ start: mark.start, end: selected.start });
-    if (mark.end > selected.end)
-      next.push({ start: selected.end, end: mark.end });
+      next.push({ ...mark, end: selected.start });
+    if (mark.end > selected.end) next.push({ ...mark, start: selected.end });
     return next;
   });
 }

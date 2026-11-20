@@ -1,5 +1,6 @@
 -- Temporary fixtures. The final ROLLBACK removes all test users, content and usage.
 begin;
+update public.tests set exam_archived=false;
 do $$
 declare item record;
 begin
@@ -210,12 +211,9 @@ do $$
 declare test uuid:='fe816150-8c12-4b3a-b04a-000000000001'; a jsonb; r jsonb; id uuid;
  expected jsonb:=current_setting('qa.sat_correct')::jsonb; answer_map jsonb; i int; item jsonb;
 begin
- if (select count(*) from jsonb_array_elements(public.web_exam_catalog()) entry
-     where entry->>'id' in ('fe816150-8c12-4b3a-b04a-000000000001','fe816150-8c12-4b3a-b04a-000000000002'))<>2
-    or exists(select 1 from jsonb_array_elements(public.web_exam_catalog()) entry
-     where entry->>'id' in ('e4b994df-8f8f-582a-bba2-e53c002d825a','9c4d7708-f642-5cca-9458-57c66aa2f1b7',
-      'e74e5cb0-f8b8-5c37-bf33-7026c247b906','2b07157d-ac83-5713-9ee9-ea7e0329dc2d')) then
-  raise exception 'SAT catalog did not hide stand-alone modules';
+ if exists(select 1 from jsonb_array_elements(public.web_exam_catalog()) entry
+  where entry->>'id' not in ('fe816150-8c12-4b3a-b04a-000000000031','70767467-ea94-5677-9212-77a335806796')) then
+  raise exception 'Catalog included an obsolete source';
  end if;
  if exists(select 1 from public.tests where public.tests.id=test) then raise exception 'Legacy catalog exposed web-only SAT form'; end if;
  begin perform public.start_exam_session('e4b994df-8f8f-582a-bba2-e53c002d825a');raise exception 'Standalone module access allowed';
@@ -440,6 +438,64 @@ begin
   if a->'sat_scores'->>'total'<>'1100' or a->'sat_scores'->>'model_revision'<>'2' then
     raise exception 'New attempt ignored the assigned conversion revision';
   end if;
+end $$;
+reset role;
+
+-- Transaction-only fixtures for the four-stage IELTS engine.
+insert into public.tests(id,category_id,title,section,duration,published,exam_archived)
+select v.id,(select id from public.exam_categories where slug='ielts'),v.name,v.name,v.minutes,false,true
+from (values ('c9990000-0000-4000-8000-000000000001'::uuid,'Listening QA',30),
+ ('c9990000-0000-4000-8000-000000000002'::uuid,'Writing QA',60),('c9990000-0000-4000-8000-000000000003'::uuid,'Speaking QA',14)) v(id,name,minutes);
+insert into public.questions(test_id,position,prompt,options)
+select id,n,'Fixture '||n,'["A","B"]'::jsonb from (values
+ ('c9990000-0000-4000-8000-000000000001'::uuid,40),
+ ('c9990000-0000-4000-8000-000000000002'::uuid,2),('c9990000-0000-4000-8000-000000000003'::uuid,3)) v(id,items)
+cross join lateral generate_series(0,items-1) n;
+insert into public.answer_keys(question_id,answer,accepted)
+select id,'A','"A"' from public.questions where test_id='c9990000-0000-4000-8000-000000000001';
+insert into storage.objects(bucket_id,name) values('tafe-ielts-audio','test-only/contract');
+select set_config('request.jwt.claim.sub','c1000000-0000-4000-8000-000000000001',true);
+set local role authenticated;
+select public.admin_ielts_sections(array['c9990000-0000-4000-8000-000000000001','70767467-ea94-5677-9212-77a335806796','c9990000-0000-4000-8000-000000000002','c9990000-0000-4000-8000-000000000003']::uuid[],
+ array[30,60,60,14],'test-only/contract',true);
+reset role;
+insert into auth.users(id,raw_user_meta_data) values('c9990000-0000-4000-8000-000000000011','{"display_name":"IELTS QA"}');
+select set_config('request.jwt.claim.sub','c9990000-0000-4000-8000-000000000011',true);
+set local role authenticated;
+do $$
+declare a jsonb; id uuid; item text; r jsonb; recording text;
+ form uuid:='fe816150-8c12-4b3a-b04a-000000000041';
+begin
+ a:=public.start_exam_session(form); id:=(a->>'id')::uuid;
+ perform set_config('qa.ielts_attempt',id::text,true);
+ if a->>'audio_path'<>'test-only/contract' or not public.ielts_storage_allowed('test-only/contract',false,false)
+ or jsonb_array_length(a->'questions')<>40 or a->'questions'->0 ? 'accepted' then raise exception 'Invalid Listening payload'; end if;
+ item:=a->'questions'->0->>'id';
+ perform public.exam_session_action(id,jsonb_build_object(item,'A'),'save',0);
+ if public.start_exam_session(form)->'answers'->>item<>'A' then raise exception 'IELTS autosave recovery failed'; end if;
+ a:=public.exam_session_action(id,'{}','advance',0);
+ if (a->>'stage')::int<>1 or a->>'audio_path' is not null or public.ielts_storage_allowed('test-only/contract',false,false) then raise exception 'Listening audio leaked'; end if;
+ a:=public.exam_session_action(id,'{}','advance',1);
+ item:=a->'questions'->0->>'id';
+ if a->'questions'->0->>'type'<>'written_answer' then raise exception 'Invalid Writing task'; end if;
+ perform public.exam_session_action(id,jsonb_build_object(item,'Draft essay saved.'),'save',2);
+ if public.start_exam_session(form)->'answers'->>item<>'Draft essay saved.' then raise exception 'Writing draft lost'; end if;
+ a:=public.exam_session_action(id,'{}','advance',2);
+ if a->'questions'->0->>'type'<>'speaking_prompt' or jsonb_array_length(a->'questions')<>3 then raise exception 'Invalid Speaking parts'; end if;
+ item:=a->'questions'->0->>'id';
+ recording:=auth.uid()::text||'/'||id::text||'/'||item||'-qa.webm';
+ insert into storage.objects(bucket_id,name) values('tafe-ielts-recordings',recording);
+ a:=public.exam_session_action(id,jsonb_build_object(item,recording),'advance',3);
+ r:=public.ielts_report(id);
+ if (a->>'submitted')::boolean is not true or r->>'listening_correct'<>'1' or r->>'reading_correct'<>'0'
+ or r->>'overall' is not null or r->'review'->0->>'response'<>'Draft essay saved.'
+ or r->'review'->2->>'response' is distinct from recording then raise exception 'Invalid IELTS report'; end if;
+ if (public.exam_session_action(id,'{}','advance',3)->>'id')::uuid<>id then raise exception 'Duplicate IELTS submission'; end if;
+end $$;
+select set_config('request.jwt.claim.sub','c1000000-0000-4000-8000-000000000001',true);
+select public.admin_grade_ielts(current_setting('qa.ielts_attempt')::uuid,6.5,7,'Manual assessment fixture');
+do $$begin
+ if (public.ielts_report(current_setting('qa.ielts_attempt')::uuid)->>'overall')::numeric is distinct from 3.5 then raise exception 'Incorrect overall'; end if;
 end $$;
 reset role;
 
