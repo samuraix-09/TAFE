@@ -559,7 +559,7 @@ function TestsList({ onStart }: { onStart: (id: string) => void }) {
     [],
   );
   const [search, setSearch] = useState("");
-  const rows = (data.data || []).filter((t) =>
+  const rows = (data.data || []).filter((t) => !t.diagnostic).filter((t) =>
     (t.title + " " + t.exam_categories?.name + " " + t.section)
       .toLowerCase()
       .includes(search.toLowerCase()),
