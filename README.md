@@ -53,4 +53,4 @@ Notification preferences are persisted, but scheduled reminder delivery is not a
 
 ### Windows downloads on the landing page
 
-After building the website, run `node scripts/stage-windows-downloads.mjs <directory-containing-exes>` before packaging the site. This stages both Windows x64 executables in `dist/downloads/windows` with checksums for browser reassembly. The default input directory is `desktop-release`.
+After building the website, run `node scripts/stage-windows-downloads.mjs <directory-containing-setup>` and publish `dist` with its download files. The script stages the Windows x64 installer in `dist/downloads/windows` with a checksum for browser reassembly. The default input directory is `desktop-release`. A build without a staged installer shows its availability status.
