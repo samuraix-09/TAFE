@@ -28,10 +28,8 @@ import type { Session } from "@supabase/supabase-js";
 import { db } from "./db";
 import { Brand, Landing, InfoPage, type VisitorPage } from "./Landing";
 import { EmailAuth } from "./EmailAuth";
-import { LibraryPage } from "./LibraryPage";
-import { ProfilePage } from "./ProfilePage";
-import { ExamPlayer, fullScreenEnabled } from "./ExamPlayer";
-import { ResultsPage } from "./ResultsPage";
+import { fullScreenEnabled } from "./exam-fullscreen";
+import { readActiveExam, rememberActiveExam } from "./exam-draft";
 import { retiredDiagnosticId } from "./exam-catalog";
 import {
   checked,
@@ -51,6 +49,18 @@ const AdminApp = lazy(() =>
 );
 const ChatPage = lazy(() =>
   import("./ChatPage").then((m) => ({ default: m.ChatPage })),
+);
+const ExamPlayer = lazy(() =>
+  import("./ExamPlayer").then((module) => ({ default: module.ExamPlayer })),
+);
+const LibraryPage = lazy(() =>
+  import("./LibraryPage").then((module) => ({ default: module.LibraryPage })),
+);
+const ProfilePage = lazy(() =>
+  import("./ProfilePage").then((module) => ({ default: module.ProfilePage })),
+);
+const ResultsPage = lazy(() =>
+  import("./ResultsPage").then((module) => ({ default: module.ResultsPage })),
 );
 const nav = [
   ["dashboard", "Dashboard", LayoutDashboard],
@@ -95,7 +105,9 @@ function App() {
       id: string;
       userId: string;
     } | null>(null),
-    [aiPrompt, setAiPrompt] = useState("");
+    [aiPrompt, setAiPrompt] = useState(""),
+    [recoveringExam, setRecoveringExam] = useState(false),
+    [recoveryError, setRecoveryError] = useState("");
   const go = (v: VisitorPage) => {
     setVisitor(v);
     location.hash = "/" + v;
@@ -116,6 +128,8 @@ function App() {
       setSession(next);
       if (!next) {
         setAttempt(null);
+        setCompletedExam(null);
+        setRecoveryError("");
       }
       if (event === "PASSWORD_RECOVERY") go("reset");
     });
@@ -181,10 +195,62 @@ function App() {
   };
   const done = (id: string) => {
     setAttempt(null);
-    if (session) setCompletedExam({ id, userId: session.user.id });
+    if (session) {
+      rememberActiveExam(session.user.id, null);
+      setCompletedExam({ id, userId: session.user.id });
+    }
     if (document.fullscreenElement)
       void document.exitFullscreen().catch(() => {});
   };
+  const learnerId = session?.user.id;
+  const canRecover =
+    account.data?.profile.status === "active" &&
+    account.data?.profile.id === learnerId &&
+    !adminRoute &&
+    visitor !== "reset";
+  useEffect(() => {
+    if (!learnerId || !canRecover) return;
+    const saved = readActiveExam(learnerId);
+    if (!saved) return;
+    let alive = true;
+    setRecoveringExam(true);
+    setRecoveryError("");
+    void rpc("exam_session_action", {
+      attempt: saved.id,
+      response: {},
+      action: "status",
+      stage: null,
+    })
+      .then((restored) => {
+        if (!alive) return;
+        if (restored.submitted) {
+          rememberActiveExam(learnerId, null);
+          setCompletedExam({ id: saved.id, userId: learnerId });
+        } else {
+          setAttempt({
+            ...restored,
+            category: saved.category,
+            section: saved.section,
+          });
+        }
+      })
+      .catch(() => {
+        if (alive)
+          setRecoveryError(
+            t(
+              "Saqlangan testni avtomatik ochib bo‘lmadi. Uni Natijalarim bo‘limidan davom ettiring.",
+            ),
+          );
+      })
+      .finally(() => {
+        if (alive) setRecoveringExam(false);
+      });
+    return () => {
+      alive = false;
+      setRecoveringExam(false);
+    };
+  }, [learnerId, canRecover]);
+
   const action = useAction();
   async function start(id: string, category = "", section = "") {
     if (action.busy || id === retiredDiagnosticId) return;
@@ -203,7 +269,12 @@ function App() {
           if (result.error) throw Error(result.error);
         } else result = await rpc("start_exam_session", { t: id });
         if (result.submitted) done(result.id);
-        else setAttempt({ ...result, category, section });
+        else {
+          if (learnerId)
+            rememberActiveExam(learnerId, { id: result.id, category, section });
+          setRecoveryError("");
+          setAttempt({ ...result, category, section });
+        }
       } catch (error) {
         if (document.fullscreenElement)
           void document.exitFullscreen().catch(() => {});
@@ -263,14 +334,17 @@ function App() {
         </button>
       </main>
     );
+  if (recoveringExam) return <Loading />;
   if (attempt)
     return (
-      <ExamPlayer
-        key={attempt.id}
-        attempt={attempt}
-        accessToken={session.access_token}
-        onDone={done}
-      />
+      <Suspense fallback={<Loading />}>
+        <ExamPlayer
+          key={attempt.id}
+          attempt={attempt}
+          accessToken={session.access_token}
+          onDone={done}
+        />
+      </Suspense>
     );
   if (adminRoute)
     return (
@@ -380,48 +454,53 @@ function App() {
           key={page}
         >
           <Feedback {...action} />
-          {page === "dashboard" && (
-            <Dashboard profile={profile} categories={categories} />
-          )}
-          {page === "tests" && <TestsList onStart={start} busy={action.busy} />}
-          {page === "results" && (
-            <>
-              <PageTitle
-                eyebrow={t("MEASURE YOUR PROGRESS")}
-                title={t("Natijalarim")}
-              />
-              <ResultsPage
-                key={session.user.id}
-                onResume={start}
-                onExplain={(prompt) => {
-                  setAiPrompt(prompt);
-                  location.hash = "/student/ai";
-                }}
-              />
-            </>
-          )}
-          {page === "ai" && (
-            <Suspense fallback={<Loading />}>
-              <ChatPage userId={session.user.id} initialPrompt={aiPrompt} />
-            </Suspense>
-          )}
-          {page === "library" && <LibraryPage userId={session.user.id} />}
-          {page === "profile" && (
-            <>
-              <PageTitle
-                eyebrow={t("YOUR ACCOUNT")}
-                title={t("Profil va sozlamalar")}
-              />
-              <ProfilePage
-                session={session}
-                profile={profile}
-                categories={categories}
-                onSaved={async () => account.reload()}
-                onTheme={setDark}
-                admin={admin}
-              />
-            </>
-          )}
+          <Feedback error={recoveryError} />
+          <Suspense fallback={<Loading />}>
+            {page === "dashboard" && (
+              <Dashboard profile={profile} categories={categories} />
+            )}
+            {page === "tests" && (
+              <TestsList onStart={start} busy={action.busy} />
+            )}
+            {page === "results" && (
+              <>
+                <PageTitle
+                  eyebrow={t("MEASURE YOUR PROGRESS")}
+                  title={t("Natijalarim")}
+                />
+                <ResultsPage
+                  key={session.user.id}
+                  onResume={start}
+                  onExplain={(prompt) => {
+                    setAiPrompt(prompt);
+                    location.hash = "/student/ai";
+                  }}
+                />
+              </>
+            )}
+            {page === "ai" && (
+              <Suspense fallback={<Loading />}>
+                <ChatPage userId={session.user.id} initialPrompt={aiPrompt} />
+              </Suspense>
+            )}
+            {page === "library" && <LibraryPage userId={session.user.id} />}
+            {page === "profile" && (
+              <>
+                <PageTitle
+                  eyebrow={t("YOUR ACCOUNT")}
+                  title={t("Profil va sozlamalar")}
+                />
+                <ProfilePage
+                  session={session}
+                  profile={profile}
+                  categories={categories}
+                  onSaved={async () => account.reload()}
+                  onTheme={setDark}
+                  admin={admin}
+                />
+              </>
+            )}
+          </Suspense>
         </main>
         {!fullChat && <footer>© TAFE · Training And Future Excellence</footer>}
       </div>

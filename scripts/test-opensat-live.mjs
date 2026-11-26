@@ -1,18 +1,12 @@
 import { PGlite } from "@electric-sql/pglite";
-import { readFile, readdir } from "node:fs/promises";
+import { readFile } from "node:fs/promises";
+import { prepareTestDatabase } from "./database-fixture.mjs";
 import { randomUUID } from "node:crypto";
 import { normalizeBank } from "../supabase/functions/opensat-start/normalize.mjs";
 import assert from "node:assert/strict";
 const db = new PGlite();
 try {
-  const setup = (await readFile("scripts/test-database.mjs", "utf8"))
-    .split("await db.exec(`")[1]
-    .split("`);")[0];
-  await db.exec(setup);
-  for (const filename of (await readdir("supabase/migrations"))
-    .filter((x) => x.endsWith(".sql"))
-    .sort())
-    await db.exec(await readFile("supabase/migrations/" + filename, "utf8"));
+  await prepareTestDatabase(db);
   const learner = randomUUID(),
     plan = randomUUID();
   await db.query(

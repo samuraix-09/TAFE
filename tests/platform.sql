@@ -1,6 +1,18 @@
 -- Temporary fixtures. The final ROLLBACK removes all test users, content and usage.
 begin;
 do $$
+begin
+  if exists (
+    select 1 from public.tests
+    where id = 'fe816150-8c12-4b3a-b04a-000000000002' and published
+  ) then
+    raise exception 'Retired introductory diagnostic remains published';
+  end if;
+end $$;
+-- Reuse the small historical form as an isolated timer fixture.
+update public.tests set published = true
+where id = 'fe816150-8c12-4b3a-b04a-000000000002';
+do $$
 declare item record;
 begin
   for item in select * from (values

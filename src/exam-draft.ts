@@ -97,3 +97,37 @@ export function storeExamDraft(
     // Live answers can still be submitted when browser storage is unavailable.
   }
 }
+
+export type ActiveExam = {
+  id: string;
+  category: string;
+  section: string;
+};
+
+export function readActiveExam(userId: string): ActiveExam | null {
+  try {
+    const exam: unknown = JSON.parse(
+      sessionStorage.getItem("tafe-active-exam-" + userId) ?? "null",
+    );
+    if (!exam || typeof exam !== "object") return null;
+    const { id, category, section } = exam as Partial<ActiveExam>;
+    return typeof id === "string" &&
+      /^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$/i.test(id) &&
+      typeof category === "string" &&
+      typeof section === "string"
+      ? { id, category, section }
+      : null;
+  } catch {
+    return null;
+  }
+}
+
+export function rememberActiveExam(userId: string, exam: ActiveExam | null) {
+  try {
+    const key = "tafe-active-exam-" + userId;
+    if (exam) sessionStorage.setItem(key, JSON.stringify(exam));
+    else sessionStorage.removeItem(key);
+  } catch {
+    /* Resume remains available through My Results if storage is disabled. */
+  }
+}

@@ -12,6 +12,7 @@ import {
   sameExamAnswer,
 } from "./exam-draft";
 import { ReadingPassage } from "./ReadingPassage";
+import { fullScreenEnabled } from "./exam-fullscreen";
 import "./exam-session.css";
 
 type Action =
@@ -22,13 +23,6 @@ type Action =
   | "return"
   | "resume"
   | "status";
-
-export function fullScreenEnabled() {
-  return (
-    !!document.fullscreenEnabled &&
-    typeof document.documentElement.requestFullscreen === "function"
-  );
-}
 
 export function ExamPlayer({
   attempt,
@@ -82,7 +76,8 @@ export function ExamPlayer({
   });
   const [clock, setClock] = useState(Date.now);
   const [outside, setOutside] = useState(
-    () => fullScreenEnabled() && !document.fullscreenElement,
+    () =>
+      document.hidden || (fullScreenEnabled() && !document.fullscreenElement),
   );
   const [leaveAt, setLeaveAt] = useState<number | null>(null);
   const [confirming, setConfirming] = useState(false);
@@ -314,7 +309,15 @@ export function ExamPlayer({
       }).catch(() => {});
     };
     window.addEventListener("pagehide", leavePage);
-    if (attempt.fullscreen_deadline && !lastOutside.current) send("return");
+    if (!attempt.paused_at) {
+      if (lastOutside.current && !attempt.fullscreen_deadline) {
+        screenLeftAt.current = Date.now();
+        setLeaveAt(screenLeftAt.current);
+        send("leave");
+      } else if (attempt.fullscreen_deadline && !lastOutside.current) {
+        send("return");
+      }
+    }
     return () => {
       active.current = false;
       clearInterval(interval);

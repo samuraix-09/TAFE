@@ -2092,6 +2092,9 @@ progress::-webkit-progress-value {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  justify-content: flex-start;
+  height: auto;
+  min-height: 3.5rem;
   gap: 0.65rem;
   padding: 0.65rem 1rem;
   border-bottom: 1px solid var(--stroke);
@@ -2161,6 +2164,11 @@ progress::-webkit-progress-value {
 }
 
 @media (max-width: 760px) {
+  .book-reader-bar strong {
+    flex-basis: 100%;
+    order: -1;
+  }
+
   .book-reader-view.has-ai {
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: minmax(0, 1fr) minmax(0, 1fr);

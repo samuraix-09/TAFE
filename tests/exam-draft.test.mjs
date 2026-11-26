@@ -2,6 +2,8 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import {
   hasExamAnswer,
+  readActiveExam,
+  rememberActiveExam,
   readExamDraft,
   sameExamAnswer,
   storeExamDraft,
@@ -42,4 +44,20 @@ test("compares grouped answers with unordered keys and keeps false or zero answe
   assert.equal(hasExamAnswer({ x: " ", y: [] }), false);
   assert.equal(hasExamAnswer(false), true);
   assert.equal(hasExamAnswer(0), true);
+});
+
+test("recovers only the current learner’s existing attempt and clears the pointer on completion", () => {
+  const attempt = {
+    id: "c3000000-0000-4000-8000-000000000002",
+    category: "SAT",
+    section: "Math",
+  };
+  rememberActiveExam("one", attempt);
+  assert.deepEqual(readActiveExam("one"), attempt);
+  assert.equal(readActiveExam("two"), null);
+  rememberActiveExam("one", { ...attempt, id: "invalid" });
+  assert.equal(readActiveExam("one"), null);
+  rememberActiveExam("one", attempt);
+  rememberActiveExam("one", null);
+  assert.equal(readActiveExam("one"), null);
 });
