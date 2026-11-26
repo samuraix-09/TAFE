@@ -14,6 +14,7 @@ import {
 import { ReadingPassage } from "./ReadingPassage";
 import { fullScreenEnabled } from "./exam-fullscreen";
 import "./exam-session.css";
+import "./sat-exam.css";
 
 type Action =
   | "save"
@@ -449,6 +450,7 @@ export function ExamPlayer({
     stage !== null
       ? `${t(satMath ? "Math" : "Reading and Writing")} · ${t("Modul")} ${(stage % 2) + 1}/2`
       : attempt.section || t("Test sessiyasi");
+  const examTitle = t(attempt.title || "Test topshirish");
   const answered = attemptQuestions.filter((item) =>
     hasExamAnswer(answers[item.id]),
   ).length;
@@ -468,8 +470,93 @@ export function ExamPlayer({
     }, 250);
   }
 
+  const questionHeading = (
+    <div className="question-heading">
+      <span className="badge">
+        {index + 1}
+        {t(sat ? "-savol" : "-savol · ")}
+        {!sat && stage === null && (
+          <>
+            {q.points || 1}
+            {t(" ball ·")}
+          </>
+        )}
+        {!sat && <> {q.required ? t("majburiy") : t("ixtiyoriy")}</>}
+      </span>
+      <button
+        className="flag-button"
+        aria-pressed={flags.includes(q.id)}
+        onClick={() => {
+          const next = flags.includes(q.id)
+            ? flags.filter((id) => id !== q.id)
+            : [...flags, q.id];
+          setFlags(next);
+          if (current.adaptive)
+            queue.current = queue.current
+              .then(async () => {
+                await rpc("opensat_review_flags", {
+                  attempt: attempt.id,
+                  flags: next,
+                });
+              })
+              .catch((e) => setError(e.message));
+        }}
+      >
+        <Flag size={16} aria-hidden="true" />
+        {flags.includes(q.id) ? t("Belgilangan") : t("Belgilash")}
+      </button>
+    </div>
+  );
+  const pagination = (
+    <div className="exam-pagination">
+      <button disabled={index === 0} onClick={() => goToQuestion(index - 1)}>
+        {t("← Oldingi")}
+      </button>
+      <button
+        disabled={index === attemptQuestions.length - 1}
+        onClick={() => goToQuestion(index + 1)}
+      >
+        {t("Keyingi →")}
+      </button>
+    </div>
+  );
+  const saveStatus = (
+    <small role="status">
+      <ShieldCheck size={13} aria-hidden="true" />{" "}
+      {!online
+        ? t("Aloqa uzildi. Javoblar ushbu oynada saqlanmoqda.")
+        : saving
+          ? t("Saqlanmoqda…")
+          : error
+            ? t("Qayta saqlash")
+            : t("Javoblar saqlandi")}
+    </small>
+  );
+
   return (
     <main className="exam-view" data-exam={presentation}>
+      {sat && (
+        <header className="sat-exam-header">
+          <div className="tafe-brand">
+            <img
+              className="tafe-logo-light"
+              src="/tafe-logo-light.svg"
+              alt="TAFE"
+              width={150}
+              height={42}
+            />
+            <img
+              className="tafe-logo-dark"
+              src="/tafe-logo-dark.svg"
+              alt="TAFE"
+              width={150}
+              height={42}
+            />
+          </div>
+          <h1>{t("Digital SAT mashq testi")}</h1>
+          {saveStatus}
+        </header>
+      )}
       <div
         className="exam-content"
         inert={blocked || moduleNotice}
@@ -502,22 +589,27 @@ export function ExamPlayer({
       >
         <div className="exam-toolbar">
           <div>
-            <p className="eyebrow exam-kind">
-              {presentation === "standard"
-                ? sectionTitle
-                : `${presentation.toUpperCase()} · ${sectionTitle}`}
-            </p>
-            <h1>{t(attempt.title || "Test topshirish")}</h1>
-            <small role="status">
-              <ShieldCheck size={13} aria-hidden="true" />{" "}
-              {!online
-                ? t("Aloqa uzildi. Javoblar ushbu oynada saqlanmoqda.")
-                : saving
-                  ? t("Saqlanmoqda…")
-                  : error
-                    ? t("Qayta saqlash")
-                    : t("Javoblar saqlandi")}
-            </small>
+            {sat ? (
+              <div className="sat-exam-details">
+                <span className="sat-module-label">{sectionTitle}</span>
+                <strong>
+                  {t("Savollar")} {index + 1} / {attemptQuestions.length}
+                </strong>
+                {attempt.title && (
+                  <span className="sat-exam-name">{examTitle}</span>
+                )}
+              </div>
+            ) : (
+              <>
+                <p className="eyebrow exam-kind">
+                  {presentation === "standard"
+                    ? sectionTitle
+                    : `${presentation.toUpperCase()} · ${sectionTitle}`}
+                </p>
+                <h1>{examTitle}</h1>
+                {saveStatus}
+              </>
+            )}
           </div>
           <div className="exam-timer-group">
             {(!sat || !hideClock || seconds <= 300) && (
@@ -525,6 +617,11 @@ export function ExamPlayer({
                 className={seconds < 60 ? "exam-clock urgent" : "exam-clock"}
                 aria-label={t("Qolgan vaqt")}
               >
+                {sat && (
+                  <span className="sat-clock-label" aria-hidden="true">
+                    {t("Qolgan vaqt")}
+                  </span>
+                )}
                 {Math.floor(seconds / 60)}:
                 {String(seconds % 60).padStart(2, "0")}
               </div>
@@ -545,7 +642,11 @@ export function ExamPlayer({
             {answered} / {attemptQuestions.length}
             {t(" javob berildi")}
           </span>
-          <progress value={answered} max={attemptQuestions.length} />
+          <progress
+            aria-label={t("Javob berilgan")}
+            value={answered}
+            max={attemptQuestions.length}
+          />
         </div>
         {sat && stage !== null && (
           <ol className="exam-module-track" aria-label={t("Modullar")}>
@@ -560,7 +661,7 @@ export function ExamPlayer({
             ))}
           </ol>
         )}
-        {attempt.instructions && (
+        {!sat && attempt.instructions && (
           <p className="muted exam-instructions">{t(attempt.instructions)}</p>
         )}
         {current.adaptive && (
@@ -582,7 +683,6 @@ export function ExamPlayer({
             </button>
           </div>
         )}
-        {satMath && <SatMathTools />}
         {!fullScreenEnabled() && (
           <p className="muted">
             {t(
@@ -596,8 +696,9 @@ export function ExamPlayer({
         >
           <div
             className="exam-question-area"
-            data-split={Boolean((sat || ielts) && (passageText || image))}
+            data-split={Boolean(ielts && (passageText || image))}
           >
+            {sat && questionHeading}
             {(passageText || image) && (
               <section
                 className="exam-passage"
@@ -646,41 +747,7 @@ export function ExamPlayer({
               ref={questionPanel}
               aria-label={t("Savol va javob")}
             >
-              <div className="question-heading">
-                <span className="badge">
-                  {index + 1}
-                  {t("-savol · ")}
-                  {stage === null && (
-                    <>
-                      {q.points || 1}
-                      {t(" ball ·")}
-                    </>
-                  )}{" "}
-                  {q.required ? t("majburiy") : t("ixtiyoriy")}
-                </span>
-                <button
-                  className="flag-button"
-                  aria-pressed={flags.includes(q.id)}
-                  onClick={() => {
-                    const next = flags.includes(q.id)
-                      ? flags.filter((id) => id !== q.id)
-                      : [...flags, q.id];
-                    setFlags(next);
-                    if (current.adaptive)
-                      queue.current = queue.current
-                        .then(async () => {
-                          await rpc("opensat_review_flags", {
-                            attempt: attempt.id,
-                            flags: next,
-                          });
-                        })
-                        .catch((e) => setError(e.message));
-                  }}
-                >
-                  <Flag size={16} aria-hidden="true" />
-                  {flags.includes(q.id) ? t("Belgilangan") : t("Belgilash")}
-                </button>
-              </div>
+              {!sat && questionHeading}
               {q.group_name && <p className="eyebrow">{q.group_name}</p>}
               {(ielts || cefr) && passageText && (
                 <button
@@ -733,23 +800,22 @@ export function ExamPlayer({
                   {t("so‘z")}
                 </p>
               )}
-              <div className="exam-pagination">
-                <button
-                  disabled={index === 0}
-                  onClick={() => goToQuestion(index - 1)}
-                >
-                  {t("← Oldingi")}
-                </button>
-                <button
-                  disabled={index === attemptQuestions.length - 1}
-                  onClick={() => goToQuestion(index + 1)}
-                >
-                  {t("Keyingi →")}
-                </button>
-              </div>
+              {!sat && pagination}
             </section>
+            {sat && pagination}
           </div>
           <section className="exam-navigation" data-menu-open={questionMenu}>
+            {sat && (
+              <div className="sat-exam-directions">
+                <h2>{t("Test ko‘rsatmalari")}</h2>
+                <p>
+                  {t(
+                    attempt.instructions ||
+                      "Joriy modul ichida oldingi va keyingi savollarga o‘tishingiz mumkin.",
+                  )}
+                </p>
+              </div>
+            )}
             <div className="exam-navigation-heading">
               {sat ? (
                 <button
@@ -861,6 +927,7 @@ export function ExamPlayer({
                   ? t("Keyingi modulga o‘tish")
                   : t("Testni yakunlash")}
             </button>
+            {satMath && <SatMathTools />}
             {error && (
               <button onClick={() => send("save")}>{t("Qayta saqlash")}</button>
             )}

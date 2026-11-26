@@ -3654,6 +3654,21 @@
     "en": "Download failed. Please try again.",
     "ru": "Не удалось скачать файл. Попробуйте ещё раз."
   },
+  "Digital SAT mashq testi": {
+    "uz": "Digital SAT mashq testi",
+    "en": "Digital SAT Practice",
+    "ru": "Пробный цифровой SAT"
+  },
+  "Test ko‘rsatmalari": {
+    "uz": "Test ko‘rsatmalari",
+    "en": "Test directions",
+    "ru": "Инструкции к тесту"
+  },
+  "Joriy modul ichida oldingi va keyingi savollarga o‘tishingiz mumkin.": {
+    "uz": "Joriy modul ichida oldingi va keyingi savollarga o‘tishingiz mumkin.",
+    "en": "Use Back and Next to move between questions in this module.",
+    "ru": "Используйте кнопки «Назад» и «Далее» для перехода между вопросами этого модуля."
+  },
   "Test sessiyasi": {
     "uz": "Test sessiyasi",
     "en": "Test session",
