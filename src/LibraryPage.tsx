@@ -1,9 +1,10 @@
 import { t } from "./i18n";
-import { useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import {
   BookOpen,
   Download,
   ImagePlus,
+  Sparkles,
   Plus,
   Search,
   Trash2,
@@ -20,7 +21,17 @@ import {
   useData,
   type Row,
 } from "./platform";
-export function LibraryPage({ admin = false }: { admin?: boolean }) {
+const ReaderChat = lazy(() =>
+  import("./ChatPage").then((module) => ({ default: module.ChatPage })),
+);
+
+export function LibraryPage({
+  admin = false,
+  userId,
+}: {
+  admin?: boolean;
+  userId?: string;
+}) {
   const books = useData(async () => {
     const rows = checked(
       await db
@@ -65,7 +76,9 @@ export function LibraryPage({ admin = false }: { admin?: boolean }) {
     [category, setCategory] = useState(""),
     [edit, setEdit] = useState<Row | null>(null),
     [selected, setSelected] = useState<Row | null>(null),
-    [preview, setPreview] = useState("");
+    [preview, setPreview] = useState<{ url: string; title: string } | null>(
+      null,
+    );
   const action = useAction();
   const rows = [...(books.data || [])]
     .sort(
@@ -86,7 +99,9 @@ export function LibraryPage({ admin = false }: { admin?: boolean }) {
   async function open(book: Row) {
     if (book.file_path) {
       const url = await signed("tafe-documents", book.file_path);
-      if (url) setPreview(url);
+      if (!url) throw Error("Kitob fayli mavjud emas.");
+      setPreview({ url, title: book.title });
+      setSelected(null);
     } else if (book.url) {
       const url = new URL(book.url, location.origin);
       if (url.protocol !== "https:")
@@ -257,21 +272,12 @@ export function LibraryPage({ admin = false }: { admin?: boolean }) {
         </Modal>
       )}
       {preview && (
-        <Modal title={t("Kitobni o‘qish")} onClose={() => setPreview("")} wide>
-          <a
-            className="download-link"
-            href={preview}
-            target="_blank"
-            rel="noreferrer"
-          >
-            {t("Alohida oynada ochish / yuklab olish ↗")}
-          </a>
-          <iframe
-            title={t("Kitob hujjati")}
-            className="reader-frame"
-            src={preview}
-          />
-        </Modal>
+        <BookReader
+          url={preview.url}
+          title={preview.title}
+          userId={userId}
+          onClose={() => setPreview(null)}
+        />
       )}
       {edit && (
         <BookEditor
@@ -287,6 +293,67 @@ export function LibraryPage({ admin = false }: { admin?: boolean }) {
     </div>
   );
 }
+function BookReader({
+  url,
+  title,
+  userId,
+  onClose,
+}: {
+  url: string;
+  title: string;
+  userId?: string;
+  onClose: () => void;
+}) {
+  const dialog = useRef<HTMLDialogElement>(null);
+  const [showAi, setShowAi] = useState(false);
+  useEffect(() => {
+    const reader = dialog.current;
+    reader?.showModal();
+    return () => reader?.close();
+  }, []);
+
+  return (
+    <dialog
+      ref={dialog}
+      className="book-reader"
+      aria-label={title}
+      onCancel={onClose}
+    >
+      <header className="book-reader-bar">
+        <button type="button" onClick={onClose}>
+          {t("Kutubxonaga qaytish")}
+        </button>
+        <strong>{title}</strong>
+        {userId && (
+          <button
+            type="button"
+            aria-expanded={showAi}
+            onClick={() => setShowAi((open) => !open)}
+          >
+            <Sparkles size={16} aria-hidden="true" /> TAFE AI
+          </button>
+        )}
+        <a className="button-link" href={url} target="_blank" rel="noreferrer">
+          {t("Alohida oynada ochish / yuklab olish ↗")}
+        </a>
+      </header>
+      <div className={showAi ? "book-reader-view has-ai" : "book-reader-view"}>
+        <iframe title={t("Kitob hujjati")} src={url} />
+        {showAi && userId && (
+          <div className="book-reader-chat">
+            <Suspense fallback={<p role="status">{t("TAFE yuklanmoqda…")}</p>}>
+              <ReaderChat
+                userId={userId}
+                initialPrompt={`“${title}” kitobidagi quyidagi matnni tushuntiring: `}
+              />
+            </Suspense>
+          </div>
+        )}
+      </div>
+    </dialog>
+  );
+}
+
 function BookEditor({
   book,
   categories,

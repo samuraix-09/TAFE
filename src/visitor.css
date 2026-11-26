@@ -975,6 +975,7 @@
     margin: 0;
   }
   .pricing-card button,
+  .pricing-card .plan-purchase-link,
   .pricing-card > p {
     grid-column: 1/-1;
   }

@@ -35,6 +35,7 @@ import {
 } from "./platform";
 import { LibraryPage } from "./LibraryPage";
 import { TestBuilder } from "./TestBuilder";
+import { SatScoringEditor } from "./SatScoringEditor";
 const links = [
   ["overview", "Overview", LayoutDashboard],
   ["users", "User Management", Users],
@@ -787,6 +788,9 @@ function TestsManager() {
     [],
   );
   const [edit, setEdit] = useState<string | null>(null);
+  const [scoring, setScoring] = useState<{ id: string; title: string } | null>(
+    null,
+  );
   const a = useAction();
   if (edit !== null)
     return (
@@ -826,6 +830,13 @@ function TestsManager() {
               <button onClick={() => setEdit(test.id)}>
                 {t("Savollarni tahrirlash")}
               </button>
+              {test.sat_session_form && (
+                <button
+                  onClick={() => setScoring({ id: test.id, title: test.title })}
+                >
+                  {t("SAT ball jadvali")}
+                </button>
+              )}
               {test.published && (
                 <button
                   disabled={a.busy}
@@ -855,6 +866,13 @@ function TestsManager() {
           </section>
         ))}
       </div>
+      {scoring && (
+        <SatScoringEditor
+          testId={scoring.id}
+          title={scoring.title}
+          onClose={() => setScoring(null)}
+        />
+      )}
       {!tests.loading && !tests.data?.length && (
         <Empty text={t("Birinchi testni vizual muharrirda yarating.")} />
       )}

@@ -17,6 +17,7 @@ import {
   X,
 } from "lucide-react";
 import { db } from "./db";
+import { PlanPurchaseLink } from "./PlanPurchaseLink";
 import { WindowsDownloads } from "./WindowsDownloads";
 import "./visitor.css";
 export type VisitorPage =
@@ -454,7 +455,7 @@ export function Landing({
                   <ArrowUpRight size={16} />
                 </button>
               ) : (
-                <p className="muted">{t("Pullik ulanish hali ochilmagan.")}</p>
+                <PlanPurchaseLink planName={p.name} />
               )}
             </section>
           ))}

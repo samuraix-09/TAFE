@@ -10,7 +10,7 @@ import {
   ShieldCheck,
   Sun,
 } from "lucide-react";
-import { db, authErrorMessage } from "./db";
+import { tafeAuthFunction, db, authErrorMessage } from "./db";
 import { Brand, type VisitorPage } from "./Landing";
 type Props = {
   mode: VisitorPage;
@@ -78,7 +78,7 @@ export function EmailAuth({ mode, go, dark, toggle, onAuthenticated }: Props) {
     }
   }
   async function invoke(body: Record<string, string>) {
-    const { data, error } = await db.functions.invoke("emailjs-registration", {
+    const { data, error } = await db.functions.invoke(tafeAuthFunction, {
       body,
     });
     if (error) {

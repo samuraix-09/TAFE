@@ -21,6 +21,7 @@ import {
   Shield,
   Sparkles,
   Sun,
+  Trophy,
   User,
 } from "lucide-react";
 import type { Session } from "@supabase/supabase-js";
@@ -29,8 +30,9 @@ import { Brand, Landing, InfoPage, type VisitorPage } from "./Landing";
 import { EmailAuth } from "./EmailAuth";
 import { LibraryPage } from "./LibraryPage";
 import { ProfilePage } from "./ProfilePage";
-import { ExamPlayer } from "./ExamPlayer";
+import { ExamPlayer, fullScreenEnabled } from "./ExamPlayer";
 import { ResultsPage } from "./ResultsPage";
+import { retiredDiagnosticId } from "./exam-catalog";
 import {
   checked,
   Empty,
@@ -89,7 +91,10 @@ function App() {
     ),
     [dark, setDark] = useState(localStorage.theme === "dark"),
     [attempt, setAttempt] = useState<Row | null>(null),
-    [completedAttemptId, setCompletedAttemptId] = useState<string | null>(null),
+    [completedExam, setCompletedExam] = useState<{
+      id: string;
+      userId: string;
+    } | null>(null),
     [aiPrompt, setAiPrompt] = useState("");
   const go = (v: VisitorPage) => {
     setVisitor(v);
@@ -111,7 +116,6 @@ function App() {
       setSession(next);
       if (!next) {
         setAttempt(null);
-        setCompletedAttemptId(null);
       }
       if (event === "PASSWORD_RECOVERY") go("reset");
     });
@@ -175,25 +179,46 @@ function App() {
         .update({ theme: next ? "dark" : "light" })
         .eq("id", session.user.id);
   };
-  const done = () => {
-    setCompletedAttemptId(attempt?.id ?? null);
+  const done = (id: string) => {
     setAttempt(null);
-    location.hash = "/student/results";
+    if (session) setCompletedExam({ id, userId: session.user.id });
+    if (document.fullscreenElement)
+      void document.exitFullscreen().catch(() => {});
   };
   const action = useAction();
-  async function start(id: string) {
-    await action.run(
-      async () => setAttempt(await rpc("start_test", { t: id })),
-      "",
-    );
+  async function start(id: string, category = "", section = "") {
+    if (action.busy || id === retiredDiagnosticId) return;
+    const fullscreen =
+      fullScreenEnabled() && !document.fullscreenElement
+        ? document.documentElement.requestFullscreen().catch(() => {})
+        : Promise.resolve();
+    await action.run(async () => {
+      await fullscreen;
+      try {
+        let result;
+        if (id === "fe816150-8c12-4b3a-b04a-000000000031") {
+          result = checked(
+            await db.functions.invoke("opensat-start", { body: {} }),
+          );
+          if (result.error) throw Error(result.error);
+        } else result = await rpc("start_exam_session", { t: id });
+        if (result.submitted) done(result.id);
+        else setAttempt({ ...result, category, section });
+      } catch (error) {
+        if (document.fullscreenElement)
+          void document.exitFullscreen().catch(() => {});
+        throw error;
+      }
+    }, "");
   }
   const infoPage = ["privacy", "terms", "contact"].includes(visitor);
   useStartupReady(
     ready && (!session || visitor === "reset" || infoPage || !account.loading),
   );
   if (!ready) return <Loading />;
-  if (infoPage) return <InfoPage kind={visitor} back={() => go("home")} />;
-  if (!session || visitor === "reset") {
+  if (!attempt && infoPage)
+    return <InfoPage kind={visitor} back={() => go("home")} />;
+  if (!session || (!attempt && visitor === "reset")) {
     if (visitor === "home" && !adminRoute)
       return <Landing go={go} dark={dark} toggle={toggle} />;
     return (
@@ -238,13 +263,39 @@ function App() {
         </button>
       </main>
     );
+  if (attempt)
+    return (
+      <ExamPlayer
+        key={attempt.id}
+        attempt={attempt}
+        accessToken={session.access_token}
+        onDone={done}
+      />
+    );
   if (adminRoute)
     return (
       <Suspense fallback={<Loading />}>
         <AdminApp onLanguageChange={changeLanguage} />
       </Suspense>
     );
-  const fullChat = page === "ai" && !attempt;
+  if (completedExam?.userId === session.user.id) {
+    return (
+      <ExamCompleted
+        id={completedExam.id}
+        onDetails={() => {
+          setCompletedExam(null);
+          location.hash = "/student/results/" + completedExam.id;
+          setPage("results");
+        }}
+        onExit={() => {
+          setCompletedExam(null);
+          location.hash = "/student/dashboard";
+          setPage("dashboard");
+        }}
+      />
+    );
+  }
+  const fullChat = page === "ai";
   return (
     <>
       <aside className="student-sidebar">
@@ -259,18 +310,6 @@ function App() {
               aria-current={page === key ? "page" : undefined}
               key={key}
               href={"#/student/" + key}
-              onClick={(e) => {
-                if (
-                  attempt &&
-                  !confirm(
-                    t(
-                      "Testdan chiqasizmi? Saqlangan javoblar bilan keyin davom etishingiz mumkin.",
-                    ),
-                  )
-                )
-                  e.preventDefault();
-                else setAttempt(null);
-              }}
             >
               <Icon size={19} />
               <span>{t(name)}</span>
@@ -338,62 +377,103 @@ function App() {
         </header>
         <main
           className={fullChat ? "chat-workspace-main" : "motion-view"}
-          key={attempt?.id || page}
+          key={page}
         >
           <Feedback {...action} />
-          {attempt ? (
-            <ExamPlayer attempt={attempt} onDone={done} />
-          ) : (
+          {page === "dashboard" && (
+            <Dashboard profile={profile} categories={categories} />
+          )}
+          {page === "tests" && <TestsList onStart={start} busy={action.busy} />}
+          {page === "results" && (
             <>
-              {page === "dashboard" && (
-                <Dashboard profile={profile} categories={categories} />
-              )}
-              {page === "tests" && <TestsList onStart={start} />}
-              {page === "results" && (
-                <>
-                  <PageTitle
-                    eyebrow={t("MEASURE YOUR PROGRESS")}
-                    title={t("Natijalarim")}
-                  />
-                  <ResultsPage
-                    completedAttemptId={completedAttemptId}
-                    onReviewOpened={() => setCompletedAttemptId(null)}
-                    onResume={start}
-                    onExplain={(prompt) => {
-                      setAiPrompt(prompt);
-                      location.hash = "/student/ai";
-                    }}
-                  />
-                </>
-              )}
-              {page === "ai" && (
-                <Suspense fallback={<Loading />}>
-                  <ChatPage userId={session.user.id} initialPrompt={aiPrompt} />
-                </Suspense>
-              )}
-              {page === "library" && <LibraryPage />}
-              {page === "profile" && (
-                <>
-                  <PageTitle
-                    eyebrow={t("YOUR ACCOUNT")}
-                    title={t("Profil va sozlamalar")}
-                  />
-                  <ProfilePage
-                    session={session}
-                    profile={profile}
-                    categories={categories}
-                    onSaved={async () => account.reload()}
-                    onTheme={setDark}
-                    admin={admin}
-                  />
-                </>
-              )}
+              <PageTitle
+                eyebrow={t("MEASURE YOUR PROGRESS")}
+                title={t("Natijalarim")}
+              />
+              <ResultsPage
+                key={session.user.id}
+                onResume={start}
+                onExplain={(prompt) => {
+                  setAiPrompt(prompt);
+                  location.hash = "/student/ai";
+                }}
+              />
+            </>
+          )}
+          {page === "ai" && (
+            <Suspense fallback={<Loading />}>
+              <ChatPage userId={session.user.id} initialPrompt={aiPrompt} />
+            </Suspense>
+          )}
+          {page === "library" && <LibraryPage userId={session.user.id} />}
+          {page === "profile" && (
+            <>
+              <PageTitle
+                eyebrow={t("YOUR ACCOUNT")}
+                title={t("Profil va sozlamalar")}
+              />
+              <ProfilePage
+                session={session}
+                profile={profile}
+                categories={categories}
+                onSaved={async () => account.reload()}
+                onTheme={setDark}
+                admin={admin}
+              />
             </>
           )}
         </main>
         {!fullChat && <footer>© TAFE · Training And Future Excellence</footer>}
       </div>
     </>
+  );
+}
+function ExamCompleted({
+  id,
+  onDetails,
+  onExit,
+}: {
+  id: string;
+  onDetails: () => void;
+  onExit: () => void;
+}) {
+  const result = useData(async () => {
+    const { data, error } = await db
+      .from("test_attempts")
+      .select("score,total,sat_scores")
+      .eq("id", id)
+      .not("submitted_at", "is", null)
+      .single();
+    if (error) throw error;
+    return data;
+  }, [id]);
+  const satScore = result.data?.sat_scores?.total;
+  return (
+    <main className="exam-completed">
+      <section className="exam-completed-panel">
+        <Trophy size={40} aria-hidden="true" />
+        <h1>{t("Test yakunlandi")}</h1>
+        <Feedback error={result.error} loading={result.loading} />
+        {result.data && (
+          <>
+            <strong className="exam-completed-score">
+              {satScore == null
+                ? `${result.data.score} / ${result.data.total}`
+                : `${satScore} / 1600`}
+            </strong>
+            {satScore != null && (
+              <p className="muted">{t("SAT taxminiy balli")}</p>
+            )}
+          </>
+        )}
+        <div className="button-row">
+          <button className="primary" onClick={onDetails}>
+            {t("Natijani ko‘rish")}
+          </button>
+          <button onClick={onExit}>{t("Chiqish")}</button>
+        </div>
+      </section>
+    </main>
   );
 }
 function Loading() {
@@ -421,16 +501,15 @@ function Dashboard({
   profile: Row;
   categories: Row[];
 }) {
-  const result = useData(
-    async () =>
-      checked(
-        await db
-          .from("test_attempts")
-          .select("id,submitted_at,score,total")
-          .order("started_at", { ascending: false }),
-      ),
-    [],
-  );
+  const result = useData(async () => {
+    await rpc("settle_exam_sessions");
+    return checked(
+      await db
+        .from("test_attempts")
+        .select("id,submitted_at,score,total")
+        .order("started_at", { ascending: false }),
+    );
+  }, []);
   const ent = useData(() => rpc("my_entitlements"), []);
   const completed = result.data?.filter((r) => r.submitted_at) || [],
     average = completed.length
@@ -539,22 +618,42 @@ function Dashboard({
     </>
   );
 }
-function TestsList({ onStart }: { onStart: (id: string) => void }) {
-  const data = useData(
-    async () =>
-      checked(
-        await db
-          .from("tests")
-          .select("*,exam_categories(name)")
-          .order("created_at", { ascending: false }),
-      ),
-    [],
-  );
+function TestsList({
+  onStart,
+  busy,
+}: {
+  onStart: (id: string, category: string, section: string) => void;
+  busy: boolean;
+}) {
+  const data = useData<Row[]>(() => rpc("web_exam_catalog"));
   const [search, setSearch] = useState("");
-  const rows = (data.data || []).filter((t) =>
-    (t.title + " " + t.exam_categories?.name + " " + t.section)
-      .toLowerCase()
-      .includes(search.toLowerCase()),
+  const [category, setCategory] = useState("");
+  const [section, setSection] = useState("");
+  const [difficulty, setDifficulty] = useState("");
+  const available = (data.data || []).filter(
+    (test) => !test.diagnostic && test.id !== retiredDiagnosticId,
+  );
+  const categories = [
+    ...new Set(
+      available.map((test) => test.exam_categories?.name).filter(Boolean),
+    ),
+  ];
+  const sections = [
+    ...new Set(available.map((test) => test.section).filter(Boolean)),
+  ];
+  const difficulties = [
+    ...new Set(available.map((test) => test.difficulty).filter(Boolean)),
+  ];
+  const query = search.trim().toLowerCase();
+  const rows = available.filter(
+    (test) =>
+      (!category || test.exam_categories?.name === category) &&
+      (!section || test.section === section) &&
+      (!difficulty || test.difficulty === difficulty) &&
+      [test.title, test.exam_categories?.name, test.section]
+        .join(" ")
+        .toLowerCase()
+        .includes(query),
   );
   return (
     <>
@@ -567,6 +666,42 @@ function TestsList({ onStart }: { onStart: (id: string) => void }) {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
+        <select
+          aria-label={t("Yo‘nalish")}
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+        >
+          <option value="">{t("Barcha yo‘nalishlar")}</option>
+          {categories.map((name) => (
+            <option key={name} value={name}>
+              {t(name)}
+            </option>
+          ))}
+        </select>
+        <select
+          aria-label={t("Bo‘lim")}
+          value={section}
+          onChange={(e) => setSection(e.target.value)}
+        >
+          <option value="">{t("Barcha bo‘limlar")}</option>
+          {sections.map((name) => (
+            <option key={name} value={name}>
+              {t(name)}
+            </option>
+          ))}
+        </select>
+        <select
+          aria-label={t("Qiyinlik")}
+          value={difficulty}
+          onChange={(e) => setDifficulty(e.target.value)}
+        >
+          <option value="">{t("Har qanday qiyinlik")}</option>
+          {difficulties.map((name) => (
+            <option key={name} value={name}>
+              {t(name)}
+            </option>
+          ))}
+        </select>
       </div>
       <div className="grid">
         {rows.map((test) => (
@@ -574,14 +709,24 @@ function TestsList({ onStart }: { onStart: (id: string) => void }) {
             <span className="badge">
               {t(test.exam_categories?.name || "")} · {t(test.kind)}
             </span>
-            <h2>{test.title}</h2>
-            <p className="muted">{test.description}</p>
+            <h2>{t(test.title)}</h2>
+            <p className="muted">{t(test.description)}</p>
             <p>
               {test.section} · {test.duration}
               {t(" daqiqa · ")}
               {t(test.difficulty)}
             </p>
-            <button className="primary" onClick={() => onStart(test.id)}>
+            <button
+              className="primary"
+              disabled={busy}
+              onClick={() =>
+                onStart(
+                  test.id,
+                  test.exam_categories?.name ?? "",
+                  test.section ?? "",
+                )
+              }
+            >
               {t("Boshlash / davom etish")}
             </button>
           </section>

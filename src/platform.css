@@ -1885,7 +1885,8 @@ progress::-webkit-progress-value {
   .result button {
     min-height: 44px;
   }
-  .student-workspace :is(input:not([type="checkbox"], [type="radio"]), textarea) {
+  .student-workspace
+    :is(input:not([type="checkbox"], [type="radio"]), textarea) {
     font-size: 16px;
   }
   .exam-toolbar h1 {
@@ -2066,4 +2067,107 @@ progress::-webkit-progress-value {
 .builder-footer {
   margin-top: 1rem;
   justify-content: flex-end;
+}
+
+.book-reader {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  color: var(--ink);
+  background: var(--paper);
+}
+
+.book-reader[open] {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+}
+
+.book-reader-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.65rem 1rem;
+  border-bottom: 1px solid var(--stroke);
+}
+
+.book-reader-bar strong {
+  flex: 1 1 14rem;
+}
+
+.book-reader-view {
+  display: grid;
+  min-height: 0;
+}
+
+.book-reader-view.has-ai {
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+}
+
+.book-reader-view iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.book-reader-chat {
+  min-width: 0;
+  min-height: 0;
+  overflow: auto;
+  border-inline-start: 1px solid var(--stroke);
+}
+
+.book-reader-chat .chat-layout {
+  height: 100%;
+  min-height: 0;
+}
+
+.exam-completed {
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding: 1.25rem;
+  background: var(--paper);
+}
+
+.exam-completed-panel {
+  width: min(100%, 33rem);
+  padding: clamp(1.25rem, 6vw, 3rem);
+  border: 1px solid var(--stroke);
+  border-radius: 1.5rem;
+  text-align: center;
+}
+
+.exam-completed-panel > svg {
+  color: var(--blue);
+}
+
+.exam-completed-score {
+  display: block;
+  margin: 0.75rem 0;
+  font-size: clamp(2rem, 8vw, 4rem);
+  font-variant-numeric: tabular-nums;
+}
+
+.exam-completed-panel .button-row {
+  justify-content: center;
+  margin-top: 1.25rem;
+}
+
+@media (max-width: 760px) {
+  .book-reader-view.has-ai {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  .book-reader-chat {
+    border-inline-start: 0;
+    border-top: 1px solid var(--stroke);
+  }
 }

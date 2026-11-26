@@ -3653,5 +3653,655 @@
     "uz": "Yuklab olishda xatolik. Qayta urinib ko‘ring.",
     "en": "Download failed. Please try again.",
     "ru": "Не удалось скачать файл. Попробуйте ещё раз."
+  },
+  "Test sessiyasi": {
+    "uz": "Test sessiyasi",
+    "en": "Test session",
+    "ru": "Экзаменационная сессия"
+  },
+  "Reading and Writing": {
+    "uz": "Reading and Writing",
+    "en": "Reading and Writing",
+    "ru": "Чтение и письмо"
+  },
+  "Math": {
+    "uz": "Math",
+    "en": "Math",
+    "ru": "Математика"
+  },
+  "Modul": {
+    "uz": "Modul",
+    "en": "Module",
+    "ru": "Модуль"
+  },
+  "Keyingi modulga o‘tish": {
+    "uz": "Keyingi modulga o‘tish",
+    "en": "Continue to the next module",
+    "ru": "Перейти к следующему модулю"
+  },
+  "Keyingi modulga o‘tasizmi? Bu modulga qaytib bo‘lmaydi.": {
+    "uz": "Keyingi modulga o‘tasizmi? Bu modulga qaytib bo‘lmaydi.",
+    "en": "Continue to the next module? You cannot return to this module.",
+    "ru": "Перейти к следующему модулю? Вернуться к этому модулю будет нельзя."
+  },
+  "To‘liq ekran rejimi": {
+    "uz": "To‘liq ekran rejimi",
+    "en": "Full-screen mode",
+    "ru": "Полноэкранный режим"
+  },
+  "Vaqt tugasa, saqlangan javoblar bilan test avtomatik yakunlanadi.": {
+    "uz": "Vaqt tugasa, saqlangan javoblar bilan test avtomatik yakunlanadi.",
+    "en": "When time runs out, the test will submit your saved answers.",
+    "ru": "Когда время истечёт, сохранённые ответы будут отправлены автоматически."
+  },
+  "Testni davom ettirish uchun to‘liq ekranga o‘ting.": {
+    "uz": "Testni davom ettirish uchun to‘liq ekranga o‘ting.",
+    "en": "Enter full screen to continue the test.",
+    "ru": "Перейдите в полноэкранный режим, чтобы продолжить тест."
+  },
+  "To‘liq ekranga qaytish": {
+    "uz": "To‘liq ekranga qaytish",
+    "en": "Return to full screen",
+    "ru": "Вернуться в полноэкранный режим"
+  },
+  "Brauzer to‘liq ekranga o‘tishga ruxsat bermadi.": {
+    "uz": "Brauzer to‘liq ekranga o‘tishga ruxsat bermadi.",
+    "en": "Your browser did not allow full-screen mode.",
+    "ru": "Браузер не разрешил полноэкранный режим."
+  },
+  "Testni davom ettirish uchun ushbu sahifaga qayting.": {
+    "uz": "Testni davom ettirish uchun ushbu sahifaga qayting.",
+    "en": "Return to this page to continue the test.",
+    "ru": "Вернитесь на эту страницу, чтобы продолжить тест."
+  },
+  "Bu brauzerda to‘liq ekran mavjud emas. Test vaqtida sahifada qoling.": {
+    "uz": "Bu brauzerda to‘liq ekran mavjud emas. Test vaqtida sahifada qoling.",
+    "en": "Full screen is unavailable in this browser. Stay on this page during the test.",
+    "ru": "Этот браузер не поддерживает полноэкранный режим. Оставайтесь на странице во время теста."
+  },
+  "Natijani tekshirish": {
+    "uz": "Natijani tekshirish",
+    "en": "Check result",
+    "ru": "Проверить результат"
+  },
+  "SAT taxminiy balli": {
+    "uz": "SAT taxminiy balli",
+    "en": "Estimated SAT score",
+    "ru": "Ориентировочный балл SAT"
+  },
+  "Bu TAFE mashq bahosi. Rasmiy SAT balli test shakli va savol kalibratsiyasiga bog‘liq.": {
+    "uz": "Bu TAFE mashq bahosi. Rasmiy SAT balli test shakli va savol kalibratsiyasiga bog‘liq.",
+    "en": "This is a TAFE practice estimate. Official SAT scores depend on the form and item calibration.",
+    "ru": "Это тренировочная оценка TAFE. Официальный балл SAT зависит от формы теста и калибровки заданий."
+  },
+  "To‘liq ekranga qaytish vaqti tugagani uchun yakunlandi.": {
+    "uz": "To‘liq ekranga qaytish vaqti tugagani uchun yakunlandi.",
+    "en": "Submitted after the full-screen grace period expired.",
+    "ru": "Тест завершён после истечения времени на возврат в полноэкранный режим."
+  },
+  "to‘g‘ri javob": {
+    "uz": "to‘g‘ri javob",
+    "en": "correct answers",
+    "ru": "правильных ответов"
+  },
+  "Quyidagi izohlar orqali qaysi mavzularni takrorlash kerakligini aniqlang.": {
+    "uz": "Quyidagi izohlar orqali qaysi mavzularni takrorlash kerakligini aniqlang.",
+    "en": "Use the explanations below to identify skills to practise.",
+    "ru": "Используйте пояснения ниже, чтобы определить темы для повторения."
+  },
+  "Takrorlash kerak bo‘lgan mavzular": {
+    "uz": "Takrorlash kerak bo‘lgan mavzular",
+    "en": "Skills to review",
+    "ru": "Темы для повторения"
+  },
+  "SAT · Full Practice": {
+    "uz": "SAT · To‘liq sinov",
+    "en": "SAT · Full Practice",
+    "ru": "SAT · Полный тренировочный тест"
+  },
+  "SAT · Boshlang‘ich sinov": {
+    "uz": "SAT · Boshlang‘ich sinov",
+    "en": "SAT · Diagnostic",
+    "ru": "SAT · Стартовый тест"
+  },
+  "98 questions across four timed modules. One result for the entire test.": {
+    "uz": "To‘rtta vaqtli modulda 98 ta savol. Butun test uchun bitta natija.",
+    "en": "98 questions across four timed modules. One result for the entire test.",
+    "ru": "98 заданий в четырёх модулях с таймером. Один результат за весь тест."
+  },
+  "16 original questions across four short modules. Review skills and answers to plan your preparation.": {
+    "uz": "To‘rtta qisqa modulda 16 ta original savol. Javoblar tahlili tayyorgarlik rejasini tuzishga yordam beradi.",
+    "en": "16 original questions across four short modules. Review skills and answers to plan your preparation.",
+    "ru": "16 оригинальных заданий в четырёх коротких модулях. Разбор ответов поможет спланировать подготовку."
+  },
+  "Complete both Reading and Writing modules, then both Math modules. Earlier modules lock when you move on.": {
+    "uz": "Avval o‘qish va yozishning ikki modulini, keyin matematikaning ikki modulini ishlang. Keyingi modulga o‘tgach ortga qaytib bo‘lmaydi.",
+    "en": "Complete both Reading and Writing modules, then both Math modules. Earlier modules lock when you move on.",
+    "ru": "Пройдите оба модуля чтения и письма, затем оба модуля математики. Возврат к прошлым модулям закрывается."
+  },
+  "Complete the modules in order. Use the answer explanations to identify skills to practise.": {
+    "uz": "Modullarni ketma-ket ishlang. Javob izohlaridan takrorlash kerak bo‘lgan mavzularni aniqlang.",
+    "en": "Complete the modules in order. Use the answer explanations to identify skills to practise.",
+    "ru": "Выполните модули по порядку. Пояснения к ответам подскажут, что стоит повторить."
+  },
+  "soniya": {
+    "uz": "soniya",
+    "en": "seconds",
+    "ru": "секунд"
+  },
+  "Sotib olish": {
+    "uz": "Sotib olish",
+    "en": "Buy",
+    "ru": "Купить"
+  },
+  "Telegram orqali sotib olish": {
+    "uz": "Telegram orqali sotib olish",
+    "en": "Buy via Telegram",
+    "ru": "Купить через Telegram"
+  },
+  "Javob berilgan": {
+    "uz": "Javob berilgan",
+    "en": "Answered",
+    "ru": "Ответ дан"
+  },
+  "Joriy savol": {
+    "uz": "Joriy savol",
+    "en": "Current question",
+    "ru": "Текущий вопрос"
+  },
+  "Rasmiy mashq manbalari": {
+    "uz": "Rasmiy mashq manbalari",
+    "en": "Official practice resources",
+    "ru": "Официальные материалы для подготовки"
+  },
+  "College Board SAT savollar banki": {
+    "uz": "College Board SAT savollar banki",
+    "en": "College Board SAT Question Bank",
+    "ru": "Банк заданий SAT College Board"
+  },
+  "IELTS namunaviy testlari": {
+    "uz": "IELTS namunaviy testlari",
+    "en": "IELTS sample tests",
+    "ru": "Пробные тесты IELTS"
+  },
+  "Javoblar varaqasi": {
+    "uz": "Javoblar varaqasi",
+    "en": "Answer sheet",
+    "ru": "Бланк ответов"
+  },
+  "Qolgan vaqt": {
+    "uz": "Qolgan vaqt",
+    "en": "Time remaining",
+    "ru": "Оставшееся время"
+  },
+  "Katta matn": {
+    "uz": "Katta matn",
+    "en": "Larger text",
+    "ru": "Крупный текст"
+  },
+  "Taymerni ko‘rsatish": {
+    "uz": "Taymerni ko‘rsatish",
+    "en": "Show timer",
+    "ru": "Показать таймер"
+  },
+  "Taymerni yashirish": {
+    "uz": "Taymerni yashirish",
+    "en": "Hide timer",
+    "ru": "Скрыть таймер"
+  },
+  "Modullar": {
+    "uz": "Modullar",
+    "en": "Modules",
+    "ru": "Модули"
+  },
+  "Variantni chiqarish": {
+    "uz": "Variantni chiqarish",
+    "en": "Cross out option",
+    "ru": "Вычеркнуть вариант"
+  },
+  "so‘z": {
+    "uz": "so‘z",
+    "en": "words",
+    "ru": "слов"
+  },
+  "Kalkulyator": {
+    "uz": "Kalkulyator",
+    "en": "Calculator",
+    "ru": "Калькулятор"
+  },
+  "Formulalar": {
+    "uz": "Formulalar",
+    "en": "Reference formulas",
+    "ru": "Формулы"
+  },
+  "Hisoblab bo‘lmadi": {
+    "uz": "Hisoblab bo‘lmadi",
+    "en": "Cannot calculate",
+    "ru": "Не удалось вычислить"
+  },
+  "Birinchi son": {
+    "uz": "Birinchi son",
+    "en": "First number",
+    "ru": "Первое число"
+  },
+  "Ikkinchi son": {
+    "uz": "Ikkinchi son",
+    "en": "Second number",
+    "ru": "Второе число"
+  },
+  "Amal": {
+    "uz": "Amal",
+    "en": "Operation",
+    "ru": "Действие"
+  },
+  "Hisoblash": {
+    "uz": "Hisoblash",
+    "en": "Calculate",
+    "ru": "Вычислить"
+  },
+  "Doira yuzi": {
+    "uz": "Doira yuzi",
+    "en": "Area of a circle",
+    "ru": "Площадь круга"
+  },
+  "Uchburchak yuzi": {
+    "uz": "Uchburchak yuzi",
+    "en": "Area of a triangle",
+    "ru": "Площадь треугольника"
+  },
+  "Pifagor teoremasi": {
+    "uz": "Pifagor teoremasi",
+    "en": "Pythagorean theorem",
+    "ru": "Теорема Пифагора"
+  },
+  "Silindr hajmi": {
+    "uz": "Silindr hajmi",
+    "en": "Volume of a cylinder",
+    "ru": "Объём цилиндра"
+  },
+  "CEFR · Multilevel Reading": {
+    "uz": "CEFR · Multilevel o‘qish",
+    "en": "CEFR · Multilevel Reading",
+    "ru": "CEFR · Чтение Multilevel"
+  },
+  "Two original reading texts with twelve practice questions.": {
+    "uz": "Ikki original matn va 12 ta mashq savoli.",
+    "en": "Two original reading texts with twelve practice questions.",
+    "ru": "Два оригинальных текста и двенадцать тренировочных заданий."
+  },
+  "Read both texts and choose one answer for each question.": {
+    "uz": "Ikkala matnni o‘qing va har bir savolga bitta javob tanlang.",
+    "en": "Read both texts and choose one answer for each question.",
+    "ru": "Прочитайте оба текста и выберите по одному ответу на каждый вопрос."
+  },
+  "Takrorlash tugadi": {
+    "uz": "Takrorlash tugadi",
+    "en": "Practice complete",
+    "ru": "Повторение завершено"
+  },
+  "Tahlilga qaytish": {
+    "uz": "Tahlilga qaytish",
+    "en": "Back to review",
+    "ru": "Вернуться к разбору"
+  },
+  "Takrorlash jarayoni": {
+    "uz": "Takrorlash jarayoni",
+    "en": "Review practice progress",
+    "ru": "Прогресс повторения"
+  },
+  "Javobni tekshirish": {
+    "uz": "Javobni tekshirish",
+    "en": "Check answer",
+    "ru": "Проверить ответ"
+  },
+  "Takrorlashni yakunlash": {
+    "uz": "Takrorlashni yakunlash",
+    "en": "Finish practice",
+    "ru": "Завершить повторение"
+  },
+  "Xatolarni qayta ishlash": {
+    "uz": "Xatolarni qayta ishlash",
+    "en": "Retry mistakes",
+    "ru": "Повторить ошибки"
+  },
+  "Xatolar va bo‘sh javoblar": {
+    "uz": "Xatolar va bo‘sh javoblar",
+    "en": "Mistakes and unanswered",
+    "ru": "Ошибки и пропуски"
+  },
+  "Xato javob": {
+    "uz": "Xato javob",
+    "en": "Incorrect",
+    "ru": "Неверный ответ"
+  },
+  "Bu turdagi savollar yo‘q.": {
+    "uz": "Bu turdagi savollar yo‘q.",
+    "en": "No questions match this filter.",
+    "ru": "Нет вопросов этого типа."
+  },
+  "Aloqa uzildi. Javoblar ushbu oynada saqlanmoqda.": {
+    "uz": "Aloqa uzildi. Javoblar ushbu oynada saqlanmoqda.",
+    "en": "Connection lost. Answers are kept in this window.",
+    "ru": "Соединение прервано. Ответы сохраняются в этом окне."
+  },
+  "Javobsiz savolga o‘tish": {
+    "uz": "Javobsiz savolga o‘tish",
+    "en": "Go to an unanswered question",
+    "ru": "Перейти к вопросу без ответа"
+  },
+  "ta savol javobsiz qoldi.": {
+    "uz": "ta savol javobsiz qoldi.",
+    "en": "questions are unanswered.",
+    "ru": "вопросов осталось без ответа."
+  },
+  "Test pauzada": {
+    "uz": "Test pauzada",
+    "en": "Test paused",
+    "ru": "Тест на паузе"
+  },
+  "Qolgan vaqt va saqlangan javoblar bilan testni davom ettiring.": {
+    "uz": "Qolgan vaqt va saqlangan javoblar bilan testni davom ettiring.",
+    "en": "Resume with your remaining time and saved answers.",
+    "ru": "Продолжите тест с оставшимся временем и сохранёнными ответами."
+  },
+  "10 soniyada qaytmasangiz, test pauzaga o‘tadi.": {
+    "uz": "10 soniyada qaytmasangiz, test pauzaga o‘tadi.",
+    "en": "The test pauses if you do not return within 10 seconds.",
+    "ru": "Тест приостановится, если вы не вернётесь за 10 секунд."
+  },
+  "Testni davom ettirish": {
+    "uz": "Testni davom ettirish",
+    "en": "Resume test",
+    "ru": "Продолжить тест"
+  },
+  "Pauza holatini tekshirish": {
+    "uz": "Pauza holatini tekshirish",
+    "en": "Check paused status",
+    "ru": "Проверить состояние паузы"
+  },
+  "Savol va javob": {
+    "uz": "Savol va javob",
+    "en": "Question and answer",
+    "ru": "Вопрос и ответ"
+  },
+  "Matnni belgilash": {
+    "uz": "Matnni belgilash",
+    "en": "Highlight text",
+    "ru": "Выделить текст"
+  },
+  "Belgini olib tashlash": {
+    "uz": "Belgini olib tashlash",
+    "en": "Remove highlight",
+    "ru": "Убрать выделение"
+  },
+  "Belgi olib tashlandi": {
+    "uz": "Belgi olib tashlandi",
+    "en": "Highlight removed",
+    "ru": "Выделение снято"
+  },
+  "Matn belgilandi": {
+    "uz": "Matn belgilandi",
+    "en": "Text highlighted",
+    "ru": "Текст выделен"
+  },
+  "daq.": {
+    "uz": "daq.",
+    "en": "min",
+    "ru": "мин"
+  },
+  "son.": {
+    "uz": "son.",
+    "en": "sec",
+    "ru": "с"
+  },
+  "Juda yuqori": {
+    "uz": "Juda yuqori",
+    "en": "Very high",
+    "ru": "Очень высокий"
+  },
+  "Rivojlanayotgan": {
+    "uz": "Rivojlanayotgan",
+    "en": "Developing",
+    "ru": "Развивающийся"
+  },
+  "Bu TAFE mashq balli. College Board rasmiy natijasi sifatida ishlatilmaydi.": {
+    "uz": "Bu TAFE mashq balli. College Board rasmiy natijasi sifatida ishlatilmaydi.",
+    "en": "This TAFE practice score cannot be used as an official College Board result.",
+    "ru": "Это тренировочный балл TAFE. Его нельзя использовать как официальный результат College Board."
+  },
+  "TAFE avvalgi ball modeli": {
+    "uz": "TAFE avvalgi ball modeli",
+    "en": "Earlier TAFE scoring model",
+    "ru": "Прежняя модель оценки TAFE"
+  },
+  "Test statistikasi": {
+    "uz": "Test statistikasi",
+    "en": "Test statistics",
+    "ru": "Статистика теста"
+  },
+  "Aniqlik": {
+    "uz": "Aniqlik",
+    "en": "Accuracy",
+    "ru": "Точность"
+  },
+  "Jami savollar": {
+    "uz": "Jami savollar",
+    "en": "Total questions",
+    "ru": "Всего вопросов"
+  },
+  "Sarflangan vaqt": {
+    "uz": "Sarflangan vaqt",
+    "en": "Time spent",
+    "ru": "Затраченное время"
+  },
+  "Mavzu va ko‘nikmalar bo‘yicha natijalar": {
+    "uz": "Mavzu va ko‘nikmalar bo‘yicha natijalar",
+    "en": "Performance by topic and skill",
+    "ru": "Результаты по темам и навыкам"
+  },
+  "Mavzu ko‘rsatilmagan": {
+    "uz": "Mavzu ko‘rsatilmagan",
+    "en": "Topic not specified",
+    "ru": "Тема не указана"
+  },
+  "Ko‘nikma ko‘rsatilmagan": {
+    "uz": "Ko‘nikma ko‘rsatilmagan",
+    "en": "Skill not specified",
+    "ru": "Навык не указан"
+  },
+  "Ko‘nikmalarni ko‘rish": {
+    "uz": "Ko‘nikmalarni ko‘rish",
+    "en": "View skills",
+    "ru": "Посмотреть навыки"
+  },
+  "Savollar tahlili": {
+    "uz": "Savollar tahlili",
+    "en": "Question analysis",
+    "ru": "Разбор вопросов"
+  },
+  "Testlar tarixiga qaytish": {
+    "uz": "Testlar tarixiga qaytish",
+    "en": "Back to test history",
+    "ru": "К истории тестов"
+  },
+  "SAT ball jadvali": {
+    "uz": "SAT ball jadvali",
+    "en": "SAT score conversion",
+    "ru": "Таблица баллов SAT"
+  },
+  "Ball jadvalining yangi versiyasi saqlandi.": {
+    "uz": "Ball jadvalining yangi versiyasi saqlandi.",
+    "en": "New scoring revision saved.",
+    "ru": "Новая версия таблицы сохранена."
+  },
+  "0 ta to‘g‘ri javobdan boshlab har bir javob soni uchun vergul bilan ajratilgan ball kiriting. Ballar 200 dan 800 gacha, 10 ga karrali va kamaymaydigan bo‘lishi kerak.": {
+    "uz": "0 ta to‘g‘ri javobdan boshlab har bir javob soni uchun vergul bilan ajratilgan ball kiriting. Ballar 200 dan 800 gacha, 10 ga karrali va kamaymaydigan bo‘lishi kerak.",
+    "en": "Enter a comma-separated score for each correct-answer count, starting at zero. Scores must increase or stay the same from 200 to 800, in multiples of 10.",
+    "ru": "Введите через запятую баллы для каждого количества правильных ответов, начиная с нуля. Баллы должны идти по возрастанию от 200 до 800 с возможностью повторения и быть кратны 10."
+  },
+  "Hozircha ball jadvali biriktirilmagan.": {
+    "uz": "Hozircha ball jadvali biriktirilmagan.",
+    "en": "No score conversion is assigned yet.",
+    "ru": "Таблица баллов пока не назначена."
+  },
+  "Yangi jadval keyingi urinishlarga qo‘llanadi.": {
+    "uz": "Yangi jadval keyingi urinishlarga qo‘llanadi.",
+    "en": "The new table applies to future attempts.",
+    "ru": "Новая таблица применяется к следующим попыткам."
+  },
+  "Ball modeli nomi": {
+    "uz": "Ball modeli nomi",
+    "en": "Scoring model name",
+    "ru": "Название модели оценки"
+  },
+  "ta qiymat": {
+    "uz": "ta qiymat",
+    "en": "values",
+    "ru": "значений"
+  },
+  "Ball jadvali talabga mos kelmadi.": {
+    "uz": "Ball jadvali talabga mos kelmadi.",
+    "en": "The score conversion does not meet the requirements.",
+    "ru": "Таблица баллов не соответствует требованиям."
+  },
+  "Yangi versiyani saqlash": {
+    "uz": "Yangi versiyani saqlash",
+    "en": "Save new revision",
+    "ru": "Сохранить новую версию"
+  },
+  "Craft and Structure": {
+    "uz": "Matn uslubi va tuzilishi",
+    "en": "Craft and Structure",
+    "ru": "Структура и стиль"
+  },
+  "Information and Ideas": {
+    "uz": "Ma’lumot va g‘oyalar",
+    "en": "Information and Ideas",
+    "ru": "Информация и идеи"
+  },
+  "Standard English Conventions": {
+    "uz": "Ingliz tili me’yorlari",
+    "en": "Standard English Conventions",
+    "ru": "Нормы английского языка"
+  },
+  "Expression of Ideas": {
+    "uz": "G‘oyalarni ifodalash",
+    "en": "Expression of Ideas",
+    "ru": "Выражение идей"
+  },
+  "Advanced Math": {
+    "uz": "Murakkab matematika",
+    "en": "Advanced Math",
+    "ru": "Высшая математика"
+  },
+  "Problem-Solving and Data Analysis": {
+    "uz": "Muammolarni yechish va ma’lumotlar tahlili",
+    "en": "Problem-Solving and Data Analysis",
+    "ru": "Решение задач и анализ данных"
+  },
+  "Geometry and Trigonometry": {
+    "uz": "Geometriya va trigonometriya",
+    "en": "Geometry and Trigonometry",
+    "ru": "Геометрия и тригонометрия"
+  },
+  "Barchasi": {
+    "uz": "Barchasi",
+    "en": "All",
+    "ru": "Все"
+  },
+  "Words in Context": {
+    "uz": "So‘zning kontekstdagi ma’nosi",
+    "en": "Words in Context",
+    "ru": "Слова в контексте"
+  },
+  "Main Ideas and Details": {
+    "uz": "Asosiy fikr va tafsilotlar",
+    "en": "Main Ideas and Details",
+    "ru": "Основные мысли и детали"
+  },
+  "Textual Evidence": {
+    "uz": "Matndan dalil",
+    "en": "Textual Evidence",
+    "ru": "Доказательства из текста"
+  },
+  "Inference": {
+    "uz": "Xulosa chiqarish",
+    "en": "Inference",
+    "ru": "Выводы"
+  },
+  "Text Structure and Purpose": {
+    "uz": "Matn tuzilishi va maqsadi",
+    "en": "Text Structure and Purpose",
+    "ru": "Структура и цель текста"
+  },
+  "Form, Structure, and Sense": {
+    "uz": "Shakl, tuzilish va ma’no",
+    "en": "Form, Structure, and Sense",
+    "ru": "Форма, структура и смысл"
+  },
+  "Transitions": {
+    "uz": "Gap va fikrlarni bog‘lash",
+    "en": "Transitions",
+    "ru": "Переходы"
+  },
+  "Algebra": {
+    "uz": "Algebra",
+    "en": "Algebra",
+    "ru": "Алгебра"
+  },
+  "Linear equations": {
+    "uz": "Chiziqli tenglamalar",
+    "en": "Linear equations",
+    "ru": "Линейные уравнения"
+  },
+  "Percentages": {
+    "uz": "Foizlar",
+    "en": "Percentages",
+    "ru": "Проценты"
+  },
+  "Quadratic equations": {
+    "uz": "Kvadrat tenglamalar",
+    "en": "Quadratic equations",
+    "ru": "Квадратные уравнения"
+  },
+  "Slope": {
+    "uz": "Qiyalik koeffitsiyenti",
+    "en": "Slope",
+    "ru": "Угловой коэффициент"
+  },
+  "Area": {
+    "uz": "Yuza",
+    "en": "Area",
+    "ru": "Площадь"
+  },
+  "Mean": {
+    "uz": "O‘rtacha arifmetik",
+    "en": "Mean",
+    "ru": "Среднее арифметическое"
+  },
+  "Probability": {
+    "uz": "Ehtimollik",
+    "en": "Probability",
+    "ru": "Вероятность"
+  },
+  "Quadratic functions": {
+    "uz": "Kvadrat funksiyalar",
+    "en": "Quadratic functions",
+    "ru": "Квадратичные функции"
+  },
+  "Exponential growth": {
+    "uz": "Eksponensial o‘sish",
+    "en": "Exponential growth",
+    "ru": "Экспоненциальный рост"
+  },
+  "Right triangles": {
+    "uz": "To‘g‘ri burchakli uchburchaklar",
+    "en": "Right triangles",
+    "ru": "Прямоугольные треугольники"
+  },
+  "Systems of equations": {
+    "uz": "Tenglamalar sistemasi",
+    "en": "Systems of equations",
+    "ru": "Системы уравнений"
   }
 }

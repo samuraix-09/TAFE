@@ -1,8 +1,16 @@
 import { createClient } from "@supabase/supabase-js";
-export const db = createClient(
-  "https://ydfmjhosuqabtgbksrsg.supabase.co",
-  "sb_publishable_vuuHoCl8cp2VERayTnI5lA_rcXq-lpH",
-);
+export const supabaseUrl = "https://ydfmjhosuqabtgbksrsg.supabase.co";
+export const supabasePublicKey =
+  "sb_publishable_vuuHoCl8cp2VERayTnI5lA_rcXq-lpH";
+export const db = createClient(supabaseUrl, supabasePublicKey);
+const isVercelTafe = [
+  "https://tafe-rust.vercel.app",
+  "https://tafe-gaybullayevs176-4072.vercel.app",
+].includes(location.origin);
+export const tafeAuthFunction = isVercelTafe
+  ? "emailjs-registration-vercel"
+  : "emailjs-registration";
+export const tafeAiFunction = isVercelTafe ? "tafe-ai-vercel" : "tafe-ai";
 
 const authErrors: Record<string, string> = {
   invalid_credentials: "Email yoki parol noto‘g‘ri.",

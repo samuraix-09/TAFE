@@ -1,3 +1,4 @@
+import { SatNotation } from "./SatNotation";
 import { t } from "./i18n";
 import {
   useEffect,
@@ -273,11 +274,15 @@ export function QuestionInput({
   value,
   onChange,
   disabled = false,
+  eliminatedOptions,
+  onEliminate,
 }: {
   question: Row;
   value: any;
   onChange: (v: any) => void;
   disabled?: boolean;
+  eliminatedOptions?: number[];
+  onEliminate?: (index: number) => void;
 }) {
   if (
     ["multiple_choice", "true_false_not_given", "yes_no_not_given"].includes(
@@ -287,18 +292,50 @@ export function QuestionInput({
     return (
       <div>
         {q.options.map((o: string, i: number) => (
-          <label className="answer-option" key={i}>
-            <input
-              type="radio"
-              name={"q-" + q.id}
-              disabled={disabled}
-              checked={value === o}
-              onChange={() => onChange(o)}
-            />
-            {["true_false_not_given", "yes_no_not_given"].includes(q.type)
-              ? t(o)
-              : o}
-          </label>
+          <div className="answer-option-row" key={i}>
+            <label
+              className="answer-option"
+              data-eliminated={
+                (value !== o && eliminatedOptions?.includes(i)) || undefined
+              }
+            >
+              <input
+                type="radio"
+                name={"q-" + q.id}
+                disabled={disabled}
+                checked={value === o}
+                onChange={() => onChange(o)}
+              />
+              {onEliminate && (
+                <span className="exam-option-letter" aria-hidden="true">
+                  {String.fromCharCode(65 + i)}
+                </span>
+              )}
+              <span>
+                {["true_false_not_given", "yes_no_not_given"].includes(
+                  q.type,
+                ) ? (
+                  t(o)
+                ) : q.config?.opensat ? (
+                  <SatNotation text={o} />
+                ) : (
+                  o
+                )}
+              </span>
+            </label>
+            {onEliminate && (
+              <button
+                type="button"
+                disabled={disabled || value === o}
+                aria-pressed={eliminatedOptions?.includes(i) ?? false}
+                aria-label={`${t("Variantni chiqarish")} ${String.fromCharCode(65 + i)}`}
+                onClick={() => onEliminate(i)}
+                className="exam-eliminate"
+              >
+                <s aria-hidden="true">{String.fromCharCode(65 + i)}</s>
+              </button>
+            )}
+          </div>
         ))}
       </div>
     );

@@ -22,7 +22,7 @@ let activeSignOut: ReturnType<typeof db.auth.signOut> | undefined;
 let outroTimer = 0;
 
 export function signOutWithMotion(
-  options?: Parameters<typeof db.auth.signOut>[0],
+  options: Parameters<typeof db.auth.signOut>[0] = { scope: "local" },
 ) {
   if (activeSignOut) return activeSignOut;
   if (prefersReducedMotion()) return db.auth.signOut(options);
