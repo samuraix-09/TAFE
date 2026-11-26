@@ -27,7 +27,6 @@ import type { Session } from "@supabase/supabase-js";
 import { db } from "./db";
 import { Brand, Landing, InfoPage, type VisitorPage } from "./Landing";
 import { EmailAuth } from "./EmailAuth";
-import { Onboarding } from "./Onboarding";
 import { LibraryPage } from "./LibraryPage";
 import { ProfilePage } from "./ProfilePage";
 import { ExamPlayer } from "./ExamPlayer";
@@ -245,7 +244,7 @@ function App() {
         <AdminApp onLanguageChange={changeLanguage} />
       </Suspense>
     );
-  const fullChat = page === "ai" && !!profile.onboarded_at && !attempt;
+  const fullChat = page === "ai" && !attempt;
   return (
     <>
       <aside className="student-sidebar">
@@ -342,14 +341,7 @@ function App() {
           key={attempt?.id || page}
         >
           <Feedback {...action} />
-          {!profile.onboarded_at ? (
-            <Onboarding
-              userId={session.user.id}
-              categories={categories}
-              profile={profile}
-              onComplete={async () => account.reload()}
-            />
-          ) : attempt ? (
+          {attempt ? (
             <ExamPlayer attempt={attempt} onDone={done} />
           ) : (
             <>
@@ -559,7 +551,7 @@ function TestsList({ onStart }: { onStart: (id: string) => void }) {
     [],
   );
   const [search, setSearch] = useState("");
-  const rows = (data.data || []).filter((t) => !t.diagnostic).filter((t) =>
+  const rows = (data.data || []).filter((t) =>
     (t.title + " " + t.exam_categories?.name + " " + t.section)
       .toLowerCase()
       .includes(search.toLowerCase()),

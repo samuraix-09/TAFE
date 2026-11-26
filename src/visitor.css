@@ -806,23 +806,6 @@
   font-size: 11px;
   color: var(--blue);
 }
-.onboarding {
-  max-width: 650px;
-  margin: auto;
-  padding: 40px 0;
-}
-.onboarding > h1 {
-  font-size: 36px;
-}
-.onboarding form {
-  gap: 20px;
-}
-.onboarding .muted {
-  font-size: 12px;
-}
-.onboarding .muted svg {
-  vertical-align: middle;
-}
 .info-page {
   max-width: 850px;
   margin: 50px auto;
@@ -1175,12 +1158,6 @@
   }
   .auth-form-wrap h1 {
     font-size: 29px;
-  }
-  .onboarding {
-    padding: 15px 0;
-  }
-  .onboarding > h1 {
-    font-size: 30px;
   }
   .mobile-logout {
     display: inline-flex;
