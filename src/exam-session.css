@@ -376,23 +376,6 @@ html:fullscreen {
   grid-template-columns: minmax(0, 1fr);
   gap: 12px;
 }
-.exam-view[data-exam="sat"] .exam-navigation {
-  display: grid;
-  position: static;
-  grid-template-columns: 1fr auto;
-  align-items: center;
-  gap: 12px;
-}
-.exam-view[data-exam="sat"] .exam-navigation > .exam-finish-button {
-  grid-column: 2;
-  grid-row: 1;
-  width: auto;
-}
-.exam-view[data-exam="sat"]
-  .exam-navigation
-  :is(.question-numbers, .exam-legend) {
-  grid-column: 1 / -1;
-}
 .exam-view[data-exam="sat"]
   .exam-navigation[data-menu-open="false"]
   :is(.question-numbers, .exam-legend) {

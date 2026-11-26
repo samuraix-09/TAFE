@@ -1,0 +1,295 @@
+.exam-view[data-exam="sat"] {
+  --exam-accent: #285a98;
+  --sat-accent-fill: #edf3fb;
+  --sat-shadow: 0 8px 28px #192d4b10;
+  --sat-gutter: clamp(12px, 2.5vw, 36px);
+}
+
+[data-theme="dark"] .exam-view[data-exam="sat"] {
+  --exam-accent: #a4c9fa;
+  --sat-accent-fill: #203650;
+  --sat-shadow: 0 8px 28px #0003;
+}
+
+.sat-exam-header {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 12px 24px;
+  min-height: 68px;
+  padding: 10px var(--sat-gutter);
+  background: var(--paper);
+  border-bottom: 1px solid var(--stroke);
+}
+
+.sat-exam-header .tafe-brand img {
+  width: 108px;
+}
+
+.sat-exam-header h1 {
+  margin: 0;
+  font-size: 15px;
+  text-align: center;
+}
+
+.sat-exam-header small {
+  display: flex;
+  align-items: center;
+  justify-self: end;
+  gap: 6px;
+  color: var(--subtle);
+  font-size: 12px;
+}
+
+.sat-exam-header small svg {
+  flex: none;
+}
+
+.exam-view[data-exam="sat"] .exam-content {
+  max-width: none;
+  padding: clamp(14px, 2.5vw, 28px) var(--sat-gutter) 36px;
+}
+
+.exam-view[data-exam="sat"]
+  :is(.exam-toolbar, .exam-question-area, .exam-navigation) {
+  border: 1px solid var(--stroke);
+  border-radius: 13px;
+  background: var(--paper);
+  box-shadow: var(--sat-shadow);
+}
+
+.exam-view[data-exam="sat"] .exam-toolbar {
+  min-height: 76px;
+  padding: 14px clamp(12px, 2vw, 22px);
+}
+
+.sat-exam-details {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+  font-size: 13px;
+}
+
+.sat-module-label {
+  padding: 6px 10px;
+  border-radius: 6px;
+  background: var(--sat-accent-fill);
+  color: var(--exam-accent);
+  font-weight: 750;
+}
+
+.sat-exam-name {
+  color: var(--subtle);
+}
+
+.exam-view[data-exam="sat"] .exam-clock {
+  min-width: 0;
+  padding: 6px 12px;
+  border-radius: 8px;
+  background: var(--surface);
+  font:
+    750 clamp(17px, 2vw, 22px) / 1.4 system-ui,
+    sans-serif;
+}
+
+.sat-clock-label {
+  margin-inline-end: 8px;
+  color: var(--subtle);
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.exam-view[data-exam="sat"] .exam-progress {
+  margin-top: 12px;
+}
+
+.exam-view[data-exam="sat"] .exam-progress progress {
+  width: 100%;
+  height: 5px;
+  margin-top: 6px;
+  accent-color: var(--exam-accent);
+}
+
+.exam-view[data-exam="sat"] .exam-layout {
+  grid-template-columns: minmax(0, 1fr) minmax(235px, 285px);
+  align-items: start;
+  gap: 18px;
+  margin-top: 17px;
+}
+
+.exam-view[data-exam="sat"] .exam-question-area {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: clamp(480px, 68dvh, 650px);
+}
+
+.exam-view[data-exam="sat"] .question-heading {
+  min-height: 62px;
+  padding: 12px clamp(14px, 2vw, 25px);
+  border-bottom: 1px solid var(--stroke);
+}
+
+.exam-view[data-exam="sat"] .question-heading .badge {
+  padding: 0;
+  background: transparent;
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.exam-view[data-exam="sat"] .flag-button[aria-pressed="true"] {
+  color: var(--flag-fg);
+  border-color: var(--flag-border);
+  background: var(--flag-fill);
+}
+
+.exam-view[data-exam="sat"] .exam-question-area > section {
+  margin: 0;
+  padding: clamp(16px, 3vw, 42px);
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+.exam-view[data-exam="sat"] .exam-passage h2 {
+  color: var(--subtle);
+  font-size: 13px;
+}
+
+.exam-view[data-exam="sat"] .exam-passage :is(p, .ielts-reading-text) {
+  max-width: 78ch;
+  max-height: none;
+  color: var(--ink);
+  font:
+    clamp(16px, 2vw, 18px) / 1.75 Georgia,
+    serif;
+}
+
+.exam-view[data-exam="sat"] .exam-passage + .exam-question-panel {
+  padding-top: 0;
+}
+
+.exam-view[data-exam="sat"] .exam-question-prompt {
+  margin-top: 0;
+  font-size: clamp(17px, 2vw, 19px);
+  scroll-margin-top: 85px;
+}
+
+.exam-view[data-exam="sat"] .answer-option-row {
+  max-width: 860px;
+  margin-block: 10px;
+}
+
+.exam-view[data-exam="sat"] .answer-option {
+  min-height: 54px;
+  margin: 0;
+  cursor: pointer;
+}
+
+.exam-view[data-exam="sat"] .answer-option:has(input:checked) {
+  border-color: var(--exam-accent);
+  background: var(--sat-accent-fill);
+}
+
+.exam-view[data-exam="sat"] .answer-option input:has(+ .exam-option-letter) {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.exam-view[data-exam="sat"] .answer-option:has(input:focus-visible) {
+  outline: 2px solid var(--exam-accent);
+  outline-offset: 2px;
+}
+
+.exam-view[data-exam="sat"] .exam-option-letter {
+  border-radius: 50%;
+}
+
+.exam-view[data-exam="sat"] .exam-pagination {
+  margin: auto 0 0;
+  padding: 14px clamp(14px, 2vw, 25px);
+}
+
+.exam-view[data-exam="sat"] .exam-pagination button:last-child:not(:disabled) {
+  color: var(--paper);
+  border-color: var(--exam-accent);
+  background: var(--exam-accent);
+}
+
+.exam-view[data-exam="sat"] .exam-navigation {
+  position: sticky;
+  top: 84px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 12px;
+  padding: 18px;
+}
+
+.sat-exam-directions {
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--stroke);
+}
+
+.sat-exam-directions h2 {
+  margin: 0 0 6px;
+  font-size: 13px;
+}
+
+.sat-exam-directions p {
+  margin: 0;
+  color: var(--subtle);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.exam-view[data-exam="sat"] .exam-navigation-heading > button {
+  width: 100%;
+}
+
+.exam-view[data-exam="sat"] .exam-navigation .exam-tools {
+  margin: 0;
+}
+
+@media (max-width: 900px) {
+  .exam-view[data-exam="sat"] .exam-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .exam-view[data-exam="sat"] .exam-navigation {
+    position: static;
+  }
+}
+
+@media (max-width: 600px) {
+  .sat-exam-header {
+    grid-template-columns: auto minmax(0, 1fr);
+    min-height: 60px;
+    gap: 6px 12px;
+  }
+
+  .sat-exam-header .tafe-brand img {
+    width: 86px;
+  }
+
+  .sat-exam-header h1 {
+    text-align: start;
+  }
+
+  .sat-exam-header small {
+    grid-column: 1 / -1;
+    justify-self: start;
+  }
+
+  .sat-clock-label {
+    display: block;
+    margin-inline-end: 0;
+  }
+}
