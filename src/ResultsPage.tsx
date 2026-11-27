@@ -1,6 +1,7 @@
+import { QuestionHint } from "./QuestionHint";
 import { t, localeTag } from "./i18n";
 import { useEffect, useState } from "react";
-import { ArrowLeft, BarChart3, Sparkles } from "lucide-react";
+import { ArrowLeft, BarChart3 } from "lucide-react";
 import { db } from "./db";
 import { MistakePractice, formatReviewAnswer } from "./MistakePractice";
 import { hasExamAnswer } from "./exam-draft";
@@ -10,15 +11,7 @@ import {
   satSectionLabel,
   type SatScores,
 } from "./SatScoreReport";
-import {
-  checked,
-  Empty,
-  Feedback,
-  Modal,
-  rpc,
-  useData,
-  type Row,
-} from "./platform";
+import { checked, Empty, Feedback, rpc, useData, type Row } from "./platform";
 const resultsRoute = "/student/results";
 function selectedAttempt() {
   const id = location.hash.split("/")[3];
@@ -30,12 +23,12 @@ function selectedAttempt() {
 
 export function ResultsPage({
   onResume,
-  onExplain,
 }: {
   onResume: (id: string, category: string, section: string) => void;
-  onExplain: (prompt: string) => void;
 }) {
+  const [attemptId, setAttemptId] = useState(selectedAttempt);
   const results = useData<Row[]>(async () => {
+    if (attemptId) return [];
     await rpc("settle_exam_sessions");
     return checked(
       await db
@@ -45,8 +38,7 @@ export function ResultsPage({
         )
         .order("started_at", { ascending: false }),
     ) as unknown as Row[];
-  }, []);
-  const [attemptId, setAttemptId] = useState(selectedAttempt);
+  }, [Boolean(attemptId)]);
   useEffect(() => {
     const update = () => {
       const next = selectedAttempt();
@@ -65,22 +57,18 @@ export function ResultsPage({
   const closeReview = () => {
     location.hash = resultsRoute;
   };
-  if (
-    attemptId &&
-    (report.loading || review?.sat_scores?.total != null || report.error)
-  )
+  if (attemptId)
     return (
       <div className="sat-result-page">
         <button className="sat-report-back" onClick={closeReview}>
           <ArrowLeft size={17} /> {t("Testlar tarixiga qaytish")}
         </button>
         <Feedback error={report.error} loading={report.loading} />
-        {review?.sat_scores?.total != null && (
+        {review && (
           <AttemptReview
             key={attemptId}
             review={review}
             attemptId={attemptId}
-            onExplain={onExplain}
           />
         )}
       </div>
@@ -184,20 +172,6 @@ export function ResultsPage({
           <Empty text={t("Hali test ishlamagansiz.")} />
         )}
       </section>
-      {attemptId && review && (
-        <Modal
-          title={t(review.title || "Test tahlili")}
-          onClose={closeReview}
-          wide
-        >
-          <AttemptReview
-            key={attemptId}
-            review={review}
-            attemptId={attemptId}
-            onExplain={onExplain}
-          />
-        </Modal>
-      )}
     </>
   );
 }
@@ -205,11 +179,9 @@ export function ResultsPage({
 function AttemptReview({
   review,
   attemptId,
-  onExplain,
 }: {
   review: Row;
   attemptId: string;
-  onExplain: (prompt: string) => void;
 }) {
   const scaled = review.sat_scores?.total != null;
   const entries = ((review.questions ?? []) as Row[]).map(
@@ -234,23 +206,30 @@ function AttemptReview({
       difficulty: items[0]?.question.difficulty,
     };
   });
+  const topicFor = (question: Row) =>
+    String(question.group_name || question.config?.sat_topic || "").trim();
   const topics = new Map<string, { correct: number; total: number }>();
-  if (adaptive)
-    for (const { question, state } of entries) {
-      const name = question.group_name;
-      const item = topics.get(name) ?? { correct: 0, total: 0 };
-      item.total++;
-      if (state === "correct") item.correct++;
-      topics.set(name, item);
-    }
-  const ranked = [...topics].sort(
-    ([, a], [, b]) => a.correct / a.total - b.correct / b.total,
-  );
+  for (const { question, state } of entries) {
+    const topic = topicFor(question);
+    if (!topic) continue;
+    const item = topics.get(topic) ?? { correct: 0, total: 0 };
+    item.total++;
+    if (state === "correct") item.correct++;
+    topics.set(topic, item);
+  }
+  const ranked = [...topics]
+    .filter(([, item]) => item.correct < item.total)
+    .sort(
+      ([, a], [, b]) =>
+        a.correct / a.total - b.correct / b.total ||
+        b.total - b.correct - (a.total - a.correct),
+    )
+    .slice(0, 3);
   const mistakes = entries.filter((entry) => entry.state !== "correct");
   const [filter, setFilter] = useState(
     scaled || !mistakes.length ? "all" : "mistakes",
   );
-  const [practicing, setPracticing] = useState(false);
+  const [practicing, setPracticing] = useState<string | null>(null);
   const missing = entries.filter((entry) => entry.state === "missing").length;
   const counts = {
     correct: review.sat_scores?.correct ?? entries.length - mistakes.length,
@@ -263,22 +242,27 @@ function AttemptReview({
         ? ((entries.length - mistakes.length) * 100) / entries.length
         : 0),
   };
-  const skillsToReview =
-    review.sat_scores && !scaled
-      ? [
-          ...new Set<string>(
-            mistakes.map(({ question }) => question.group_name).filter(Boolean),
-          ),
-        ]
-      : [];
   return (
     <>
       {scaled && review.title && <h2>{t(review.title)}</h2>}
-      {practicing ? (
+      {practicing !== null ? (
         <MistakePractice
           attemptId={attemptId}
-          questions={mistakes}
-          onClose={() => setPracticing(false)}
+          questions={
+            practicing
+              ? mistakes
+                  .filter(({ question }) => topicFor(question) === practicing)
+                  .concat(
+                    entries.filter(
+                      ({ question, state }) =>
+                        state === "correct" &&
+                        topicFor(question) === practicing,
+                    ),
+                  )
+                  .slice(0, 10)
+              : mistakes
+          }
+          onClose={() => setPracticing(null)}
         />
       ) : (
         <>
@@ -325,14 +309,56 @@ function AttemptReview({
               )}
             </p>
           )}
-          {skillsToReview.length > 0 && (
-            <section>
-              <h3>{t("Takrorlash kerak bo‘lgan mavzular")}</h3>
-              <ul>
-                {skillsToReview.map((skill) => (
-                  <li key={skill}>{t(skill)}</li>
+          <section className="review-question review-brief">
+            <h3>{t("Qisqa xulosa")}</h3>
+            <p>
+              {counts.correct}/{counts.questions} {t("to‘g‘ri javob")} ·{" "}
+              {counts.incorrect} {t("Xato javob")} · {counts.unanswered}{" "}
+              {t("Javob berilmagan")}
+            </p>
+            {ranked[0] && (
+              <p>
+                {t("Avval takrorlang")} · <strong>{t(ranked[0][0])}</strong>
+              </p>
+            )}
+            {mistakes.length > 0 && (
+              <button
+                onClick={() => {
+                  setFilter("mistakes");
+                  document
+                    .getElementById("review-questions")
+                    ?.scrollIntoView({ block: "start" });
+                }}
+              >
+                {t("Xatolarni ko‘rish")}
+              </button>
+            )}
+            {ranked[0] && (
+              <button
+                className="primary"
+                onClick={() => setPracticing(ranked[0][0])}
+              >
+                {t("Shu mavzuni mashq qilish")}
+              </button>
+            )}
+          </section>
+          {topics.size > 0 && (
+            <section aria-label={t("Mavzular xaritasi")}>
+              <h3>{t("Mavzular xaritasi")}</h3>
+              <div className="sat-section-results">
+                {[...topics].map(([topic, item]) => (
+                  <button
+                    className="topic-practice"
+                    key={topic}
+                    onClick={() => setPracticing(topic)}
+                  >
+                    <strong>{t(topic)}</strong>
+                    <span>
+                      {item.correct} / {item.total} {t("to‘g‘ri javob")}
+                    </span>
+                  </button>
                 ))}
-              </ul>
+              </div>
             </section>
           )}
           {adaptive && (
@@ -347,23 +373,10 @@ function AttemptReview({
                   </li>
                 ))}
               </ul>
-              {ranked.length > 0 && (
-                <p>
-                  {ranked[0][1].correct < ranked[0][1].total ? (
-                    <>
-                      Keyingi mashq uchun tavsiya —{" "}
-                      <strong>{t(ranked[0][0])}</strong> mavzusini takrorlang va
-                      xato javoblarni qayta ishlang.
-                    </>
-                  ) : (
-                    "Barcha mavzulardagi javoblar to‘g‘ri. Keyingi mashqda tezlik va vaqt taqsimotini kuzating."
-                  )}
-                </p>
-              )}
             </section>
           )}
           {scaled && <h3>{t("Savollar tahlili")}</h3>}
-          <div className="review-controls">
+          <div className="review-controls" id="review-questions">
             <div className="review-filter" aria-label={t("Savollar")}>
               {[
                 ["all", "Barchasi", entries.length],
@@ -390,7 +403,7 @@ function AttemptReview({
               ))}
             </div>
             {mistakes.length > 0 && (
-              <button className="primary" onClick={() => setPracticing(true)}>
+              <button className="primary" onClick={() => setPracticing("")}>
                 {t("Xatolarni qayta ishlash")}
               </button>
             )}
@@ -437,33 +450,21 @@ function AttemptReview({
                   {t("Sizning javobingiz —")}{" "}
                   {formatReviewAnswer(review.answers[q.id])}
                 </p>
-                <p>
-                  {t("Qabul qilinadigan javob —")}{" "}
-                  {formatReviewAnswer(q.accepted ?? q.answer)}
-                </p>
-                {q.explanation && <p>{q.explanation}</p>}
-                {q.evidence ? (
-                  <blockquote>{q.evidence}</blockquote>
-                ) : (
-                  <p className="muted">{t("Dalil keltirilmagan")}</p>
-                )}
-                <button
-                  onClick={() => {
-                    onExplain(
-                      "Quyidagi test savolini va javobimni tushuntiring. Savol: " +
-                        q.prompt +
-                        "\nJavobim: " +
-                        JSON.stringify(review.answers[q.id]) +
-                        "\nTasdiqlangan javob: " +
-                        JSON.stringify(q.accepted ?? q.answer) +
-                        "\nPassage dalili: " +
-                        (q.evidence || "Dalil keltirilmagan"),
-                    );
-                  }}
-                >
-                  <Sparkles size={15} />
-                  {t("TAFE AI bilan tushunish")}
-                </button>
+                <details>
+                  <summary>{t("To‘g‘ri javob")}</summary>
+                  <p>{formatReviewAnswer(q.accepted ?? q.answer)}</p>
+                  {q.explanation && <p>{q.explanation}</p>}
+                  {q.evidence && <blockquote>{q.evidence}</blockquote>}
+                </details>
+                <QuestionHint
+                  prompt={JSON.stringify({
+                    question: q.prompt,
+                    options: q.options,
+                    response: review.answers[q.id],
+                    accepted: q.accepted ?? q.answer,
+                    evidence: q.evidence,
+                  })}
+                />
               </section>
             ))}
           {filter !== "all" &&

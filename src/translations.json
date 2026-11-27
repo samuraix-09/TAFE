@@ -1,4 +1,69 @@
 {
+  "Qisqa xulosa": {
+    "uz": "Qisqa xulosa",
+    "en": "Quick summary",
+    "ru": "Краткий итог"
+  },
+  "Avval takrorlang": {
+    "uz": "Avval takrorlang",
+    "en": "Review first",
+    "ru": "Повторите сначала"
+  },
+  "Xatolarni ko‘rish": {
+    "uz": "Xatolarni ko‘rish",
+    "en": "View mistakes",
+    "ru": "Посмотреть ошибки"
+  },
+  "Mavzular xaritasi": {
+    "uz": "Mavzular xaritasi",
+    "en": "Topic map",
+    "ru": "Карта тем"
+  },
+  "Ishora ber": {
+    "uz": "Ishora ber",
+    "en": "Get a hint",
+    "ru": "Получить подсказку"
+  },
+  "To‘liq yechim": {
+    "uz": "To‘liq yechim",
+    "en": "Full solution",
+    "ru": "Полное решение"
+  },
+  "Savol bo‘yicha yordam": {
+    "uz": "Savol bo‘yicha yordam",
+    "en": "Question help",
+    "ru": "Помощь по заданию"
+  },
+  "Xatcho‘plar va izohlar": {
+    "uz": "Xatcho‘plar va izohlar",
+    "en": "Bookmarks and notes",
+    "ru": "Закладки и заметки"
+  },
+  "Sahifaga izoh yozing": {
+    "uz": "Sahifaga izoh yozing",
+    "en": "Write a note for this page",
+    "ru": "Напишите заметку к странице"
+  },
+  "Xatcho‘pni saqlash": {
+    "uz": "Xatcho‘pni saqlash",
+    "en": "Save bookmark",
+    "ru": "Сохранить закладку"
+  },
+  "Xatcho‘pni saqlab bo‘lmadi.": {
+    "uz": "Xatcho‘pni saqlab bo‘lmadi.",
+    "en": "The bookmark could not be saved.",
+    "ru": "Не удалось сохранить закладку."
+  },
+  "Shu mavzuni mashq qilish": {
+    "uz": "Shu mavzuni mashq qilish",
+    "en": "Practice this topic",
+    "ru": "Практиковать эту тему"
+  },
+  "O‘qishni davom ettirish": {
+    "uz": "O‘qishni davom ettirish",
+    "en": "Continue reading",
+    "ru": "Продолжить чтение"
+  },
   "Dashboard": {
     "uz": "Boshqaruv paneli",
     "en": "Dashboard",

@@ -73,3 +73,36 @@
   padding: 24px;
   text-align: center;
 }
+
+.reader-notes {
+  max-width: 70ch;
+  margin: 0 auto 16px;
+  padding: 16px;
+  border: 1px solid var(--stroke);
+  border-radius: 16px;
+  background: var(--paper);
+}
+
+.reader-notes form,
+.reader-notes label {
+  display: grid;
+  gap: 8px;
+}
+
+.reader-notes textarea {
+  width: 100%;
+}
+
+.reader-notes ul {
+  display: grid;
+  gap: 6px;
+  list-style: none;
+  padding: 0;
+}
+
+.reader-notes li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  overflow-wrap: anywhere;
+}

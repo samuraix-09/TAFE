@@ -1,3 +1,4 @@
+import { readReadingProgress } from "./reading-progress";
 import { t } from "./i18n";
 import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import {
@@ -78,19 +79,17 @@ export function LibraryPage({
     };
   }, [books.data]);
   const preference = useData(async () => {
-    if (admin) return null;
-    const { data } = await db.auth.getUser();
-    if (!data.user) return null;
+    if (admin || !userId) return null;
     return (
       checked(
         await db
           .from("profiles")
           .select("target_exam")
-          .eq("id", data.user.id)
+          .eq("id", userId)
           .single(),
       )?.target_exam || null
     );
-  }, [admin]);
+  }, [admin, userId]);
   const cats = useData(
     async () =>
       checked(
@@ -111,8 +110,21 @@ export function LibraryPage({
       url: string;
       title: string;
       path: string;
+      bookId: string;
     } | null>(null);
   const action = useAction();
+  const readingKey = userId ? "tafe-last-reading:" + userId : null;
+  const [lastReading, setLastReading] = useState(() =>
+    readReadingProgress(userId),
+  );
+  const resumeBook =
+    !admin && lastReading
+      ? books.data?.find(
+          (book) =>
+            book.id === lastReading.bookId &&
+            book.file_path === lastReading.path,
+        )
+      : null;
   const rows = [...(books.data || [])]
     .sort(
       (a, b) =>
@@ -137,16 +149,38 @@ export function LibraryPage({
           .createSignedUrl(book.file_path, 3600),
       )?.signedUrl;
       if (!url) throw Error("Kitob fayli mavjud emas.");
-      setPreview({ url, title: book.title, path: book.file_path });
+      setPreview({
+        url,
+        title: book.title,
+        path: book.file_path,
+        bookId: book.id,
+      });
       setSelected(null);
     } else if (book.url) {
       const url = new URL(book.url, location.origin);
       if (url.protocol !== "https:")
         throw Error("Kitob havolasi xavfsiz emas.");
-      setPreview({ url: url.href, title: book.title, path: url.pathname });
+      setPreview({
+        url: url.href,
+        title: book.title,
+        path: url.pathname,
+        bookId: book.id,
+      });
       setSelected(null);
     } else throw Error("Kitob fayli mavjud emas.");
   }
+  const resumeOpened = useRef(false);
+  useEffect(() => {
+    if (
+      !resumeBook ||
+      resumeOpened.current ||
+      location.hash !== "#/student/library/read"
+    )
+      return;
+    resumeOpened.current = true;
+    void action.run(() => open(resumeBook), "");
+  }, [resumeBook]);
+
   return (
     <div>
       <div className="section-toolbar">
@@ -175,6 +209,21 @@ export function LibraryPage({
         notice={action.notice}
         loading={books.loading}
       />
+      {resumeBook && lastReading && (
+        <div className="section-toolbar">
+          <p>
+            <strong>{resumeBook.title}</strong> · {t("Sahifa")}{" "}
+            {lastReading.page}
+          </p>
+          <button
+            className="primary"
+            disabled={action.busy}
+            onClick={() => void action.run(() => open(resumeBook), "")}
+          >
+            {t("O‘qishni davom ettirish")}
+          </button>
+        </div>
+      )}
       <div className="filter-bar">
         <label className="search-field">
           <Search size={17} />
@@ -329,6 +378,27 @@ export function LibraryPage({
           path={preview.path}
           title={preview.title}
           userId={userId}
+          notesKey={
+            userId && !admin
+              ? JSON.stringify([userId, preview.bookId, preview.path])
+              : undefined
+          }
+          initialPage={
+            lastReading?.bookId === preview.bookId &&
+            lastReading.path === preview.path
+              ? lastReading.page
+              : 1
+          }
+          onPage={(page) => {
+            if (!readingKey || admin) return;
+            const next = { bookId: preview.bookId, path: preview.path, page };
+            setLastReading(next);
+            try {
+              localStorage.setItem(readingKey, JSON.stringify(next));
+            } catch {
+              /* Storage is optional. */
+            }
+          }}
           onClose={() => setPreview(null)}
         />
       )}
@@ -351,12 +421,18 @@ function BookReader({
   path,
   title,
   userId,
+  initialPage,
+  notesKey,
+  onPage,
   onClose,
 }: {
   url: string;
   path: string;
   title: string;
   userId?: string;
+  initialPage: number;
+  notesKey?: string;
+  onPage: (page: number) => void;
   onClose: () => void;
 }) {
   const dialog = useRef<HTMLDialogElement>(null);
@@ -394,7 +470,14 @@ function BookReader({
       </header>
       <div className={showAi ? "book-reader-view has-ai" : "book-reader-view"}>
         <Suspense fallback={<p role="status">{t("TAFE yuklanmoqda…")}</p>}>
-          <DocumentPreview url={url} path={path} title={title} />
+          <DocumentPreview
+            url={url}
+            path={path}
+            title={title}
+            initialPage={initialPage}
+            notesKey={notesKey}
+            onPage={onPage}
+          />
         </Suspense>
         {showAi && userId && (
           <div className="book-reader-chat">
