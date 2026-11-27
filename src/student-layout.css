@@ -420,3 +420,127 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 5px;
 }
+
+[data-coin-theme="atlas"] {
+  --collectible-background:
+    repeating-conic-gradient(
+        from 45deg at 22px 22px,
+        #338de324 0deg 90deg,
+        #efb75320 90deg 180deg
+      )
+      0 0 / 44px 44px,
+    linear-gradient(145deg, #1788aa28, transparent 65%);
+}
+
+[data-coin-theme="jade"] {
+  --collectible-background:
+    radial-gradient(ellipse at 10% 4%, #3bd68a75, transparent 55%),
+    radial-gradient(ellipse at 90% 28%, #d3bf5260, transparent 55%),
+    linear-gradient(170deg, #16836533, transparent 62%);
+}
+
+[data-coin-theme="nebula"] {
+  --collectible-background:
+    radial-gradient(circle, #aa8aff75 1px, transparent 1.5px) 0 0 / 20px 20px,
+    radial-gradient(ellipse at 80% 5%, #9863ff6b, transparent 60%),
+    radial-gradient(ellipse at 15% 35%, #e064a44a, transparent 55%);
+}
+
+.student-workspace:is(
+  [data-coin-theme="atlas"],
+  [data-coin-theme="jade"],
+  [data-coin-theme="nebula"]
+) {
+  --glass-background: var(--collectible-background), var(--surface);
+}
+
+.coin-workspace-preview:is(
+  [data-coin-theme="atlas"],
+  [data-coin-theme="jade"],
+  [data-coin-theme="nebula"]
+) {
+  --sample-bg: var(--collectible-background), var(--sample-base);
+}
+
+.coin-theme-preview.coin-scholar-preview {
+  color: #ffe6a5;
+  background: radial-gradient(ellipse at 50% 0%, #ac7435, #49301e);
+  gap: 4px;
+  align-content: center;
+}
+
+.golden-scholar-badge {
+  display: inline-flex;
+  margin-inline-start: 6px;
+  color: #9a5b08;
+}
+
+[data-theme="dark"] .golden-scholar-badge {
+  color: #ffd171;
+}
+
+.student-workspace[data-custom-background="true"] {
+  background:
+    linear-gradient(#eef3facc, #eef3fadd),
+    var(--custom-background) center top / cover fixed,
+    var(--surface);
+}
+
+[data-theme="dark"] .student-workspace[data-custom-background="true"] {
+  background:
+    linear-gradient(#10192acb, #10192ae8),
+    var(--custom-background) center top / cover fixed,
+    var(--surface);
+}
+
+.coin-theme-preview[data-preview="background"] {
+  background: linear-gradient(135deg, #195e68, #284ca3);
+}
+
+.coin-theme-preview[data-preview="study_timer"] {
+  background: linear-gradient(135deg, #5441a5, #6d3382);
+}
+
+.coin-background-editor {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+}
+
+.coin-background-editor img {
+  width: 100%;
+  max-height: 180px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.coin-background-editor label {
+  display: grid;
+  gap: 6px;
+}
+
+.coin-background-editor input {
+  width: 100%;
+}
+
+.coin-study-timer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 16px;
+  border: 1px solid var(--stroke);
+  border-radius: 16px;
+  background: var(--glass-surface);
+}
+
+.coin-study-timer :is(h2, p) {
+  margin: 0;
+}
+
+.coin-study-timer output {
+  font-size: 1.75rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}

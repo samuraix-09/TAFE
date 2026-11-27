@@ -517,5 +517,42 @@ begin
 end $$;
 reset role;
 
+update public.tafe_coin_wallets set balance = 1200
+where user_id = 'c1000000-0000-4000-8000-000000000099';
+set local role authenticated;
+do $$
+declare wallet jsonb;
+begin
+  if public.can_customize_tafe_background() then
+    raise exception 'Unowned background feature was available';
+  end if;
+  begin
+    perform public.set_tafe_coin_theme('atlas');
+    raise exception 'Unowned Atlas theme was activated';
+  exception when raise_exception then
+    if sqlerrm <> 'Theme is not owned' then raise; end if;
+  end;
+  perform public.tafe_coin_purchase('background','c9000000-0000-4000-8000-000000000005');
+  perform public.tafe_coin_purchase('background','c9000000-0000-4000-8000-000000000006');
+  perform public.tafe_coin_purchase('atlas','c9000000-0000-4000-8000-000000000007');
+  perform public.tafe_coin_purchase('study_timer','c9000000-0000-4000-8000-000000000008');
+  perform public.tafe_coin_purchase('scholar','c9000000-0000-4000-8000-000000000009');
+  perform public.set_tafe_coin_theme('atlas');
+  wallet := public.tafe_coin_wallet();
+  if wallet->>'balance' <> '180' or wallet->>'theme' <> 'atlas'
+    or not (wallet->'owned' @> '["background","atlas","study_timer","scholar"]'::jsonb)
+    or not public.can_customize_tafe_background() then
+    raise exception 'Collectibles pricing, ownership or activation failed';
+  end if;
+end $$;
+select set_config('request.jwt.claim.sub','c1000000-0000-4000-8000-000000000003',true);
+do $$
+begin
+  if public.can_customize_tafe_background() then
+    raise exception 'A different account inherited background ownership';
+  end if;
+end $$;
+reset role;
+
 select 'platform transaction assertions passed' as result;
 rollback;

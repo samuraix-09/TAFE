@@ -1,3 +1,6 @@
+import { signedCoinBackground } from "./CoinBackground";
+import { StudyTimer } from "./StudyTimer";
+import type { CSSProperties } from "react";
 import { TafeCoinBadge, TafeCoinReward } from "./TafeCoinBadge";
 import type { CoinWallet } from "./TafeCoinPage";
 import { readReadingProgress } from "./reading-progress";
@@ -16,6 +19,7 @@ import {
   ArrowUpRight,
   BookOpen,
   ChartNoAxesCombined,
+  BadgeCheck,
   LayoutDashboard,
   Library,
   LogOut,
@@ -180,6 +184,23 @@ function App() {
     coinUpdate && coinUpdate.userId === coinUser
       ? coinUpdate.wallet
       : coinAccount.data;
+  const backgroundUser =
+    coinUser && wallet?.owned.includes("background") ? coinUser : null;
+  const coinBackground = useData<string | null>(
+    () =>
+      backgroundUser
+        ? signedCoinBackground(backgroundUser)
+        : Promise.resolve(null),
+    [backgroundUser],
+  );
+  const [backgroundUpdate, setBackgroundUpdate] = useState<{
+    userId: string;
+    value: string | null;
+  } | null>(null);
+  const selectedBackground =
+    backgroundUpdate && backgroundUpdate.userId === backgroundUser
+      ? backgroundUpdate.value
+      : coinBackground.data;
   useEffect(() => {
     document.documentElement.dataset.theme = dark ? "dark" : "light";
     const favicon = document.querySelector<HTMLLinkElement>('link[rel="icon"]');
@@ -463,6 +484,14 @@ function App() {
             : "workspace student-workspace"
         }
         data-coin-theme={wallet?.theme}
+        data-custom-background={selectedBackground ? true : undefined}
+        style={
+          selectedBackground
+            ? ({
+                "--custom-background": `url(${JSON.stringify(selectedBackground)})`,
+              } as CSSProperties)
+            : undefined
+        }
       >
         <header className="student-topbar">
           <span className="student-breadcrumb">
@@ -477,6 +506,11 @@ function App() {
             aria-label={t("Profil va sozlamalar")}
           >
             <Brand caption={t(nav.find((n) => n[0] === page)?.[1] || "")} />
+            {wallet?.owned.includes("scholar") && (
+              <span className="golden-scholar-badge" title="Golden Scholar">
+                <BadgeCheck size={18} aria-hidden="true" />
+              </span>
+            )}
           </a>
           <div>
             <a
@@ -526,6 +560,7 @@ function App() {
                 userId={session.user.id}
                 onResume={start}
                 busy={action.busy}
+                hasStudyTimer={Boolean(wallet?.owned.includes("study_timer"))}
               />
             )}
             {page === "tests" && (
@@ -548,6 +583,11 @@ function App() {
             {page === "coins" && (
               <TafeCoinPage
                 wallet={wallet}
+                userId={session.user.id}
+                background={selectedBackground ?? null}
+                onBackground={(value) =>
+                  setBackgroundUpdate({ userId: session.user.id, value })
+                }
                 loading={coinAccount.loading && !wallet}
                 error={wallet ? "" : coinAccount.error}
                 onChange={(next) =>
@@ -651,12 +691,14 @@ function Dashboard({
   userId,
   onResume,
   busy,
+  hasStudyTimer,
 }: {
   profile: Row;
   categories: Row[];
   userId: string;
   onResume: (id: string, category: string, section: string) => void;
   busy: boolean;
+  hasStudyTimer: boolean;
 }) {
   const result = useData(async () => {
     await rpc("settle_exam_sessions");
@@ -750,6 +792,7 @@ function Dashboard({
           </a>
         )}
       </section>
+      {hasStudyTimer && <StudyTimer userId={userId} />}
       <div className="stats">
         {[
           ["Yakunlangan testlar", completed.length],

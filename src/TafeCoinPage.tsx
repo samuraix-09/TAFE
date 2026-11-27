@@ -1,3 +1,4 @@
+import { CoinBackground } from "./CoinBackground";
 import { TafeCoinBadge, TafeCoinReward } from "./TafeCoinBadge";
 import { useState } from "react";
 import {
@@ -7,40 +8,65 @@ import {
   ClipboardCheck,
   Eye,
   Sparkles,
+  BadgeCheck,
+  Image as ImageIcon,
+  Timer,
 } from "lucide-react";
 import { localeTag, t } from "./i18n";
 import { db } from "./db";
 import { checked, Feedback, Modal, rpc, useAction, useData } from "./platform";
 
-export type CoinTheme = "classic" | "aurora" | "midnight";
+export type CoinTheme =
+  | "classic"
+  | "aurora"
+  | "midnight"
+  | "nebula"
+  | "atlas"
+  | "jade";
+type Collectible = CoinTheme | "scholar" | "background" | "study_timer";
 export type CoinWallet = {
   balance: number;
   daily_earned?: number;
   theme: CoinTheme;
-  owned: CoinTheme[];
+  owned: Collectible[];
   history: { item: string; amount: number; created_at: string }[];
 };
 const themes = [
   { id: "classic", title: "TAFE Classic", price: 0 },
   { id: "aurora", title: "Aurora Glass", price: 90 },
   { id: "midnight", title: "Midnight Circuit", price: 150 },
+  { id: "atlas", title: "Atlas Mosaic", price: 185 },
+  { id: "jade", title: "Jade Garden", price: 220 },
+  { id: "nebula", title: "Nebula Lab", price: 240 },
 ] as const;
 const focusPrice = 300;
+const scholar = { id: "scholar", title: "Golden Scholar", price: 210 } as const;
+const features = [
+  { id: "background", title: "Shaxsiy fon rasmi", price: 500, Icon: ImageIcon },
+  { id: "study_timer", title: "O‘qish taymeri", price: 125, Icon: Timer },
+] as const;
 const eventLabels: Record<string, string> = {
   exam: "Test mukofoti",
-  aurora: "Aurora Glass",
-  midnight: "Midnight Circuit",
   focus: "3 kunlik TAFE Focus",
+  ...Object.fromEntries(themes.map(({ id, title }) => [id, title])),
+  scholar: scholar.title,
+  ...Object.fromEntries(features.map(({ id, title }) => [id, title])),
   login: "Kunlik kirish mukofoti",
 };
 
 export function TafeCoinPage({
   wallet,
+  userId,
+  background,
+  onBackground,
   loading,
   error,
   onChange,
 }: {
   wallet: CoinWallet | null;
+  userId: string;
+  background: string | null;
+  onBackground: (value: string | null) => void;
   loading: boolean;
   error: string;
   onChange: (wallet: CoinWallet) => void;
@@ -49,7 +75,10 @@ export function TafeCoinPage({
   const [earned, setEarned] = useState<number | null>(null);
   const [rewardId, setRewardId] = useState(0);
   const [selectedProduct, setSelectedProduct] = useState<
-    (typeof themes)[number] | { id: "focus"; title: string; price: number }
+    | (typeof themes)[number]
+    | typeof scholar
+    | (typeof features)[number]
+    | { id: "focus"; title: string; price: number }
   >();
   const [darkPreview, setDarkPreview] = useState(false);
   const focus = useData(
@@ -75,13 +104,24 @@ export function TafeCoinPage({
     onChange(await rpc("tafe_coin_wallet"));
   }
 
+  const selectedOwned =
+    selectedProduct &&
+    (selectedProduct.id === "classic" ||
+      (selectedProduct.id !== "focus" &&
+        wallet?.owned.includes(selectedProduct.id)));
+  const selectedActive =
+    selectedProduct &&
+    (wallet?.theme === selectedProduct.id ||
+      (["scholar", "study_timer", "background"].includes(selectedProduct.id) &&
+        selectedOwned));
+
   async function purchase(product: string) {
     await rpc("tafe_coin_purchase", {
       product,
       request_id: crypto.randomUUID(),
     });
     await refresh();
-    setSelectedProduct(undefined);
+    if (product !== "background") setSelectedProduct(undefined);
   }
 
   return (
@@ -195,6 +235,36 @@ export function TafeCoinPage({
               </article>
             );
           })}
+          {features.map((product) => (
+            <article className="coin-product" key={product.id}>
+              <div className="coin-theme-preview" data-preview={product.id}>
+                <product.Icon size={30} aria-hidden="true" />
+              </div>
+              <h3>{t(product.title)}</h3>
+              <p className="muted">
+                {wallet?.owned.includes(product.id)
+                  ? t("Sizda mavjud")
+                  : `${product.price} TafeCoin`}
+              </p>
+              <button onClick={() => preview(product)}>
+                {t("Batafsil ko‘rish")}
+              </button>
+            </article>
+          ))}
+          <article className="coin-product">
+            <div className="coin-theme-preview coin-scholar-preview">
+              <BadgeCheck size={30} aria-hidden="true" />
+            </div>
+            <h3>{scholar.title}</h3>
+            <p className="muted">
+              {wallet?.owned.includes("scholar")
+                ? t("Sizda mavjud")
+                : `${scholar.price} TafeCoin`}
+            </p>
+            <button type="button" onClick={() => preview(scholar)}>
+              <Eye size={16} aria-hidden="true" /> {t("Batafsil ko‘rish")}
+            </button>
+          </article>
           <article className="coin-product">
             <div className="coin-theme-preview" data-preview="focus">
               <Crown size={24} aria-hidden="true" />
@@ -240,6 +310,50 @@ export function TafeCoinPage({
                   </ul>
                 )}
               </>
+            ) : selectedProduct.id === "background" ? (
+              <>
+                <p>
+                  {t(
+                    "Bir marta sotib oling va kabinet fonini istalgan payt almashtiring.",
+                  )}
+                </p>
+                {selectedOwned && (
+                  <CoinBackground
+                    userId={userId}
+                    current={background}
+                    onChange={onBackground}
+                  />
+                )}
+              </>
+            ) : selectedProduct.id === "study_timer" ? (
+              <>
+                <p>
+                  {t(
+                    "Bosh sahifadagi taymer bilan 15, 25 yoki 45 daqiqalik o‘qish sessiyasini boshlang.",
+                  )}
+                </p>
+                {selectedOwned && (
+                  <a
+                    className="button-link"
+                    href="#/student/dashboard"
+                    onClick={() => setSelectedProduct(undefined)}
+                  >
+                    {t("Dashboard")}
+                  </a>
+                )}
+              </>
+            ) : selectedProduct.id === "scholar" ? (
+              <>
+                <div className="coin-theme-preview coin-scholar-preview">
+                  <BadgeCheck size={34} aria-hidden="true" />{" "}
+                  <strong>{scholar.title}</strong>
+                </div>
+                <p>
+                  {t(
+                    "Xariddan so‘ng oltin belgi profil logosi yonida ko‘rinadi.",
+                  )}
+                </p>
+              </>
             ) : (
               <>
                 <ThemePreview theme={selectedProduct.id} dark={darkPreview} />
@@ -261,9 +375,7 @@ export function TafeCoinPage({
             )}
             <p>
               <strong>
-                {wallet?.theme === selectedProduct.id ||
-                selectedProduct.id === "classic" ||
-                wallet?.owned.includes(selectedProduct.id as CoinTheme)
+                {selectedOwned
                   ? t("Sizda mavjud")
                   : `${selectedProduct.price} TafeCoin`}
               </strong>
@@ -274,17 +386,12 @@ export function TafeCoinPage({
               disabled={
                 !wallet ||
                 action.busy ||
-                wallet.theme === selectedProduct.id ||
-                (selectedProduct.id !== "classic" &&
-                  !wallet.owned.includes(selectedProduct.id as CoinTheme) &&
-                  wallet.balance < selectedProduct.price)
+                Boolean(selectedActive) ||
+                (!selectedOwned && wallet.balance < selectedProduct.price)
               }
               onClick={() =>
                 void action.run(async () => {
-                  if (
-                    selectedProduct.id === "classic" ||
-                    wallet?.owned.includes(selectedProduct.id as CoinTheme)
-                  ) {
+                  if (selectedOwned && !selectedActive) {
                     await rpc("set_tafe_coin_theme", {
                       product: selectedProduct.id,
                     });
@@ -295,10 +402,11 @@ export function TafeCoinPage({
               }
             >
               {t(
-                wallet?.theme === selectedProduct.id
-                  ? "Faol mavzu"
-                  : selectedProduct.id === "classic" ||
-                      wallet?.owned.includes(selectedProduct.id as CoinTheme)
+                selectedActive
+                  ? selectedProduct.id !== wallet?.theme
+                    ? "Sizda mavjud"
+                    : "Faol mavzu"
+                  : selectedOwned
                     ? "Mavzuni yoqish"
                     : "Xaridni tasdiqlash",
               )}
