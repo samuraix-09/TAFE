@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { Calculator, ChevronDown } from "lucide-react";
 import { t } from "./i18n";
 
 const apiKey = import.meta.env.VITE_DESMOS_API_KEY?.trim();
@@ -42,7 +43,15 @@ export function DesmosCalculator() {
         setOpen(event.currentTarget.open);
       }}
     >
-      <summary>Desmos</summary>
+      <summary>
+        <Calculator size={18} aria-hidden="true" />
+        <span>Desmos</span>
+        <ChevronDown
+          className="sat-desmos-arrow"
+          size={17}
+          aria-hidden="true"
+        />
+      </summary>
       {open && status === "loading" && <p role="status">{t("Yuklanmoqda…")}</p>}
       {open && status === "error" && (
         <button
@@ -60,7 +69,13 @@ export function DesmosCalculator() {
           key={attempt}
           ref={frame}
           className="sat-desmos-calculator"
-          src={`/desmos-calculator.html#${encodeURIComponent(apiKey)}`}
+          src={`/desmos-calculator.html#${new URLSearchParams({
+            key: apiKey,
+            theme:
+              document.documentElement.dataset.theme === "dark"
+                ? "dark"
+                : "light",
+          })}`}
           sandbox="allow-scripts"
           title="Desmos Graphing Calculator"
           hidden={status === "error"}

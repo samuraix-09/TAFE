@@ -283,3 +283,52 @@
   height: min(480px, 65dvh);
   min-height: 280px;
 }
+
+.sat-desmos {
+  overflow: hidden;
+  border: 1px solid var(--stroke);
+  border-radius: 14px;
+  background: var(--paper);
+}
+
+.sat-desmos summary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 10px 14px;
+  list-style: none;
+  color: var(--exam-accent);
+  font-weight: 700;
+}
+
+.sat-desmos summary::-webkit-details-marker {
+  display: none;
+}
+
+.sat-desmos summary:focus-visible {
+  outline: 2px solid var(--exam-accent);
+  outline-offset: -3px;
+}
+
+.sat-desmos-arrow {
+  margin-inline-start: auto;
+}
+
+.sat-desmos[open] summary {
+  border-bottom: 1px solid var(--stroke);
+  background: var(--sat-accent-fill);
+}
+
+.sat-desmos[open] .sat-desmos-arrow {
+  transform: rotate(180deg);
+}
+
+.sat-desmos > :is(p, button) {
+  margin: 12px 14px;
+}
+
+.sat-desmos-calculator:not([hidden]) {
+  display: block;
+  height: clamp(300px, 60dvh, 560px);
+}
