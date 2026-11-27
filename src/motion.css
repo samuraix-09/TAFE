@@ -368,29 +368,6 @@
     animation: motion-stage var(--motion-scene) var(--motion-spring)
       calc(var(--motion-step) * 2) backwards;
   }
-  html:not([data-tafe-ready])
-    :is(
-      .public-header > a,
-      .public-header > nav,
-      .public-header > .header-actions,
-      .hero-copy > *,
-      .hero-line,
-      .hero-stage
-    ) {
-    animation-play-state: paused;
-  }
-  html:not([data-tafe-ready])
-    #root:focus-within
-    :is(
-      .public-header > a,
-      .public-header > nav,
-      .public-header > .header-actions,
-      .hero-copy > *,
-      .hero-line,
-      .hero-stage
-    ) {
-    animation-play-state: running;
-  }
   .motion-view,
   .auth-story > div,
   .auth-form-wrap,
@@ -455,23 +432,6 @@
       transition-timing-function: ease, var(--motion-enter), step-start;
     }
   }
-  @supports (animation-timeline: view()) {
-    :is(
-      .section-heading,
-      .feature-card,
-      .public-exams > button,
-      .pricing-card,
-      .how-block,
-      .final-cta
-    ) {
-      animation: motion-scroll linear both;
-      animation-timeline: view();
-      animation-range: entry 1% entry 28%;
-    }
-    :is(.feature-card, .public-exams > button, .pricing-card):focus-within {
-      animation: none;
-    }
-  }
   @supports (animation-timeline: scroll()) {
     @media (min-width: 801px) and (pointer: fine) {
       .hero-stage::before {
@@ -505,12 +465,6 @@
   from {
     opacity: 0;
     transform: translateY(16px) scale(0.985);
-  }
-}
-@keyframes motion-scroll {
-  from {
-    opacity: 0.35;
-    translate: 0 14px;
   }
 }
 @keyframes motion-parallax {

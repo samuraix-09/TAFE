@@ -1,0 +1,54 @@
+:root:not([data-theme="dark"]) {
+  --glass-surface: rgb(255 255 255 / 76%);
+  --glass-edge: rgb(255 255 255 / 88%);
+  --glass-shadow: 0 8px 30px rgb(24 51 89 / 8%);
+}
+:root:not([data-theme="dark"]) :is(.landing, .student-workspace) {
+  background:
+    radial-gradient(ellipse at 12% 8%, #dcecff, transparent 48%),
+    radial-gradient(ellipse at 92% 28%, #e6e4fd, transparent 50%), #f2f6fc;
+}
+:root:not([data-theme="dark"])
+  :is(.student-topbar, .student-sidebar, .public-header) {
+  background: var(--glass-surface);
+  backdrop-filter: blur(16px);
+  border-color: var(--glass-edge);
+}
+:root:not([data-theme="dark"])
+  :is(
+    .landing .feature-card,
+    .landing .pricing-card,
+    .student-workspace .panel
+  ) {
+  background: var(--glass-surface);
+  border-color: var(--glass-edge);
+  box-shadow: var(--glass-shadow);
+}
+.tafe-ai-shortcut {
+  position: fixed;
+  right: max(16px, env(safe-area-inset-right));
+  bottom: max(16px, env(safe-area-inset-bottom));
+  z-index: 15;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 9px 15px;
+  border-radius: 24px;
+  background: var(--blue);
+  color: white;
+  box-shadow: 0 4px 14px #10182826;
+  font-weight: 700;
+  text-decoration: none;
+}
+@media (max-width: 800px) {
+  .student-sidebar ~ .workspace {
+    padding-bottom: 75px;
+  }
+  .student-sidebar ~ .chat-workspace {
+    padding-bottom: 0;
+  }
+  .tafe-ai-shortcut:has(~ .student-sidebar) {
+    bottom: calc(76px + env(safe-area-inset-bottom));
+  }
+}
