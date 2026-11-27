@@ -1,0 +1,75 @@
+.book-reader .book-reader-bar {
+  background: var(--glass-surface, var(--paper));
+  border-bottom: 1px solid var(--stroke);
+  backdrop-filter: blur(16px);
+}
+
+.book-reader .book-reader-view {
+  min-height: 0;
+}
+
+.reader-pdf {
+  min-height: 0;
+  min-width: 0;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  background: var(--surface);
+}
+
+.reader-pdf-tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--stroke);
+  background: var(--paper);
+}
+
+.reader-pdf-tools button {
+  display: grid;
+  place-items: center;
+  min-height: 42px;
+  min-width: 42px;
+  padding: 6px;
+}
+
+.reader-pdf-tools output {
+  min-width: 56px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.reader-file-scroll {
+  min-height: 0;
+  min-width: 0;
+  overflow: auto;
+  scrollbar-gutter: stable;
+  padding: 16px;
+  background: var(--surface);
+}
+
+.reader-file-scroll canvas,
+.reader-word-sheet {
+  display: block;
+  margin-inline: auto;
+  background: white;
+  box-shadow: 0 4px 24px #10182824;
+}
+
+.reader-word-sheet {
+  max-width: 70ch;
+  min-height: 100%;
+  padding: clamp(18px, 5vw, 54px);
+  color: #172134;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.reader-file-fallback {
+  align-self: start;
+  padding: 24px;
+  text-align: center;
+}

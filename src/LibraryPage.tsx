@@ -15,12 +15,14 @@ import {
   Empty,
   Feedback,
   Modal,
-  signed,
   upload,
   useAction,
   useData,
   type Row,
 } from "./platform";
+import "./library-reader.css";
+
+const DocumentPreview = lazy(() => import("./LibraryDocument"));
 const ReaderChat = lazy(() =>
   import("./ChatPage").then((module) => ({ default: module.ChatPage })),
 );
@@ -39,13 +41,42 @@ export function LibraryPage({
         .select("*,exam_categories(name)")
         .order("created_at", { ascending: false }),
     );
-    return await Promise.all(
-      (rows || []).map(async (b) => ({
-        ...b,
-        cover: await signed("tafe-covers", b.cover_path),
-      })),
-    );
-  }, [admin]);
+    return rows || [];
+  }, [admin, userId]);
+  const [covers, setCovers] = useState<Record<string, string>>({});
+  useEffect(() => {
+    const paths = [
+      ...new Set(
+        (books.data || [])
+          .map((book) => book.cover_path as string | null)
+          .filter((path): path is string => Boolean(path)),
+      ),
+    ];
+    if (!paths.length) return;
+    let active = true;
+    for (let offset = 0; offset < paths.length; offset += 100) {
+      void db.storage
+        .from("tafe-covers")
+        .createSignedUrls(paths.slice(offset, offset + 100), 600)
+        .then(({ data }) => {
+          if (!active || !data) return;
+          setCovers((previous) => ({
+            ...previous,
+            ...Object.fromEntries(
+              data.flatMap((item) =>
+                item.path && item.signedUrl && !item.error
+                  ? [[item.path, item.signedUrl]]
+                  : [],
+              ),
+            ),
+          }));
+        })
+        .catch(() => {});
+    }
+    return () => {
+      active = false;
+    };
+  }, [books.data]);
   const preference = useData(async () => {
     if (admin) return null;
     const { data } = await db.auth.getUser();
@@ -76,9 +107,11 @@ export function LibraryPage({
     [category, setCategory] = useState(""),
     [edit, setEdit] = useState<Row | null>(null),
     [selected, setSelected] = useState<Row | null>(null),
-    [preview, setPreview] = useState<{ url: string; title: string } | null>(
-      null,
-    );
+    [preview, setPreview] = useState<{
+      url: string;
+      title: string;
+      path: string;
+    } | null>(null);
   const action = useAction();
   const rows = [...(books.data || [])]
     .sort(
@@ -98,15 +131,20 @@ export function LibraryPage({
     );
   async function open(book: Row) {
     if (book.file_path) {
-      const url = await signed("tafe-documents", book.file_path);
+      const url = checked(
+        await db.storage
+          .from("tafe-documents")
+          .createSignedUrl(book.file_path, 3600),
+      )?.signedUrl;
       if (!url) throw Error("Kitob fayli mavjud emas.");
-      setPreview({ url, title: book.title });
+      setPreview({ url, title: book.title, path: book.file_path });
       setSelected(null);
     } else if (book.url) {
       const url = new URL(book.url, location.origin);
       if (url.protocol !== "https:")
         throw Error("Kitob havolasi xavfsiz emas.");
-      window.open(url.href, "_blank", "noopener,noreferrer");
+      setPreview({ url: url.href, title: book.title, path: url.pathname });
+      setSelected(null);
     } else throw Error("Kitob fayli mavjud emas.");
   }
   return (
@@ -185,18 +223,26 @@ export function LibraryPage({
         </select>
       </div>
       <div className="book-grid">
-        {rows.map((b) => (
+        {rows.map((b, index) => (
           <section className="book-card" key={b.id}>
             <button
               className="book-cover"
               onClick={() => setSelected(b)}
               aria-label={b.title + t(" tafsilotlari")}
             >
-              {b.cover ? (
+              {covers[b.cover_path] ? (
                 <img
-                  src={b.cover}
+                  src={covers[b.cover_path]}
                   alt={b.title + t(" muqovasi")}
-                  loading="lazy"
+                  loading={index < 4 ? "eager" : "lazy"}
+                  decoding="async"
+                  onError={() =>
+                    setCovers((previous) => {
+                      const next = { ...previous };
+                      delete next[b.cover_path];
+                      return next;
+                    })
+                  }
                 />
               ) : (
                 <span className="no-cover">
@@ -229,7 +275,13 @@ export function LibraryPage({
                   {t("Tafsilotlar")}
                 </button>
                 {admin ? (
-                  <button onClick={() => setEdit(b)}>{t("Tahrirlash")}</button>
+                  <button
+                    onClick={() =>
+                      setEdit({ ...b, cover: covers[b.cover_path] })
+                    }
+                  >
+                    {t("Tahrirlash")}
+                  </button>
                 ) : (
                   <button
                     className="primary"
@@ -274,6 +326,7 @@ export function LibraryPage({
       {preview && (
         <BookReader
           url={preview.url}
+          path={preview.path}
           title={preview.title}
           userId={userId}
           onClose={() => setPreview(null)}
@@ -295,11 +348,13 @@ export function LibraryPage({
 }
 function BookReader({
   url,
+  path,
   title,
   userId,
   onClose,
 }: {
   url: string;
+  path: string;
   title: string;
   userId?: string;
   onClose: () => void;
@@ -338,7 +393,9 @@ function BookReader({
         </a>
       </header>
       <div className={showAi ? "book-reader-view has-ai" : "book-reader-view"}>
-        <iframe title={t("Kitob hujjati")} src={url} />
+        <Suspense fallback={<p role="status">{t("TAFE yuklanmoqda…")}</p>}>
+          <DocumentPreview url={url} path={path} title={title} />
+        </Suspense>
         {showAi && userId && (
           <div className="book-reader-chat">
             <Suspense fallback={<p role="status">{t("TAFE yuklanmoqda…")}</p>}>
@@ -352,6 +409,30 @@ function BookReader({
       </div>
     </dialog>
   );
+}
+
+async function optimizeCover(file: File) {
+  let image: ImageBitmap | undefined;
+  try {
+    image = await createImageBitmap(file);
+    const scale = Math.min(1, 720 / Math.max(image.width, image.height));
+    const canvas = document.createElement("canvas");
+    canvas.width = Math.max(1, Math.round(image.width * scale));
+    canvas.height = Math.max(1, Math.round(image.height * scale));
+    const context = canvas.getContext("2d");
+    if (!context) return file;
+    context.drawImage(image, 0, 0, canvas.width, canvas.height);
+    const result = await new Promise<Blob | null>((resolve) =>
+      canvas.toBlob(resolve, "image/webp", 0.83),
+    );
+    return result?.type === "image/webp" && result.size < file.size
+      ? new File([result], "cover.webp", { type: result.type })
+      : file;
+  } catch {
+    return file;
+  } finally {
+    image?.close();
+  }
 }
 
 function BookEditor({
@@ -389,7 +470,7 @@ function BookEditor({
         created.push({ bucket: "tafe-documents", path: filePath });
       }
       if (cover) {
-        coverPath = await upload("tafe-covers", cover);
+        coverPath = await upload("tafe-covers", await optimizeCover(cover));
         created.push({ bucket: "tafe-covers", path: coverPath });
       }
       if (!filePath && !book.url) throw Error("PDF yoki hujjat yuklang.");
