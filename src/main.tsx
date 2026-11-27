@@ -619,10 +619,11 @@ function Dashboard({
   }, []);
   const ent = useData(() => rpc("my_entitlements"), []);
   const completed = result.data?.filter((r) => r.submitted_at) || [],
-    average = completed.length
+    scored = completed.filter((r) => r.total > 0),
+    average = scored.length
       ? Math.round(
-          completed.reduce((s, r) => s + (r.score / r.total) * 100, 0) /
-            completed.length,
+          scored.reduce((s, r) => s + (r.score / r.total) * 100, 0) /
+            scored.length,
         )
       : null;
   const reading = readReadingProgress(userId);

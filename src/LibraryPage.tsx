@@ -79,19 +79,17 @@ export function LibraryPage({
     };
   }, [books.data]);
   const preference = useData(async () => {
-    if (admin) return null;
-    const { data } = await db.auth.getUser();
-    if (!data.user) return null;
+    if (admin || !userId) return null;
     return (
       checked(
         await db
           .from("profiles")
           .select("target_exam")
-          .eq("id", data.user.id)
+          .eq("id", userId)
           .single(),
       )?.target_exam || null
     );
-  }, [admin]);
+  }, [admin, userId]);
   const cats = useData(
     async () =>
       checked(

@@ -1,6 +1,7 @@
-import { SatNotation } from "./SatNotation";
 import { t } from "./i18n";
 import {
+  lazy,
+  Suspense,
   useEffect,
   useId,
   useRef,
@@ -10,6 +11,10 @@ import {
 } from "react";
 import { X, Inbox, LoaderCircle } from "lucide-react";
 import { db } from "./db";
+const SatNotation = lazy(() =>
+  import("./SatNotation").then((module) => ({ default: module.SatNotation })),
+);
+
 export type Row = Record<string, any>;
 export function checked<T>(result: { data: T; error: any }): T {
   if (result.error) throw Error(result.error.message || "So‘rov bajarilmadi.");
@@ -317,7 +322,9 @@ export function QuestionInput({
                 ) ? (
                   t(o)
                 ) : q.config?.opensat ? (
-                  <SatNotation text={o} />
+                  <Suspense fallback={o}>
+                    <SatNotation text={o} />
+                  </Suspense>
                 ) : (
                   o
                 )}

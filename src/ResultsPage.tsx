@@ -11,15 +11,7 @@ import {
   satSectionLabel,
   type SatScores,
 } from "./SatScoreReport";
-import {
-  checked,
-  Empty,
-  Feedback,
-  Modal,
-  rpc,
-  useData,
-  type Row,
-} from "./platform";
+import { checked, Empty, Feedback, rpc, useData, type Row } from "./platform";
 const resultsRoute = "/student/results";
 function selectedAttempt() {
   const id = location.hash.split("/")[3];
@@ -34,7 +26,9 @@ export function ResultsPage({
 }: {
   onResume: (id: string, category: string, section: string) => void;
 }) {
+  const [attemptId, setAttemptId] = useState(selectedAttempt);
   const results = useData<Row[]>(async () => {
+    if (attemptId) return [];
     await rpc("settle_exam_sessions");
     return checked(
       await db
@@ -44,8 +38,7 @@ export function ResultsPage({
         )
         .order("started_at", { ascending: false }),
     ) as unknown as Row[];
-  }, []);
-  const [attemptId, setAttemptId] = useState(selectedAttempt);
+  }, [Boolean(attemptId)]);
   useEffect(() => {
     const update = () => {
       const next = selectedAttempt();
@@ -64,17 +57,14 @@ export function ResultsPage({
   const closeReview = () => {
     location.hash = resultsRoute;
   };
-  if (
-    attemptId &&
-    (report.loading || review?.sat_scores?.total != null || report.error)
-  )
+  if (attemptId)
     return (
       <div className="sat-result-page">
         <button className="sat-report-back" onClick={closeReview}>
           <ArrowLeft size={17} /> {t("Testlar tarixiga qaytish")}
         </button>
         <Feedback error={report.error} loading={report.loading} />
-        {review?.sat_scores?.total != null && (
+        {review && (
           <AttemptReview
             key={attemptId}
             review={review}
@@ -182,19 +172,6 @@ export function ResultsPage({
           <Empty text={t("Hali test ishlamagansiz.")} />
         )}
       </section>
-      {attemptId && review && (
-        <Modal
-          title={t(review.title || "Test tahlili")}
-          onClose={closeReview}
-          wide
-        >
-          <AttemptReview
-            key={attemptId}
-            review={review}
-            attemptId={attemptId}
-          />
-        </Modal>
-      )}
     </>
   );
 }
@@ -332,7 +309,7 @@ function AttemptReview({
               )}
             </p>
           )}
-          <section className="review-question">
+          <section className="review-question review-brief">
             <h3>{t("Qisqa xulosa")}</h3>
             <p>
               {counts.correct}/{counts.questions} {t("to‘g‘ri javob")} ·{" "}
