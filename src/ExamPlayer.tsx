@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { Check, Circle, Flag, Maximize, ShieldCheck } from "lucide-react";
 import { supabaseUrl, supabasePublicKey } from "./db";
 import { Feedback, QuestionInput, rpc, signed, type Row } from "./platform";
-import { examPresentation, SatMathTools, splitSatPrompt } from "./ExamTools";
+import { examPresentation, splitSatPrompt } from "./ExamTools";
 import {
   hasExamAnswer,
   readExamDraft,
@@ -15,6 +15,7 @@ import { ReadingPassage } from "./ReadingPassage";
 import { fullScreenEnabled } from "./exam-fullscreen";
 import "./exam-session.css";
 import "./sat-exam.css";
+import { DesmosCalculator } from "./DesmosCalculator";
 
 type Action =
   | "save"
@@ -637,33 +638,23 @@ export function ExamPlayer({
           </div>
         </div>
         <Feedback error={error} />
-        <div className="exam-progress">
-          <span>
-            {answered} / {attemptQuestions.length}
-            {t(" javob berildi")}
-          </span>
-          <progress
-            aria-label={t("Javob berilgan")}
-            value={answered}
-            max={attemptQuestions.length}
-          />
-        </div>
-        {sat && stage !== null && (
-          <ol className="exam-module-track" aria-label={t("Modullar")}>
-            {Array.from({ length: current.stage_count ?? 4 }, (_, i) => (
-              <li
-                key={i}
-                data-complete={i < stage}
-                aria-current={i === stage ? "step" : undefined}
-              >
-                {t(i < 2 ? "Reading and Writing" : "Math")} {(i % 2) + 1}
-              </li>
-            ))}
-          </ol>
+        {!sat && (
+          <div className="exam-progress">
+            <span>
+              {answered} / {attemptQuestions.length}
+              {t(" javob berildi")}
+            </span>
+            <progress
+              aria-label={t("Javob berilgan")}
+              value={answered}
+              max={attemptQuestions.length}
+            />
+          </div>
         )}
         {!sat && attempt.instructions && (
           <p className="muted exam-instructions">{t(attempt.instructions)}</p>
         )}
+        {satMath && <DesmosCalculator />}
         {current.adaptive && (
           <div className="opensat-tools">
             <small>OpenSAT · TAFE moslashuvchan simulyatsiyasi</small>
@@ -806,15 +797,15 @@ export function ExamPlayer({
           </div>
           <section className="exam-navigation" data-menu-open={questionMenu}>
             {sat && (
-              <div className="sat-exam-directions">
-                <h2>{t("Test ko‘rsatmalari")}</h2>
+              <details className="sat-exam-directions">
+                <summary>{t("Test ko‘rsatmalari")}</summary>
                 <p>
                   {t(
                     attempt.instructions ||
                       "Joriy modul ichida oldingi va keyingi savollarga o‘tishingiz mumkin.",
                   )}
                 </p>
-              </div>
+              </details>
             )}
             <div className="exam-navigation-heading">
               {sat ? (
@@ -824,7 +815,8 @@ export function ExamPlayer({
                   aria-controls="exam-question-list"
                   onClick={() => setQuestionMenu((value) => !value)}
                 >
-                  {t("Savollar")} · {index + 1}/{attemptQuestions.length}
+                  {t("Savollar")} · {answered}/{attemptQuestions.length}
+                  {t(" javob berildi")}
                 </button>
               ) : (
                 <h3>{t(cefr ? "Javoblar varaqasi" : "Savollar")}</h3>
@@ -927,7 +919,6 @@ export function ExamPlayer({
                   ? t("Keyingi modulga o‘tish")
                   : t("Testni yakunlash")}
             </button>
-            {satMath && <SatMathTools />}
             {error && (
               <button onClick={() => send("save")}>{t("Qayta saqlash")}</button>
             )}

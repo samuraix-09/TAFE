@@ -1,14 +1,12 @@
 .exam-view[data-exam="sat"] {
   --exam-accent: #285a98;
   --sat-accent-fill: #edf3fb;
-  --sat-shadow: 0 8px 28px #192d4b10;
   --sat-gutter: clamp(12px, 2.5vw, 36px);
 }
 
 [data-theme="dark"] .exam-view[data-exam="sat"] {
   --exam-accent: #a4c9fa;
   --sat-accent-fill: #203650;
-  --sat-shadow: 0 8px 28px #0003;
 }
 
 .sat-exam-header {
@@ -49,7 +47,7 @@
 }
 
 .exam-view[data-exam="sat"] .exam-content {
-  max-width: none;
+  max-width: 1000px;
   padding: clamp(14px, 2.5vw, 28px) var(--sat-gutter) 36px;
 }
 
@@ -58,7 +56,6 @@
   border: 1px solid var(--stroke);
   border-radius: 13px;
   background: var(--paper);
-  box-shadow: var(--sat-shadow);
 }
 
 .exam-view[data-exam="sat"] .exam-toolbar {
@@ -103,19 +100,8 @@
   font-weight: 700;
 }
 
-.exam-view[data-exam="sat"] .exam-progress {
-  margin-top: 12px;
-}
-
-.exam-view[data-exam="sat"] .exam-progress progress {
-  width: 100%;
-  height: 5px;
-  margin-top: 6px;
-  accent-color: var(--exam-accent);
-}
-
 .exam-view[data-exam="sat"] .exam-layout {
-  grid-template-columns: minmax(0, 1fr) minmax(235px, 285px);
+  grid-template-columns: minmax(0, 1fr);
   align-items: start;
   gap: 18px;
   margin-top: 17px;
@@ -125,7 +111,6 @@
   display: flex;
   flex-direction: column;
   min-width: 0;
-  min-height: clamp(480px, 68dvh, 650px);
 }
 
 .exam-view[data-exam="sat"] .question-heading {
@@ -224,8 +209,7 @@
 }
 
 .exam-view[data-exam="sat"] .exam-navigation {
-  position: sticky;
-  top: 84px;
+  position: static;
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -238,7 +222,7 @@
   border-bottom: 1px solid var(--stroke);
 }
 
-.sat-exam-directions h2 {
+.sat-exam-directions summary {
   margin: 0 0 6px;
   font-size: 13px;
 }
@@ -256,16 +240,6 @@
 
 .exam-view[data-exam="sat"] .exam-navigation .exam-tools {
   margin: 0;
-}
-
-@media (max-width: 900px) {
-  .exam-view[data-exam="sat"] .exam-layout {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .exam-view[data-exam="sat"] .exam-navigation {
-    position: static;
-  }
 }
 
 @media (max-width: 600px) {
@@ -292,4 +266,18 @@
     display: block;
     margin-inline-end: 0;
   }
+}
+
+.sat-exam-directions summary,
+.sat-desmos summary {
+  cursor: pointer;
+}
+
+.sat-desmos {
+  margin-top: 12px;
+}
+
+.sat-desmos-calculator {
+  height: min(480px, 65dvh);
+  min-height: 280px;
 }

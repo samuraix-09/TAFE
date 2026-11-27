@@ -43,6 +43,7 @@ import {
 import "./style.css";
 import "./platform.css";
 import "./motion.css";
+import "./glass.css";
 import { signOutWithMotion, useStartupReady } from "./motion";
 const AdminApp = lazy(() =>
   import("./AdminApp").then((m) => ({ default: m.AdminApp })),
@@ -346,32 +347,49 @@ function App() {
         />
       </Suspense>
     );
+  const aiShortcut = (
+    <a
+      className="tafe-ai-shortcut"
+      href="#/student/ai"
+      onClick={() => {
+        setCompletedExam(null);
+        setAiPrompt("");
+      }}
+    >
+      <Sparkles size={18} aria-hidden="true" /> TAFE AI
+    </a>
+  );
   if (adminRoute)
     return (
       <Suspense fallback={<Loading />}>
+        {aiShortcut}
         <AdminApp onLanguageChange={changeLanguage} />
       </Suspense>
     );
   if (completedExam?.userId === session.user.id) {
     return (
-      <ExamCompleted
-        id={completedExam.id}
-        onDetails={() => {
-          setCompletedExam(null);
-          location.hash = "/student/results/" + completedExam.id;
-          setPage("results");
-        }}
-        onExit={() => {
-          setCompletedExam(null);
-          location.hash = "/student/dashboard";
-          setPage("dashboard");
-        }}
-      />
+      <>
+        {aiShortcut}
+        <ExamCompleted
+          id={completedExam.id}
+          onDetails={() => {
+            setCompletedExam(null);
+            location.hash = "/student/results/" + completedExam.id;
+            setPage("results");
+          }}
+          onExit={() => {
+            setCompletedExam(null);
+            location.hash = "/student/dashboard";
+            setPage("dashboard");
+          }}
+        />
+      </>
     );
   }
   const fullChat = page === "ai";
   return (
     <>
+      {!fullChat && aiShortcut}
       <aside className="student-sidebar">
         <a className="brand" href="#/student/dashboard">
           <Brand />
