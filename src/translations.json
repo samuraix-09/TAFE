@@ -1,4 +1,114 @@
 {
+  "Maxsus kolleksiya": {
+    "uz": "Maxsus kolleksiya",
+    "en": "Special collection",
+    "ru": "Особая коллекция"
+  },
+  "Kabinet fonlari": {
+    "uz": "Kabinet fonlari",
+    "en": "Workspace backgrounds",
+    "ru": "Фоны кабинета"
+  },
+  "Profil nishonlari": {
+    "uz": "Profil nishonlari",
+    "en": "Profile badges",
+    "ru": "Значки профиля"
+  },
+  "Avatar ramkalari": {
+    "uz": "Avatar ramkalari",
+    "en": "Avatar frames",
+    "ru": "Рамки аватара"
+  },
+  "Mukofot animatsiyalari": {
+    "uz": "Mukofot animatsiyalari",
+    "en": "Reward animations",
+    "ru": "Анимации наград"
+  },
+  "Bosh sahifa bezaklari": {
+    "uz": "Bosh sahifa bezaklari",
+    "en": "Dashboard decorations",
+    "ru": "Украшения главной страницы"
+  },
+  "Animatsiyani ko‘rish": {
+    "uz": "Animatsiyani ko‘rish",
+    "en": "Preview animation",
+    "ru": "Посмотреть анимацию"
+  },
+  "Faollashtirish": {
+    "uz": "Faollashtirish",
+    "en": "Activate",
+    "ru": "Активировать"
+  },
+  "Item is not owned": {
+    "uz": "Bu mahsulot hali xarid qilinmagan.",
+    "en": "Item is not owned",
+    "ru": "Предмет не приобретён"
+  },
+  "Xariddan so‘ng oltin belgi profil logosi yonida ko‘rinadi.": {
+    "uz": "Xariddan so‘ng oltin belgi profil logosi yonida ko‘rinadi.",
+    "en": "The gold badge appears next to your profile logo after purchase.",
+    "ru": "После покупки рядом с логотипом профиля появится золотой значок."
+  },
+  "Shaxsiy fon rasmi": {
+    "uz": "Shaxsiy fon rasmi",
+    "en": "Custom background",
+    "ru": "Свой фон"
+  },
+  "O‘qish taymeri": {
+    "uz": "O‘qish taymeri",
+    "en": "Study timer",
+    "ru": "Таймер занятий"
+  },
+  "Fon rasmi": {
+    "uz": "Fon rasmi",
+    "en": "Background image",
+    "ru": "Фоновое изображение"
+  },
+  "Fon rasmini tanlash": {
+    "uz": "Fon rasmini tanlash",
+    "en": "Choose a background image",
+    "ru": "Выбрать фоновое изображение"
+  },
+  "Fon rasmini saqlash": {
+    "uz": "Fon rasmini saqlash",
+    "en": "Save background",
+    "ru": "Сохранить фон"
+  },
+  "Fon rasmini olib tashlash": {
+    "uz": "Fon rasmini olib tashlash",
+    "en": "Remove background",
+    "ru": "Удалить фон"
+  },
+  "Fon rasmini ochib bo‘lmadi.": {
+    "uz": "Fon rasmini ochib bo‘lmadi.",
+    "en": "Could not load the background.",
+    "ru": "Не удалось загрузить фон."
+  },
+  "JPG, PNG yoki WebP faylini tanlang. Maksimal hajm 3 MB.": {
+    "uz": "JPG, PNG yoki WebP faylini tanlang. Maksimal hajm 3 MB.",
+    "en": "Choose a JPG, PNG, or WebP file up to 3 MB.",
+    "ru": "Выберите JPG, PNG или WebP размером до 3 МБ."
+  },
+  "Bir marta sotib oling va kabinet fonini istalgan payt almashtiring.": {
+    "uz": "Bir marta sotib oling va kabinet fonini istalgan payt almashtiring.",
+    "en": "Buy once and change your workspace background whenever you like.",
+    "ru": "Купите один раз и меняйте фон кабинета в любое время."
+  },
+  "Bosh sahifadagi taymer bilan 15, 25 yoki 45 daqiqalik o‘qish sessiyasini boshlang.": {
+    "uz": "Bosh sahifadagi taymer bilan 15, 25 yoki 45 daqiqalik o‘qish sessiyasini boshlang.",
+    "en": "Start a 15, 25, or 45 minute study session from your dashboard.",
+    "ru": "Запускайте занятия на 15, 25 или 45 минут с главной страницы."
+  },
+  "O‘qish vaqti tugadi.": {
+    "uz": "O‘qish vaqti tugadi.",
+    "en": "Study time has ended.",
+    "ru": "Время занятия истекло."
+  },
+  "To‘xtatish": {
+    "uz": "To‘xtatish",
+    "en": "Stop",
+    "ru": "Остановить"
+  },
   "Toshkent vaqti bo‘yicha kuniga bir marta avtomatik qo‘shiladi.": {
     "uz": "Toshkent vaqti bo‘yicha kuniga bir marta avtomatik qo‘shiladi.",
     "en": "Automatically credited once a day, Tashkent time.",

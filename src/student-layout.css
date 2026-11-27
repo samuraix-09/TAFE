@@ -420,3 +420,271 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 5px;
 }
+
+[data-coin-theme="atlas"] {
+  --collectible-background:
+    repeating-conic-gradient(
+        from 45deg at 22px 22px,
+        #338de324 0deg 90deg,
+        #efb75320 90deg 180deg
+      )
+      0 0 / 44px 44px,
+    linear-gradient(145deg, #1788aa28, transparent 65%);
+}
+
+[data-coin-theme="jade"] {
+  --collectible-background:
+    radial-gradient(ellipse at 10% 4%, #3bd68a75, transparent 55%),
+    radial-gradient(ellipse at 90% 28%, #d3bf5260, transparent 55%),
+    linear-gradient(170deg, #16836533, transparent 62%);
+}
+
+[data-coin-theme="nebula"] {
+  --collectible-background:
+    radial-gradient(circle, #aa8aff75 1px, transparent 1.5px) 0 0 / 20px 20px,
+    radial-gradient(ellipse at 80% 5%, #9863ff6b, transparent 60%),
+    radial-gradient(ellipse at 15% 35%, #e064a44a, transparent 55%);
+}
+
+.student-workspace:is(
+  [data-coin-theme="atlas"],
+  [data-coin-theme="jade"],
+  [data-coin-theme="nebula"]
+) {
+  --glass-background: var(--collectible-background), var(--surface);
+}
+
+.coin-workspace-preview:is(
+  [data-coin-theme="atlas"],
+  [data-coin-theme="jade"],
+  [data-coin-theme="nebula"]
+) {
+  --sample-bg: var(--collectible-background), var(--sample-base);
+}
+
+.coin-theme-preview.coin-scholar-preview {
+  color: #ffe6a5;
+  background: radial-gradient(ellipse at 50% 0%, #ac7435, #49301e);
+  gap: 4px;
+  align-content: center;
+}
+
+.golden-scholar-badge {
+  display: inline-flex;
+  margin-inline-start: 6px;
+  color: #9a5b08;
+}
+
+[data-theme="dark"] .golden-scholar-badge {
+  color: #ffd171;
+}
+
+.student-workspace[data-custom-background="true"] {
+  background:
+    linear-gradient(#eef3facc, #eef3fadd),
+    var(--custom-background) center top / cover fixed,
+    var(--surface);
+}
+
+[data-theme="dark"] .student-workspace[data-custom-background="true"] {
+  background:
+    linear-gradient(#10192acb, #10192ae8),
+    var(--custom-background) center top / cover fixed,
+    var(--surface);
+}
+
+.coin-theme-preview[data-preview="background"] {
+  background: linear-gradient(135deg, #195e68, #284ca3);
+}
+
+.coin-theme-preview[data-preview="study_timer"] {
+  background: linear-gradient(135deg, #5441a5, #6d3382);
+}
+
+.coin-background-editor {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+}
+
+.coin-background-editor img {
+  width: 100%;
+  max-height: 180px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.coin-background-editor label {
+  display: grid;
+  gap: 6px;
+}
+
+.coin-background-editor input {
+  width: 100%;
+}
+
+.coin-study-timer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 16px;
+  border: 1px solid var(--stroke);
+  border-radius: 16px;
+  background: var(--glass-surface);
+}
+
+.coin-study-timer :is(h2, p) {
+  margin: 0;
+}
+
+.coin-study-timer output {
+  font-size: 1.75rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.coin-category-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.coin-category-filters button[aria-pressed="true"] {
+  border-color: var(--blue);
+  color: var(--blue);
+}
+.coin-decoration-sample,
+.coin-decoration {
+  display: grid;
+  place-items: center;
+  color: var(--ink);
+  background:
+    linear-gradient(var(--coin-extra-tint), var(--coin-extra-tint)),
+    var(--paper);
+  border: 1px solid var(--coin-extra-color);
+}
+.coin-decoration-sample {
+  min-height: 82px;
+  border-radius: 13px;
+  overflow: hidden;
+}
+.coin-decoration {
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+}
+.coin-decoration-sample[data-kind="scene"] {
+  background: var(--coin-extra-pattern), var(--surface);
+}
+.student-workspace[data-extra-scene="true"]:not(
+    [data-custom-background="true"]
+  ) {
+  background: var(--coin-extra-pattern), var(--surface);
+}
+.coin-frame-demo,
+.avatar[data-extra-frame] {
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 2px var(--coin-extra-color),
+    0 0 0 5px var(--coin-extra-tint);
+}
+.coin-frame-demo {
+  width: 44px;
+  height: 44px;
+  background: var(--paper);
+}
+.avatar[data-extra-frame="1"],
+.avatar[data-extra-frame="4"] {
+  border-radius: 10px;
+}
+.avatar[data-extra-frame="2"],
+.avatar[data-extra-frame="5"] {
+  box-shadow:
+    0 0 0 3px var(--coin-extra-color),
+    0 0 14px var(--coin-extra-color);
+}
+.avatar[data-extra-frame="3"] {
+  outline: 1px dashed var(--coin-extra-color);
+  outline-offset: 5px;
+}
+.dashboard-next > .coin-decoration {
+  width: 50px;
+  height: 50px;
+}
+@media (max-width: 700px) {
+  .student-topbar .avatar[data-extra-frame] {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  [data-kind="effect"][data-animate="true"] svg {
+    animation: coin-extra-flip 650ms ease both;
+  }
+  [data-kind="effect"][data-animate="true"][data-variant="1"] svg {
+    animation-name: coin-extra-pop;
+  }
+  [data-kind="effect"][data-animate="true"][data-variant="2"] svg {
+    animation-name: coin-extra-orbit;
+  }
+  [data-kind="effect"][data-animate="true"][data-variant="3"] svg {
+    animation-name: coin-extra-rise;
+  }
+  [data-kind="effect"][data-animate="true"][data-variant="4"] svg {
+    animation-name: coin-extra-bounce;
+  }
+  [data-kind="effect"][data-animate="true"][data-variant="5"] svg {
+    animation-name: coin-extra-pulse;
+  }
+}
+@keyframes coin-extra-flip {
+  from {
+    transform: rotateY(-180deg) scale(0.75);
+  }
+}
+@keyframes coin-extra-pop {
+  0% {
+    transform: scale(0.4);
+  }
+  65% {
+    transform: scale(1.4);
+  }
+}
+@keyframes coin-extra-orbit {
+  from {
+    transform: rotate(-270deg) scale(0.55);
+  }
+}
+@keyframes coin-extra-rise {
+  from {
+    transform: translateY(24px);
+    opacity: 0;
+  }
+}
+@keyframes coin-extra-bounce {
+  0% {
+    transform: translateY(-26px);
+  }
+  55% {
+    transform: translateY(6px);
+  }
+  75% {
+    transform: translateY(-5px);
+  }
+}
+@keyframes coin-extra-pulse {
+  0%,
+  35%,
+  65% {
+    transform: translateX(-5px);
+  }
+  20%,
+  50%,
+  80% {
+    transform: translateX(5px);
+  }
+}

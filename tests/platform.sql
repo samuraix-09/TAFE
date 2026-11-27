@@ -517,5 +517,79 @@ begin
 end $$;
 reset role;
 
+update public.tafe_coin_wallets set balance = 1200
+where user_id = 'c1000000-0000-4000-8000-000000000099';
+set local role authenticated;
+do $$
+declare wallet jsonb;
+begin
+  if public.can_customize_tafe_background() then
+    raise exception 'Unowned background feature was available';
+  end if;
+  begin
+    perform public.set_tafe_coin_theme('atlas');
+    raise exception 'Unowned Atlas theme was activated';
+  exception when raise_exception then
+    if sqlerrm <> 'Theme is not owned' then raise; end if;
+  end;
+  perform public.tafe_coin_purchase('background','c9000000-0000-4000-8000-000000000005');
+  perform public.tafe_coin_purchase('background','c9000000-0000-4000-8000-000000000006');
+  perform public.tafe_coin_purchase('atlas','c9000000-0000-4000-8000-000000000007');
+  perform public.tafe_coin_purchase('study_timer','c9000000-0000-4000-8000-000000000008');
+  perform public.tafe_coin_purchase('scholar','c9000000-0000-4000-8000-000000000009');
+  perform public.set_tafe_coin_theme('atlas');
+  wallet := public.tafe_coin_wallet();
+  if wallet->>'balance' <> '180' or wallet->>'theme' <> 'atlas'
+    or not (wallet->'owned' @> '["background","atlas","study_timer","scholar"]'::jsonb)
+    or not public.can_customize_tafe_background() then
+    raise exception 'Collectibles pricing, ownership or activation failed';
+  end if;
+end $$;
+select set_config('request.jwt.claim.sub','c1000000-0000-4000-8000-000000000003',true);
+do $$
+begin
+  if public.can_customize_tafe_background() then
+    raise exception 'A different account inherited background ownership';
+  end if;
+end $$;
+reset role;
+
+do $$
+begin
+  if (select count(*) from public.tafe_coin_extra_catalog) <> 30 or
+     (select count(distinct category) from public.tafe_coin_extra_catalog) <> 5 then
+    raise exception 'The shop collection is incomplete';
+  end if;
+end $$;
+select set_config('request.jwt.claim.sub','c1000000-0000-4000-8000-000000000099',true);
+update public.tafe_coin_wallets set balance = 500 where user_id = auth.uid();
+set local role authenticated;
+do $$
+declare wallet jsonb;
+begin
+  begin
+    perform public.equip_tafe_coin_extra('scene_1', true);
+    raise exception 'Unowned item activated';
+  exception when raise_exception then
+    if sqlerrm <> 'Item is not owned' then raise; end if;
+  end;
+  perform public.buy_tafe_coin_extra('scene_1');
+  perform public.buy_tafe_coin_extra('scene_1');
+  perform public.buy_tafe_coin_extra('scene_2');
+  perform public.buy_tafe_coin_extra('badge_1');
+  perform public.equip_tafe_coin_extra('scene_1', true);
+  perform public.equip_tafe_coin_extra('scene_2', true);
+  perform public.equip_tafe_coin_extra('badge_1', true);
+  perform public.equip_tafe_coin_extra('scene_1', false);
+  wallet := public.tafe_coin_wallet();
+  if wallet->>'balance' <> '100' or wallet->'equipped'->>'scene' <> 'scene_2'
+    or wallet->'equipped'->>'badge' <> 'badge_1'
+    or not (wallet->'extra_owned' @> '["scene_1","scene_2","badge_1"]'::jsonb)
+  then raise exception 'Collection ownership, debit or equipped slots are incorrect'; end if;
+  perform public.equip_tafe_coin_extra('scene_2', false);
+  if (public.tafe_coin_wallet()->'equipped') ? 'scene' then raise exception 'Unequip failed'; end if;
+end $$;
+reset role;
+
 select 'platform transaction assertions passed' as result;
 rollback;
