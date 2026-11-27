@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useEffectEvent, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight, Minus, Plus } from "lucide-react";
 import { t } from "./i18n";
 
@@ -17,6 +17,8 @@ export default function LibraryDocument(props: {
   url: string;
   path: string;
   title: string;
+  initialPage?: number;
+  onPage?: (page: number) => void;
 }) {
   if (/\.pdf$/i.test(props.path)) return <PdfDocument {...props} />;
   if (/\.docx$/i.test(props.path)) return <WordDocument url={props.url} />;
@@ -59,14 +61,31 @@ function WordDocument({ url }: { url: string }) {
   );
 }
 
-function PdfDocument({ url, title }: { url: string; title: string }) {
+function PdfDocument({
+  url,
+  title,
+  initialPage = 1,
+  onPage,
+}: {
+  url: string;
+  title: string;
+  initialPage?: number;
+  onPage?: (page: number) => void;
+}) {
   const [pdf, setPdf] = useState<import("pdfjs-dist").PDFDocumentProxy>();
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(initialPage);
+  const pageNumber = pdf ? Math.min(page, pdf.numPages) : page;
   const [zoom, setZoom] = useState(1);
   const [width, setWidth] = useState(0);
   const [failed, setFailed] = useState(false);
   const scroll = useRef<HTMLDivElement>(null);
   const canvas = useRef<HTMLCanvasElement>(null);
+  const recordedPage = useRef(0);
+  const recordPage = useEffectEvent((number: number) => {
+    if (recordedPage.current === number) return;
+    recordedPage.current = number;
+    onPage?.(number);
+  });
 
   useEffect(() => {
     const element = scroll.current;
@@ -106,7 +125,7 @@ function PdfDocument({ url, title }: { url: string; title: string }) {
     let active = true;
     let render: import("pdfjs-dist").RenderTask | undefined;
     void pdf
-      .getPage(page)
+      .getPage(pageNumber)
       .then(async (sheet) => {
         const element = canvas.current;
         if (!active || !element) return;
@@ -129,6 +148,7 @@ function PdfDocument({ url, title }: { url: string; title: string }) {
           transform: [ratio, 0, 0, ratio, 0, 0],
         });
         await render.promise;
+        if (active) recordPage(pageNumber);
       })
       .catch(() => {
         if (active) setFailed(true);
@@ -137,7 +157,7 @@ function PdfDocument({ url, title }: { url: string; title: string }) {
       active = false;
       render?.cancel();
     };
-  }, [pdf, page, zoom, width]);
+  }, [pdf, pageNumber, zoom, width]);
 
   if (failed) return <ReadingFallback url={url} />;
   return (
@@ -145,23 +165,23 @@ function PdfDocument({ url, title }: { url: string; title: string }) {
       {pdf && (
         <div className="reader-pdf-tools">
           <button
-            disabled={page <= 1}
+            disabled={pageNumber <= 1}
             aria-label={t("← Oldingi")}
             onClick={() => {
-              setPage(page - 1);
+              setPage(pageNumber - 1);
               scroll.current?.scrollTo(0, 0);
             }}
           >
             <ChevronLeft size={18} />
           </button>
           <output aria-live="polite">
-            {page} / {pdf.numPages}
+            {pageNumber} / {pdf.numPages}
           </output>
           <button
-            disabled={page >= pdf.numPages}
+            disabled={pageNumber >= pdf.numPages}
             aria-label={t("Keyingi →")}
             onClick={() => {
-              setPage(page + 1);
+              setPage(pageNumber + 1);
               scroll.current?.scrollTo(0, 0);
             }}
           >
@@ -186,7 +206,11 @@ function PdfDocument({ url, title }: { url: string; title: string }) {
       <div className="reader-file-scroll" ref={scroll}>
         {!pdf && <p role="status">{t("TAFE yuklanmoqda…")}</p>}
         {pdf && (
-          <canvas ref={canvas} role="img" aria-label={`${title} · ${page}`} />
+          <canvas
+            ref={canvas}
+            role="img"
+            aria-label={`${title} · ${pageNumber}`}
+          />
         )}
       </div>
     </div>

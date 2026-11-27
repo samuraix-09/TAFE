@@ -111,8 +111,38 @@ export function LibraryPage({
       url: string;
       title: string;
       path: string;
+      bookId: string;
     } | null>(null);
   const action = useAction();
+  const readingKey = userId ? "tafe-last-reading:" + userId : null;
+  const [lastReading, setLastReading] = useState<{
+    bookId: string;
+    path: string;
+    page: number;
+  } | null>(() => {
+    try {
+      const value = readingKey
+        ? JSON.parse(localStorage.getItem(readingKey) || "null")
+        : null;
+      return value &&
+        typeof value.bookId === "string" &&
+        typeof value.path === "string" &&
+        Number.isSafeInteger(value.page) &&
+        value.page > 0
+        ? value
+        : null;
+    } catch {
+      return null;
+    }
+  });
+  const resumeBook =
+    !admin && lastReading
+      ? books.data?.find(
+          (book) =>
+            book.id === lastReading.bookId &&
+            book.file_path === lastReading.path,
+        )
+      : null;
   const rows = [...(books.data || [])]
     .sort(
       (a, b) =>
@@ -137,13 +167,23 @@ export function LibraryPage({
           .createSignedUrl(book.file_path, 3600),
       )?.signedUrl;
       if (!url) throw Error("Kitob fayli mavjud emas.");
-      setPreview({ url, title: book.title, path: book.file_path });
+      setPreview({
+        url,
+        title: book.title,
+        path: book.file_path,
+        bookId: book.id,
+      });
       setSelected(null);
     } else if (book.url) {
       const url = new URL(book.url, location.origin);
       if (url.protocol !== "https:")
         throw Error("Kitob havolasi xavfsiz emas.");
-      setPreview({ url: url.href, title: book.title, path: url.pathname });
+      setPreview({
+        url: url.href,
+        title: book.title,
+        path: url.pathname,
+        bookId: book.id,
+      });
       setSelected(null);
     } else throw Error("Kitob fayli mavjud emas.");
   }
@@ -175,6 +215,21 @@ export function LibraryPage({
         notice={action.notice}
         loading={books.loading}
       />
+      {resumeBook && lastReading && (
+        <div className="section-toolbar">
+          <p>
+            <strong>{resumeBook.title}</strong> · {t("Sahifa")}{" "}
+            {lastReading.page}
+          </p>
+          <button
+            className="primary"
+            disabled={action.busy}
+            onClick={() => void action.run(() => open(resumeBook), "")}
+          >
+            {t("O‘qishni davom ettirish")}
+          </button>
+        </div>
+      )}
       <div className="filter-bar">
         <label className="search-field">
           <Search size={17} />
@@ -329,6 +384,22 @@ export function LibraryPage({
           path={preview.path}
           title={preview.title}
           userId={userId}
+          initialPage={
+            lastReading?.bookId === preview.bookId &&
+            lastReading.path === preview.path
+              ? lastReading.page
+              : 1
+          }
+          onPage={(page) => {
+            if (!readingKey || admin) return;
+            const next = { bookId: preview.bookId, path: preview.path, page };
+            setLastReading(next);
+            try {
+              localStorage.setItem(readingKey, JSON.stringify(next));
+            } catch {
+              /* Storage is optional. */
+            }
+          }}
           onClose={() => setPreview(null)}
         />
       )}
@@ -351,12 +422,16 @@ function BookReader({
   path,
   title,
   userId,
+  initialPage,
+  onPage,
   onClose,
 }: {
   url: string;
   path: string;
   title: string;
   userId?: string;
+  initialPage: number;
+  onPage: (page: number) => void;
   onClose: () => void;
 }) {
   const dialog = useRef<HTMLDialogElement>(null);
@@ -394,7 +469,13 @@ function BookReader({
       </header>
       <div className={showAi ? "book-reader-view has-ai" : "book-reader-view"}>
         <Suspense fallback={<p role="status">{t("TAFE yuklanmoqda…")}</p>}>
-          <DocumentPreview url={url} path={path} title={title} />
+          <DocumentPreview
+            url={url}
+            path={path}
+            title={title}
+            initialPage={initialPage}
+            onPage={onPage}
+          />
         </Suspense>
         {showAi && userId && (
           <div className="book-reader-chat">

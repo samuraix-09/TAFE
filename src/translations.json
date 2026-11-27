@@ -1,4 +1,14 @@
 {
+  "Shu mavzuni mashq qilish": {
+    "uz": "Shu mavzuni mashq qilish",
+    "en": "Practice this topic",
+    "ru": "Практиковать эту тему"
+  },
+  "O‘qishni davom ettirish": {
+    "uz": "O‘qishni davom ettirish",
+    "en": "Continue reading",
+    "ru": "Продолжить чтение"
+  },
   "Dashboard": {
     "uz": "Boshqaruv paneli",
     "en": "Dashboard",

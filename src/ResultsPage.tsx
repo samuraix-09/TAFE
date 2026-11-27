@@ -234,23 +234,30 @@ function AttemptReview({
       difficulty: items[0]?.question.difficulty,
     };
   });
+  const topicFor = (question: Row) =>
+    String(question.group_name || question.config?.sat_topic || "").trim();
   const topics = new Map<string, { correct: number; total: number }>();
-  if (adaptive)
-    for (const { question, state } of entries) {
-      const name = question.group_name;
-      const item = topics.get(name) ?? { correct: 0, total: 0 };
-      item.total++;
-      if (state === "correct") item.correct++;
-      topics.set(name, item);
-    }
-  const ranked = [...topics].sort(
-    ([, a], [, b]) => a.correct / a.total - b.correct / b.total,
-  );
+  for (const { question, state } of entries) {
+    const topic = topicFor(question);
+    if (!topic) continue;
+    const item = topics.get(topic) ?? { correct: 0, total: 0 };
+    item.total++;
+    if (state === "correct") item.correct++;
+    topics.set(topic, item);
+  }
+  const ranked = [...topics]
+    .filter(([, item]) => item.correct < item.total)
+    .sort(
+      ([, a], [, b]) =>
+        a.correct / a.total - b.correct / b.total ||
+        b.total - b.correct - (a.total - a.correct),
+    )
+    .slice(0, 3);
   const mistakes = entries.filter((entry) => entry.state !== "correct");
   const [filter, setFilter] = useState(
     scaled || !mistakes.length ? "all" : "mistakes",
   );
-  const [practicing, setPracticing] = useState(false);
+  const [practicing, setPracticing] = useState<string | null>(null);
   const missing = entries.filter((entry) => entry.state === "missing").length;
   const counts = {
     correct: review.sat_scores?.correct ?? entries.length - mistakes.length,
@@ -263,22 +270,20 @@ function AttemptReview({
         ? ((entries.length - mistakes.length) * 100) / entries.length
         : 0),
   };
-  const skillsToReview =
-    review.sat_scores && !scaled
-      ? [
-          ...new Set<string>(
-            mistakes.map(({ question }) => question.group_name).filter(Boolean),
-          ),
-        ]
-      : [];
   return (
     <>
       {scaled && review.title && <h2>{t(review.title)}</h2>}
-      {practicing ? (
+      {practicing !== null ? (
         <MistakePractice
           attemptId={attemptId}
-          questions={mistakes}
-          onClose={() => setPracticing(false)}
+          questions={
+            practicing
+              ? mistakes
+                  .filter(({ question }) => topicFor(question) === practicing)
+                  .slice(0, 10)
+              : mistakes
+          }
+          onClose={() => setPracticing(null)}
         />
       ) : (
         <>
@@ -325,14 +330,22 @@ function AttemptReview({
               )}
             </p>
           )}
-          {skillsToReview.length > 0 && (
-            <section>
-              <h3>{t("Takrorlash kerak bo‘lgan mavzular")}</h3>
-              <ul>
-                {skillsToReview.map((skill) => (
-                  <li key={skill}>{t(skill)}</li>
-                ))}
-              </ul>
+          {ranked.length > 0 && (
+            <section
+              className="sat-section-results"
+              aria-label={t("Takrorlash kerak bo‘lgan mavzular")}
+            >
+              {ranked.map(([topic, item]) => (
+                <section key={topic}>
+                  <h3>{t(topic)}</h3>
+                  <p>
+                    {item.correct} / {item.total} {t("to‘g‘ri javob")}
+                  </p>
+                  <button onClick={() => setPracticing(topic)}>
+                    {t("Shu mavzuni mashq qilish")}
+                  </button>
+                </section>
+              ))}
             </section>
           )}
           {adaptive && (
@@ -347,19 +360,6 @@ function AttemptReview({
                   </li>
                 ))}
               </ul>
-              {ranked.length > 0 && (
-                <p>
-                  {ranked[0][1].correct < ranked[0][1].total ? (
-                    <>
-                      Keyingi mashq uchun tavsiya —{" "}
-                      <strong>{t(ranked[0][0])}</strong> mavzusini takrorlang va
-                      xato javoblarni qayta ishlang.
-                    </>
-                  ) : (
-                    "Barcha mavzulardagi javoblar to‘g‘ri. Keyingi mashqda tezlik va vaqt taqsimotini kuzating."
-                  )}
-                </p>
-              )}
             </section>
           )}
           {scaled && <h3>{t("Savollar tahlili")}</h3>}
@@ -390,7 +390,7 @@ function AttemptReview({
               ))}
             </div>
             {mistakes.length > 0 && (
-              <button className="primary" onClick={() => setPracticing(true)}>
+              <button className="primary" onClick={() => setPracticing("")}>
                 {t("Xatolarni qayta ishlash")}
               </button>
             )}
@@ -450,7 +450,7 @@ function AttemptReview({
                 <button
                   onClick={() => {
                     onExplain(
-                      "Quyidagi test savolini va javobimni tushuntiring. Savol: " +
+                      "Avval javobni oshkor qilmasdan bitta ishora bering. To‘liq yechimni faqat so‘rasam tushuntiring. Savol: " +
                         q.prompt +
                         "\nJavobim: " +
                         JSON.stringify(review.answers[q.id]) +
