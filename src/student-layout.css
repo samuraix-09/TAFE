@@ -1,0 +1,323 @@
+.student-workspace[data-coin-theme="aurora"] {
+  --glass-background:
+    radial-gradient(ellipse at 12% 0%, #81dfb655, transparent 65%),
+    radial-gradient(ellipse at 95% 28%, #a17cff44, transparent 55%),
+    var(--surface);
+}
+
+.student-workspace[data-coin-theme="midnight"] {
+  --glass-background:
+    linear-gradient(145deg, #537eff30, transparent 45%),
+    repeating-linear-gradient(0deg, transparent 0 31px, #5473af17 31px 32px),
+    repeating-linear-gradient(90deg, transparent 0 31px, #5473af17 31px 32px),
+    var(--surface);
+}
+
+.coin-shortcut {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 6px 11px;
+  border: 1px solid var(--stroke);
+  border-radius: 999px;
+  background: var(--glass-surface);
+  font-weight: 750;
+  text-decoration: none;
+}
+
+.coin-shortcut svg,
+.coin-eyebrow svg {
+  color: #b27615;
+}
+
+[data-theme="dark"] :is(.coin-shortcut, .coin-eyebrow) svg {
+  color: #f8c66d;
+}
+
+.coin-page {
+  display: grid;
+  gap: 24px;
+  max-width: 1080px;
+  margin-inline: auto;
+}
+
+.coin-page :is(h1, h2, h3, p) {
+  margin: 0;
+}
+
+.coin-page h2 {
+  margin-bottom: 10px;
+}
+
+.coin-hero,
+.coin-earn,
+.coin-product,
+.coin-history,
+.reader-notes {
+  min-width: 0;
+  border: 1px solid var(--stroke);
+  border-radius: 20px;
+  background: var(--paper);
+  overflow-wrap: anywhere;
+}
+
+.coin-hero,
+.coin-earn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: clamp(16px, 4vw, 32px);
+}
+
+.coin-hero {
+  background:
+    radial-gradient(ellipse at 90% 0%, #e7b15840, transparent 65%), var(--paper);
+}
+
+.coin-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-weight: 750;
+}
+
+.coin-hero h1 {
+  margin-block: 4px 10px;
+  font-size: clamp(26px, 5vw, 44px);
+}
+
+.coin-balance {
+  display: grid;
+  gap: 3px;
+  min-width: 126px;
+  padding: 12px 16px;
+  border: 1px solid var(--stroke);
+  border-radius: 16px;
+  background: var(--glass-surface);
+}
+
+.coin-balance strong {
+  font-size: 32px;
+  font-variant-numeric: tabular-nums;
+}
+
+.coin-earn ul {
+  padding-inline-start: 18px;
+}
+
+.coin-earned {
+  flex-basis: 100%;
+}
+
+.coin-shop {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+  gap: 12px;
+}
+
+.coin-product,
+.coin-history {
+  padding: 14px;
+}
+
+.coin-product {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.coin-product button {
+  margin-top: auto;
+  min-height: 44px;
+}
+
+.coin-theme-preview {
+  display: grid;
+  place-items: center;
+  min-height: 72px;
+  border-radius: 12px;
+  color: white;
+  background: #23395d;
+}
+
+.coin-theme-preview[data-preview="aurora"] {
+  background: linear-gradient(125deg, #176e58, #6444ba);
+}
+
+.coin-theme-preview[data-preview="midnight"] {
+  background: repeating-linear-gradient(
+    130deg,
+    #273860 0 5px,
+    #182441 5px 12px
+  );
+}
+
+.coin-theme-preview[data-preview="focus"] {
+  background: linear-gradient(125deg, #72420b, #90651d);
+}
+
+.coin-history ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.coin-history li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  gap: 12px;
+  padding: 8px 0;
+  border-top: 1px solid var(--stroke);
+}
+
+.dashboard-next > div,
+.review-question,
+.topic-practice,
+.reader-notes li > button:first-child {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.review-brief .review-brief-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.review-brief .review-brief-actions button {
+  margin: 0;
+}
+
+.topic-practice {
+  align-content: center;
+  justify-content: stretch;
+  min-height: 68px;
+}
+
+.reader-file-scroll .reader-notes li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.reader-file-scroll .reader-notes li > button:first-child {
+  white-space: normal;
+  text-align: start;
+}
+
+@media (max-width: 600px) {
+  .coin-page {
+    gap: 16px;
+  }
+  .coin-shortcut {
+    padding-inline: 8px;
+  }
+  .review-brief .review-brief-actions > button {
+    flex: 1 1 145px;
+  }
+}
+
+.student-sidebar[data-coin-theme="aurora"] {
+  border-color: #6eab9d65;
+}
+
+.student-sidebar[data-coin-theme="midnight"] {
+  border-color: #7895de70;
+}
+
+.student-workspace > .student-topbar > div:last-child {
+  min-width: 0;
+}
+
+@media (max-width: 700px) {
+  .student-topbar .student-app-title {
+    flex: 0 1 auto;
+    min-width: 0;
+  }
+
+  .student-topbar .student-app-title .tafe-brand img {
+    width: clamp(70px, 20vw, 99px);
+  }
+
+  .student-workspace > .student-topbar > div:last-child {
+    flex: 1 1 auto;
+    justify-content: flex-end;
+    gap: 4px;
+  }
+}
+
+.tafecoin-mark {
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+  width: 1.35em;
+  aspect-ratio: 1;
+  border: 1px solid #aa6116;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 30% 20%,
+    #fff2ab,
+    #f8c052 53%,
+    #c77419 100%
+  );
+  color: #562802;
+  box-shadow:
+    inset 0 0 0 2px #ffe593,
+    0 1px 3px #40260040;
+  font:
+    900 1.1em / 1 system-ui,
+    sans-serif;
+}
+
+.tafecoin-reward {
+  position: fixed;
+  z-index: 30;
+  inset: 16px max(12px, env(safe-area-inset-right)) auto auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: calc(100vw - 24px);
+  padding: 12px 16px;
+  border: 1px solid #d9953866;
+  border-radius: 18px;
+  background: var(--paper);
+  box-shadow: 0 14px 36px #663d2240;
+  pointer-events: none;
+}
+
+.tafecoin-reward div {
+  display: grid;
+  gap: 2px;
+}
+
+.tafecoin-reward .tafecoin-mark {
+  font-size: 1.6rem;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .tafecoin-reward {
+    animation: tafecoin-arrive 360ms cubic-bezier(0.2, 0.7, 0.25, 1) both;
+  }
+
+  .tafecoin-reward .tafecoin-mark {
+    animation: tafecoin-flip 650ms ease-out both;
+  }
+}
+
+@keyframes tafecoin-arrive {
+  from {
+    opacity: 0;
+    transform: translateY(-12px) scale(0.94);
+  }
+}
+
+@keyframes tafecoin-flip {
+  from {
+    transform: rotateY(-180deg) scale(0.76);
+  }
+  70% {
+    transform: rotateY(18deg) scale(1.15);
+  }
+}

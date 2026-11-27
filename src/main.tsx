@@ -1,3 +1,5 @@
+import { TafeCoinBadge, TafeCoinReward } from "./TafeCoinBadge";
+import type { CoinWallet } from "./TafeCoinPage";
 import { readReadingProgress } from "./reading-progress";
 import {
   t,
@@ -44,6 +46,7 @@ import "./style.css";
 import "./platform.css";
 import "./motion.css";
 import "./glass.css";
+import "./student-layout.css";
 import { signOutWithMotion, useStartupReady } from "./motion";
 const AdminApp = lazy(() =>
   import("./AdminApp").then((m) => ({ default: m.AdminApp })),
@@ -62,6 +65,9 @@ const ProfilePage = lazy(() =>
 );
 const ResultsPage = lazy(() =>
   import("./ResultsPage").then((module) => ({ default: module.ResultsPage })),
+);
+const TafeCoinPage = lazy(() =>
+  import("./TafeCoinPage").then((module) => ({ default: module.TafeCoinPage })),
 );
 const nav = [
   ["dashboard", "Dashboard", LayoutDashboard],
@@ -87,7 +93,9 @@ function visitorRoute(): VisitorPage {
 }
 function studentRoute() {
   const route = location.hash.split("/")[2];
-  return nav.some((n) => n[0] === route) ? route : "dashboard";
+  return route === "coins" || nav.some((n) => n[0] === route)
+    ? route
+    : "dashboard";
 }
 function App() {
   useLocale();
@@ -158,6 +166,20 @@ function App() {
       admin: checked(isAdmin),
     };
   }, [session?.user.id]);
+  const coinUser =
+    account.data?.profile.status === "active" ? account.data.profile.id : null;
+  const coinAccount = useData<CoinWallet | null>(
+    () => (coinUser ? rpc("check_in_tafe_coins") : Promise.resolve(null)),
+    [coinUser],
+  );
+  const [coinUpdate, setCoinUpdate] = useState<{
+    userId: string;
+    wallet: CoinWallet;
+  } | null>(null);
+  const wallet =
+    coinUpdate && coinUpdate.userId === coinUser
+      ? coinUpdate.wallet
+      : coinAccount.data;
   useEffect(() => {
     document.documentElement.dataset.theme = dark ? "dark" : "light";
     const favicon = document.querySelector<HTMLLinkElement>('link[rel="icon"]');
@@ -389,7 +411,14 @@ function App() {
   return (
     <>
       {!fullChat && aiShortcut}
-      <aside className="student-sidebar">
+      {coinAccount.data?.daily_earned === 10 && (
+        <TafeCoinReward
+          key={session.user.id}
+          amount={10}
+          label={t("Kunlik kirish mukofoti")}
+        />
+      )}
+      <aside className="student-sidebar" data-coin-theme={wallet?.theme}>
         <a className="brand" href="#/student/dashboard">
           <Brand />
         </a>
@@ -433,10 +462,14 @@ function App() {
             ? "workspace student-workspace chat-workspace"
             : "workspace student-workspace"
         }
+        data-coin-theme={wallet?.theme}
       >
         <header className="student-topbar">
           <span className="student-breadcrumb">
-            TAFE / {t(nav.find((n) => n[0] === page)?.[1] || "")}
+            TAFE /{" "}
+            {page === "coins"
+              ? "TafeCoin"
+              : t(nav.find((n) => n[0] === page)?.[1] || "")}
           </span>
           <a
             className="student-app-title"
@@ -446,6 +479,15 @@ function App() {
             <Brand caption={t(nav.find((n) => n[0] === page)?.[1] || "")} />
           </a>
           <div>
+            <a
+              className="coin-shortcut"
+              href="#/student/coins"
+              aria-label="TafeCoin"
+              aria-current={page === "coins" ? "page" : undefined}
+            >
+              <TafeCoinBadge />
+              <span>{wallet?.balance ?? "—"}</span>
+            </a>
             <LanguagePicker onChange={changeLanguage} />
             {admin && (
               <a className="admin-portal-link" href="#/admin/overview">
@@ -502,6 +544,16 @@ function App() {
               <Suspense fallback={<Loading />}>
                 <ChatPage userId={session.user.id} />
               </Suspense>
+            )}
+            {page === "coins" && (
+              <TafeCoinPage
+                wallet={wallet}
+                loading={coinAccount.loading && !wallet}
+                error={wallet ? "" : coinAccount.error}
+                onChange={(next) =>
+                  setCoinUpdate({ userId: session.user.id, wallet: next })
+                }
+              />
             )}
             {page === "library" && <LibraryPage userId={session.user.id} />}
             {page === "profile" && (

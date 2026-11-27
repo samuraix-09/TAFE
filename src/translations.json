@@ -1,4 +1,109 @@
 {
+  "Kunlik kirish mukofoti": {
+    "uz": "Kunlik kirish mukofoti",
+    "en": "Daily sign-in reward",
+    "ru": "Награда за ежедневный вход"
+  },
+  "Har kuni birinchi kirish": {
+    "uz": "Har kuni birinchi kirish",
+    "en": "First sign-in each day",
+    "ru": "Первый вход за день"
+  },
+  "O‘quv mukofotlari": {
+    "uz": "O‘quv mukofotlari",
+    "en": "Learning rewards",
+    "ru": "Награды за обучение"
+  },
+  "Test ishlang va tangalarni mavzular yoki TAFE Focus uchun sarflang.": {
+    "uz": "Test ishlang va tangalarni mavzular yoki TAFE Focus uchun sarflang.",
+    "en": "Take tests and spend coins on themes or TAFE Focus.",
+    "ru": "Проходите тесты и тратьте монеты на темы или TAFE Focus."
+  },
+  "Balans": {
+    "uz": "Balans",
+    "en": "Balance",
+    "ru": "Баланс"
+  },
+  "Tanga ishlab topish": {
+    "uz": "Tanga ishlab topish",
+    "en": "Earn coins",
+    "ru": "Заработать монеты"
+  },
+  "Kamida 10 ballik testda 50% yoki undan yuqori natija": {
+    "uz": "Kamida 10 ballik testda 50% yoki undan yuqori natija",
+    "en": "Score 50% or higher on a test worth at least 10 points",
+    "ru": "Наберите 50% или больше в тесте на 10 и более баллов"
+  },
+  "Shu testda 80% yoki undan yuqori natija": {
+    "uz": "Shu testda 80% yoki undan yuqori natija",
+    "en": "Score 80% or higher on that test",
+    "ru": "Наберите 80% или больше в таком тесте"
+  },
+  "Kuniga 3 tagacha turli test uchun. So‘nggi 30 kundagi mos testlar hisobga olinadi.": {
+    "uz": "Kuniga 3 tagacha turli test uchun. So‘nggi 30 kundagi mos testlar hisobga olinadi.",
+    "en": "Up to 3 different tests each day. Eligible tests from the last 30 days count.",
+    "ru": "До 3 разных тестов в день. Учитываются подходящие тесты за последние 30 дней."
+  },
+  "Tangalarni yig‘ish": {
+    "uz": "Tangalarni yig‘ish",
+    "en": "Collect coins",
+    "ru": "Собрать монеты"
+  },
+  "Yangi mukofot mavjud emas.": {
+    "uz": "Yangi mukofot mavjud emas.",
+    "en": "No new rewards are available.",
+    "ru": "Новых наград пока нет."
+  },
+  "TafeCoin do‘koni": {
+    "uz": "TafeCoin do‘koni",
+    "en": "TafeCoin shop",
+    "ru": "Магазин TafeCoin"
+  },
+  "Sizda mavjud": {
+    "uz": "Sizda mavjud",
+    "en": "Owned",
+    "ru": "В наличии"
+  },
+  "Faol mavzu": {
+    "uz": "Faol mavzu",
+    "en": "Active theme",
+    "ru": "Активная тема"
+  },
+  "Mavzuni yoqish": {
+    "uz": "Mavzuni yoqish",
+    "en": "Activate theme",
+    "ru": "Применить тему"
+  },
+  "3 kunlik TAFE Focus": {
+    "uz": "3 kunlik TAFE Focus",
+    "en": "3 days of TAFE Focus",
+    "ru": "TAFE Focus на 3 дня"
+  },
+  "Faol obuna bo‘lmasa, TAFE Focus darhol boshlanadi.": {
+    "uz": "Faol obuna bo‘lmasa, TAFE Focus darhol boshlanadi.",
+    "en": "TAFE Focus starts right away if you have no active subscription.",
+    "ru": "TAFE Focus активируется сразу при отсутствии активной подписки."
+  },
+  "Tanga tarixi": {
+    "uz": "Tanga tarixi",
+    "en": "Coin history",
+    "ru": "История монет"
+  },
+  "Test mukofoti": {
+    "uz": "Test mukofoti",
+    "en": "Test reward",
+    "ru": "Награда за тест"
+  },
+  "Insufficient TafeCoin": {
+    "uz": "TafeCoin yetarli emas.",
+    "en": "Insufficient TafeCoin",
+    "ru": "Недостаточно TafeCoin"
+  },
+  "An active or scheduled subscription already exists": {
+    "uz": "Faol yoki rejalashtirilgan obuna mavjud.",
+    "en": "An active or scheduled subscription already exists",
+    "ru": "Уже есть активная или запланированная подписка"
+  },
   "Qisqa xulosa": {
     "uz": "Qisqa xulosa",
     "en": "Quick summary",
