@@ -278,6 +278,8 @@
 }
 
 .sat-desmos-calculator {
+  width: 100%;
+  border: 0;
   height: min(480px, 65dvh);
   min-height: 280px;
 }

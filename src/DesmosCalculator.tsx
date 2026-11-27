@@ -1,86 +1,71 @@
 import { useEffect, useRef, useState } from "react";
 import { t } from "./i18n";
 
-type Calculator = { destroy(): void };
-type DesmosApi = {
-  GraphingCalculator(
-    element: HTMLElement,
-    options: { settingsMenu: boolean },
-  ): Calculator;
-};
-
 const apiKey = import.meta.env.VITE_DESMOS_API_KEY?.trim();
-let loading: Promise<DesmosApi> | undefined;
-
-function loadDesmos() {
-  if (!loading) {
-    loading = new Promise<DesmosApi>((resolve, reject) => {
-      const script = document.createElement("script");
-      const url = new URL("https://www.desmos.com/api/v1.11/calculator.js");
-      url.searchParams.set("apiKey", apiKey);
-      script.src = url.href;
-      const fail = () => {
-        script.remove();
-        reject(new Error("Desmos API failed to load"));
-      };
-      script.onerror = fail;
-      script.onload = () => {
-        const api = (window as Window & { Desmos?: DesmosApi }).Desmos;
-        if (api?.GraphingCalculator) resolve(api);
-        else fail();
-      };
-      document.head.append(script);
-    }).catch((error) => {
-      loading = undefined;
-      throw error;
-    });
-  }
-  return loading;
-}
 
 export function DesmosCalculator() {
   const [open, setOpen] = useState(false);
+  const [attempt, setAttempt] = useState(0);
   const [status, setStatus] = useState<"loading" | "ready" | "error">(
     "loading",
   );
-  const host = useRef<HTMLDivElement>(null);
+  const frame = useRef<HTMLIFrameElement>(null);
+
   useEffect(() => {
-    if (!open || !apiKey) return;
-    let active = true;
-    let calculator: Calculator | undefined;
-    loadDesmos()
-      .then((api) => {
-        if (!active || !host.current) return;
-        calculator = api.GraphingCalculator(host.current, {
-          settingsMenu: false,
-        });
-        setStatus("ready");
-      })
-      .catch(() => {
-        if (active) setStatus("error");
-      });
+    if (!open) return;
+    const timer = window.setTimeout(() => setStatus("error"), 20000);
+    function onMessage(event: MessageEvent) {
+      if (
+        event.source !== frame.current?.contentWindow ||
+        event.origin !== "null"
+      )
+        return;
+      if (event.data !== "desmos-ready" && event.data !== "desmos-error")
+        return;
+      window.clearTimeout(timer);
+      setStatus(event.data === "desmos-ready" ? "ready" : "error");
+    }
+
+    window.addEventListener("message", onMessage);
     return () => {
-      active = false;
-      calculator?.destroy();
+      window.clearTimeout(timer);
+      window.removeEventListener("message", onMessage);
     };
-  }, [open]);
+  }, [open, attempt]);
 
   if (!apiKey) return null;
   return (
     <details
       className="sat-desmos"
       onToggle={(event) => {
-        const expanded = event.currentTarget.open;
-        if (expanded) setStatus("loading");
-        setOpen(expanded);
+        if (event.currentTarget.open) setStatus("loading");
+        setOpen(event.currentTarget.open);
       }}
     >
       <summary>Desmos</summary>
       {open && status === "loading" && <p role="status">{t("Yuklanmoqda…")}</p>}
       {open && status === "error" && (
-        <p role="alert">Desmos · {t("Qayta urinish")}</p>
+        <button
+          type="button"
+          onClick={() => {
+            setStatus("loading");
+            setAttempt((value) => value + 1);
+          }}
+        >
+          {t("Qayta urinish")}
+        </button>
       )}
-      {open && <div className="sat-desmos-calculator" ref={host} />}
+      {open && (
+        <iframe
+          key={attempt}
+          ref={frame}
+          className="sat-desmos-calculator"
+          src={`/desmos-calculator.html#${encodeURIComponent(apiKey)}`}
+          sandbox="allow-scripts"
+          title="Desmos Graphing Calculator"
+          hidden={status === "error"}
+        />
+      )}
     </details>
   );
 }

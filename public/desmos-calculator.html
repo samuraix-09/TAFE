@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="referrer" content="no-referrer" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-dKb02hw4iyq8YC+0W7exarlynlb6yfjcRCYTDwYtAvU=' https://www.desmos.com 'unsafe-eval'; style-src 'unsafe-inline'; img-src data: blob: https://www.desmos.com; font-src data: https://www.desmos.com; connect-src https://www.desmos.com; worker-src blob:; base-uri 'none'; form-action 'none'" />
+  <title>Desmos Graphing Calculator</title>
+  <style>
+    html, body, #calculator { width: 100%; height: 100%; margin: 0; }
+  </style>
+  <div id="calculator"></div>
+  <script>
+const report = (status) => parent.postMessage("desmos-" + status, "*");
+const apiKey = decodeURIComponent(location.hash.slice(1));
+const script = document.createElement("script");
+const url = new URL("https://www.desmos.com/api/v1.11/calculator.js");
+url.searchParams.set("apiKey", apiKey);
+script.src = url.href;
+script.onerror = () => report("error");
+script.onload = () => {
+  try {
+    Desmos.GraphingCalculator(document.getElementById("calculator"), {
+      settingsMenu: false,
+      images: false,
+    });
+    report("ready");
+  } catch {
+    report("error");
+  }
+};
+document.head.append(script);
+</script>
+</html>
