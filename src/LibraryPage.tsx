@@ -1,3 +1,4 @@
+import { readReadingProgress } from "./reading-progress";
 import { t } from "./i18n";
 import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import {
@@ -115,26 +116,9 @@ export function LibraryPage({
     } | null>(null);
   const action = useAction();
   const readingKey = userId ? "tafe-last-reading:" + userId : null;
-  const [lastReading, setLastReading] = useState<{
-    bookId: string;
-    path: string;
-    page: number;
-  } | null>(() => {
-    try {
-      const value = readingKey
-        ? JSON.parse(localStorage.getItem(readingKey) || "null")
-        : null;
-      return value &&
-        typeof value.bookId === "string" &&
-        typeof value.path === "string" &&
-        Number.isSafeInteger(value.page) &&
-        value.page > 0
-        ? value
-        : null;
-    } catch {
-      return null;
-    }
-  });
+  const [lastReading, setLastReading] = useState(() =>
+    readReadingProgress(userId),
+  );
   const resumeBook =
     !admin && lastReading
       ? books.data?.find(
@@ -187,6 +171,18 @@ export function LibraryPage({
       setSelected(null);
     } else throw Error("Kitob fayli mavjud emas.");
   }
+  const resumeOpened = useRef(false);
+  useEffect(() => {
+    if (
+      !resumeBook ||
+      resumeOpened.current ||
+      location.hash !== "#/student/library/read"
+    )
+      return;
+    resumeOpened.current = true;
+    void action.run(() => open(resumeBook), "");
+  }, [resumeBook]);
+
   return (
     <div>
       <div className="section-toolbar">
@@ -384,6 +380,11 @@ export function LibraryPage({
           path={preview.path}
           title={preview.title}
           userId={userId}
+          notesKey={
+            userId && !admin
+              ? JSON.stringify([userId, preview.bookId, preview.path])
+              : undefined
+          }
           initialPage={
             lastReading?.bookId === preview.bookId &&
             lastReading.path === preview.path
@@ -423,6 +424,7 @@ function BookReader({
   title,
   userId,
   initialPage,
+  notesKey,
   onPage,
   onClose,
 }: {
@@ -431,6 +433,7 @@ function BookReader({
   title: string;
   userId?: string;
   initialPage: number;
+  notesKey?: string;
   onPage: (page: number) => void;
   onClose: () => void;
 }) {
@@ -474,6 +477,7 @@ function BookReader({
             path={path}
             title={title}
             initialPage={initialPage}
+            notesKey={notesKey}
             onPage={onPage}
           />
         </Suspense>

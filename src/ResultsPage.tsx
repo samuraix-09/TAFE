@@ -1,6 +1,7 @@
+import { QuestionHint } from "./QuestionHint";
 import { t, localeTag } from "./i18n";
 import { useEffect, useState } from "react";
-import { ArrowLeft, BarChart3, Sparkles } from "lucide-react";
+import { ArrowLeft, BarChart3 } from "lucide-react";
 import { db } from "./db";
 import { MistakePractice, formatReviewAnswer } from "./MistakePractice";
 import { hasExamAnswer } from "./exam-draft";
@@ -30,10 +31,8 @@ function selectedAttempt() {
 
 export function ResultsPage({
   onResume,
-  onExplain,
 }: {
   onResume: (id: string, category: string, section: string) => void;
-  onExplain: (prompt: string) => void;
 }) {
   const results = useData<Row[]>(async () => {
     await rpc("settle_exam_sessions");
@@ -80,7 +79,6 @@ export function ResultsPage({
             key={attemptId}
             review={review}
             attemptId={attemptId}
-            onExplain={onExplain}
           />
         )}
       </div>
@@ -194,7 +192,6 @@ export function ResultsPage({
             key={attemptId}
             review={review}
             attemptId={attemptId}
-            onExplain={onExplain}
           />
         </Modal>
       )}
@@ -205,11 +202,9 @@ export function ResultsPage({
 function AttemptReview({
   review,
   attemptId,
-  onExplain,
 }: {
   review: Row;
   attemptId: string;
-  onExplain: (prompt: string) => void;
 }) {
   const scaled = review.sat_scores?.total != null;
   const entries = ((review.questions ?? []) as Row[]).map(
@@ -280,6 +275,13 @@ function AttemptReview({
             practicing
               ? mistakes
                   .filter(({ question }) => topicFor(question) === practicing)
+                  .concat(
+                    entries.filter(
+                      ({ question, state }) =>
+                        state === "correct" &&
+                        topicFor(question) === practicing,
+                    ),
+                  )
                   .slice(0, 10)
               : mistakes
           }
@@ -330,22 +332,56 @@ function AttemptReview({
               )}
             </p>
           )}
-          {ranked.length > 0 && (
-            <section
-              className="sat-section-results"
-              aria-label={t("Takrorlash kerak bo‘lgan mavzular")}
-            >
-              {ranked.map(([topic, item]) => (
-                <section key={topic}>
-                  <h3>{t(topic)}</h3>
-                  <p>
-                    {item.correct} / {item.total} {t("to‘g‘ri javob")}
-                  </p>
-                  <button onClick={() => setPracticing(topic)}>
-                    {t("Shu mavzuni mashq qilish")}
+          <section className="review-question">
+            <h3>{t("Qisqa xulosa")}</h3>
+            <p>
+              {counts.correct}/{counts.questions} {t("to‘g‘ri javob")} ·{" "}
+              {counts.incorrect} {t("Xato javob")} · {counts.unanswered}{" "}
+              {t("Javob berilmagan")}
+            </p>
+            {ranked[0] && (
+              <p>
+                {t("Avval takrorlang")} · <strong>{t(ranked[0][0])}</strong>
+              </p>
+            )}
+            {mistakes.length > 0 && (
+              <button
+                onClick={() => {
+                  setFilter("mistakes");
+                  document
+                    .getElementById("review-questions")
+                    ?.scrollIntoView({ block: "start" });
+                }}
+              >
+                {t("Xatolarni ko‘rish")}
+              </button>
+            )}
+            {ranked[0] && (
+              <button
+                className="primary"
+                onClick={() => setPracticing(ranked[0][0])}
+              >
+                {t("Shu mavzuni mashq qilish")}
+              </button>
+            )}
+          </section>
+          {topics.size > 0 && (
+            <section aria-label={t("Mavzular xaritasi")}>
+              <h3>{t("Mavzular xaritasi")}</h3>
+              <div className="sat-section-results">
+                {[...topics].map(([topic, item]) => (
+                  <button
+                    className="topic-practice"
+                    key={topic}
+                    onClick={() => setPracticing(topic)}
+                  >
+                    <strong>{t(topic)}</strong>
+                    <span>
+                      {item.correct} / {item.total} {t("to‘g‘ri javob")}
+                    </span>
                   </button>
-                </section>
-              ))}
+                ))}
+              </div>
             </section>
           )}
           {adaptive && (
@@ -363,7 +399,7 @@ function AttemptReview({
             </section>
           )}
           {scaled && <h3>{t("Savollar tahlili")}</h3>}
-          <div className="review-controls">
+          <div className="review-controls" id="review-questions">
             <div className="review-filter" aria-label={t("Savollar")}>
               {[
                 ["all", "Barchasi", entries.length],
@@ -437,33 +473,21 @@ function AttemptReview({
                   {t("Sizning javobingiz —")}{" "}
                   {formatReviewAnswer(review.answers[q.id])}
                 </p>
-                <p>
-                  {t("Qabul qilinadigan javob —")}{" "}
-                  {formatReviewAnswer(q.accepted ?? q.answer)}
-                </p>
-                {q.explanation && <p>{q.explanation}</p>}
-                {q.evidence ? (
-                  <blockquote>{q.evidence}</blockquote>
-                ) : (
-                  <p className="muted">{t("Dalil keltirilmagan")}</p>
-                )}
-                <button
-                  onClick={() => {
-                    onExplain(
-                      "Avval javobni oshkor qilmasdan bitta ishora bering. To‘liq yechimni faqat so‘rasam tushuntiring. Savol: " +
-                        q.prompt +
-                        "\nJavobim: " +
-                        JSON.stringify(review.answers[q.id]) +
-                        "\nTasdiqlangan javob: " +
-                        JSON.stringify(q.accepted ?? q.answer) +
-                        "\nPassage dalili: " +
-                        (q.evidence || "Dalil keltirilmagan"),
-                    );
-                  }}
-                >
-                  <Sparkles size={15} />
-                  {t("TAFE AI bilan tushunish")}
-                </button>
+                <details>
+                  <summary>{t("To‘g‘ri javob")}</summary>
+                  <p>{formatReviewAnswer(q.accepted ?? q.answer)}</p>
+                  {q.explanation && <p>{q.explanation}</p>}
+                  {q.evidence && <blockquote>{q.evidence}</blockquote>}
+                </details>
+                <QuestionHint
+                  prompt={JSON.stringify({
+                    question: q.prompt,
+                    options: q.options,
+                    response: review.answers[q.id],
+                    accepted: q.accepted ?? q.answer,
+                    evidence: q.evidence,
+                  })}
+                />
               </section>
             ))}
           {filter !== "all" &&

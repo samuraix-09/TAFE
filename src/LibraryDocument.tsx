@@ -17,6 +17,7 @@ export default function LibraryDocument(props: {
   url: string;
   path: string;
   title: string;
+  notesKey?: string;
   initialPage?: number;
   onPage?: (page: number) => void;
 }) {
@@ -64,17 +65,47 @@ function WordDocument({ url }: { url: string }) {
 function PdfDocument({
   url,
   title,
+  notesKey,
   initialPage = 1,
   onPage,
 }: {
   url: string;
   title: string;
+  notesKey?: string;
   initialPage?: number;
   onPage?: (page: number) => void;
 }) {
   const [pdf, setPdf] = useState<import("pdfjs-dist").PDFDocumentProxy>();
   const [page, setPage] = useState(initialPage);
   const pageNumber = pdf ? Math.min(page, pdf.numPages) : page;
+  const storageKey = notesKey ? "tafe-pdf-notes:" + notesKey : null;
+  const [showNotes, setShowNotes] = useState(false);
+  const [notesError, setNotesError] = useState(false);
+  const [notes, setNotes] = useState<Record<string, string>>(() => {
+    try {
+      const stored: unknown = storageKey
+        ? JSON.parse(localStorage.getItem(storageKey) || "{}")
+        : {};
+      if (!stored || typeof stored !== "object") return {};
+      return Object.fromEntries(
+        Object.entries(stored).filter(
+          ([key, value]) => /^[1-9]\d*$/.test(key) && typeof value === "string",
+        ),
+      );
+    } catch {
+      return {};
+    }
+  });
+  function saveNotes(next: Record<string, string>) {
+    if (!storageKey) return;
+    try {
+      localStorage.setItem(storageKey, JSON.stringify(next));
+      setNotes(next);
+      setNotesError(false);
+    } catch {
+      setNotesError(true);
+    }
+  }
   const [zoom, setZoom] = useState(1);
   const [width, setWidth] = useState(0);
   const [failed, setFailed] = useState(false);
@@ -201,9 +232,77 @@ function PdfDocument({
           >
             <Plus size={18} />
           </button>
+          {storageKey && (
+            <button
+              type="button"
+              aria-expanded={showNotes}
+              onClick={() => setShowNotes(!showNotes)}
+            >
+              {t("Xatcho‘plar va izohlar")}
+            </button>
+          )}
         </div>
       )}
       <div className="reader-file-scroll" ref={scroll}>
+        {pdf && showNotes && storageKey && (
+          <section className="reader-notes">
+            <form
+              key={pageNumber}
+              onSubmit={(event) => {
+                event.preventDefault();
+                const text = String(
+                  new FormData(event.currentTarget).get("note") || "",
+                )
+                  .trim()
+                  .slice(0, 500);
+                saveNotes({ ...notes, [pageNumber]: text });
+              }}
+            >
+              <label>
+                {t("Sahifa")} {pageNumber}
+                <textarea
+                  name="note"
+                  maxLength={500}
+                  defaultValue={notes[pageNumber] || ""}
+                  placeholder={t("Sahifaga izoh yozing")}
+                />
+              </label>
+              <button className="primary" type="submit">
+                {t("Xatcho‘pni saqlash")}
+              </button>
+            </form>
+            {notesError && (
+              <p role="alert">{t("Xatcho‘pni saqlab bo‘lmadi.")}</p>
+            )}
+            <ul>
+              {Object.entries(notes)
+                .filter(([number]) => Number(number) <= pdf.numPages)
+                .map(([number, text]) => (
+                  <li key={number}>
+                    <button
+                      onClick={() => {
+                        setPage(Number(number));
+                        setShowNotes(false);
+                        scroll.current?.scrollTo(0, 0);
+                      }}
+                    >
+                      {t("Sahifa")} {number}
+                      {text ? " · " + text : ""}
+                    </button>
+                    <button
+                      onClick={() => {
+                        const next = { ...notes };
+                        delete next[number];
+                        saveNotes(next);
+                      }}
+                    >
+                      {t("O‘chirish")}
+                    </button>
+                  </li>
+                ))}
+            </ul>
+          </section>
+        )}
         {!pdf && <p role="status">{t("TAFE yuklanmoqda…")}</p>}
         {pdf && (
           <canvas

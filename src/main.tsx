@@ -1,3 +1,4 @@
+import { readReadingProgress } from "./reading-progress";
 import {
   t,
   LanguagePicker,
@@ -13,7 +14,6 @@ import {
   ArrowUpRight,
   BookOpen,
   ChartNoAxesCombined,
-  GraduationCap,
   LayoutDashboard,
   Library,
   LogOut,
@@ -106,7 +106,6 @@ function App() {
       id: string;
       userId: string;
     } | null>(null),
-    [aiPrompt, setAiPrompt] = useState(""),
     [recoveringExam, setRecoveringExam] = useState(false),
     [recoveryError, setRecoveryError] = useState("");
   const go = (v: VisitorPage) => {
@@ -353,7 +352,6 @@ function App() {
       href="#/student/ai"
       onClick={() => {
         setCompletedExam(null);
-        setAiPrompt("");
       }}
     >
       <Sparkles className="tafe-ai-sparkle" size={18} aria-hidden="true" />
@@ -480,7 +478,13 @@ function App() {
           <Feedback error={recoveryError} />
           <Suspense fallback={<Loading />}>
             {page === "dashboard" && (
-              <Dashboard profile={profile} categories={categories} />
+              <Dashboard
+                profile={profile}
+                categories={categories}
+                userId={session.user.id}
+                onResume={start}
+                busy={action.busy}
+              />
             )}
             {page === "tests" && (
               <TestsList onStart={start} busy={action.busy} />
@@ -491,19 +495,12 @@ function App() {
                   eyebrow={t("MEASURE YOUR PROGRESS")}
                   title={t("Natijalarim")}
                 />
-                <ResultsPage
-                  key={session.user.id}
-                  onResume={start}
-                  onExplain={(prompt) => {
-                    setAiPrompt(prompt);
-                    location.hash = "/student/ai";
-                  }}
-                />
+                <ResultsPage key={session.user.id} onResume={start} />
               </>
             )}
             {page === "ai" && (
               <Suspense fallback={<Loading />}>
-                <ChatPage userId={session.user.id} initialPrompt={aiPrompt} />
+                <ChatPage userId={session.user.id} />
               </Suspense>
             )}
             {page === "library" && <LibraryPage userId={session.user.id} />}
@@ -599,18 +596,26 @@ function PageTitle({ eyebrow, title }: { eyebrow: string; title: string }) {
 function Dashboard({
   profile,
   categories,
+  userId,
+  onResume,
+  busy,
 }: {
   profile: Row;
   categories: Row[];
+  userId: string;
+  onResume: (id: string, category: string, section: string) => void;
+  busy: boolean;
 }) {
   const result = useData(async () => {
     await rpc("settle_exam_sessions");
     return checked(
       await db
         .from("test_attempts")
-        .select("id,submitted_at,score,total")
+        .select(
+          "id,test_id,submitted_at,score,total,finish_reason,tests(title,section,exam_categories(name))",
+        )
         .order("started_at", { ascending: false }),
-    );
+    ) as unknown as Row[];
   }, []);
   const ent = useData(() => rpc("my_entitlements"), []);
   const completed = result.data?.filter((r) => r.submitted_at) || [],
@@ -620,6 +625,46 @@ function Dashboard({
             completed.length,
         )
       : null;
+  const reading = readReadingProgress(userId);
+  const book = useData<Row | null>(
+    async () =>
+      reading
+        ? checked(
+            await db
+              .from("library_resources")
+              .select("title")
+              .eq("id", reading.bookId)
+              .eq("file_path", reading.path)
+              .maybeSingle(),
+          )
+        : null,
+    [userId, reading?.bookId, reading?.path],
+  );
+  const unfinished = result.data?.find(
+    (item) =>
+      !item.submitted_at &&
+      !item.finish_reason &&
+      item.test_id !== retiredDiagnosticId,
+  );
+  const next = unfinished
+    ? {
+        title: "Testni davom ettirish",
+        detail: unfinished.tests?.title || "",
+        href: "",
+      }
+    : book.data && reading
+      ? {
+          title: "O‘qishni davom ettirish",
+          detail: book.data.title + " · " + t("Sahifa") + " " + reading.page,
+          href: "#/student/library/read",
+        }
+      : completed[0]
+        ? {
+            title: "Natijani ko‘rish",
+            detail: t("Takrorlash kerak bo‘lgan mavzular"),
+            href: "#/student/results/" + completed[0].id,
+          }
+        : { title: "Testlarni ko‘rish ", detail: "", href: "#/student/tests" };
   return (
     <>
       <PageTitle
@@ -627,29 +672,31 @@ function Dashboard({
         title={t("Salom, ") + (profile.display_name || t("o‘quvchi")) + "."}
       />
       <Feedback error={result.error || ent.error} loading={result.loading} />
-      <div className="hero">
+      <section className="dashboard-next">
         <div>
-          <span className="badge">TAFE LEARNING</span>
-          <h2>
-            {t("Bugungi harakatingiz.")}
-            <br />
-            {t("Ertangi yutug‘ingiz.")}
-          </h2>
-          <p>
-            {t("Bilimingizni sinang, natijangizni kuzating va")}
-            <br />
-            {t("tayyorgarlikni o‘z rejangiz asosida davom ettiring.")}
-          </p>
-          <a className="button-link" href="#/student/tests">
-            {t("Testlarni ko‘rish ")}
-            <ArrowUpRight size={18} />
+          <h2>{t(next.title)}</h2>
+          {next.detail && <p>{next.detail}</p>}
+        </div>
+        {unfinished ? (
+          <button
+            className="primary"
+            disabled={busy}
+            onClick={() =>
+              onResume(
+                unfinished.test_id,
+                unfinished.tests?.exam_categories?.name ?? "",
+                unfinished.tests?.section ?? "",
+              )
+            }
+          >
+            {t(next.title)} <ArrowUpRight size={18} aria-hidden="true" />
+          </button>
+        ) : (
+          <a className="button-link primary" href={next.href}>
+            {t(next.title)} <ArrowUpRight size={18} aria-hidden="true" />
           </a>
-        </div>
-        <div className="orbit">
-          <GraduationCap size={100} />
-          <span>{t("PREPARE · PRACTICE · PROGRESS")}</span>
-        </div>
-      </div>
+        )}
+      </section>
       <div className="stats">
         {[
           ["Yakunlangan testlar", completed.length],
