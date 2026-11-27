@@ -321,26 +321,28 @@ function AttemptReview({
                 {t("Avval takrorlang")} · <strong>{t(ranked[0][0])}</strong>
               </p>
             )}
-            {mistakes.length > 0 && (
-              <button
-                onClick={() => {
-                  setFilter("mistakes");
-                  document
-                    .getElementById("review-questions")
-                    ?.scrollIntoView({ block: "start" });
-                }}
-              >
-                {t("Xatolarni ko‘rish")}
-              </button>
-            )}
-            {ranked[0] && (
-              <button
-                className="primary"
-                onClick={() => setPracticing(ranked[0][0])}
-              >
-                {t("Shu mavzuni mashq qilish")}
-              </button>
-            )}
+            <div className="review-brief-actions">
+              {mistakes.length > 0 && (
+                <button
+                  onClick={() => {
+                    setFilter("mistakes");
+                    document
+                      .getElementById("review-questions")
+                      ?.scrollIntoView({ block: "start" });
+                  }}
+                >
+                  {t("Xatolarni ko‘rish")}
+                </button>
+              )}
+              {ranked[0] && (
+                <button
+                  className="primary"
+                  onClick={() => setPracticing(ranked[0][0])}
+                >
+                  {t("Shu mavzuni mashq qilish")}
+                </button>
+              )}
+            </div>
           </section>
           {topics.size > 0 && (
             <section aria-label={t("Mavzular xaritasi")}>
