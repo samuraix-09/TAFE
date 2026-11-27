@@ -73,14 +73,14 @@ returns void language plpgsql security definer set search_path = '' as $$
 declare learner uuid := auth.uid();
 declare price integer;
 declare receipt text;
-declare premium_plan uuid;
+declare focus_plan uuid;
 begin
   if not public.account_active(learner) then raise exception 'Account unavailable'; end if;
   if request_id is null then raise exception 'Invalid purchase'; end if;
   case product
-    when 'aurora' then price := 45; receipt := 'theme:aurora';
-    when 'midnight' then price := 75; receipt := 'theme:midnight';
-    when 'premium' then price := 180; receipt := 'premium:' || request_id;
+    when 'aurora' then price := 90; receipt := 'theme:aurora';
+    when 'midnight' then price := 150; receipt := 'theme:midnight';
+    when 'focus' then price := 300; receipt := 'focus:' || request_id;
     else raise exception 'Invalid purchase';
   end case;
 
@@ -88,20 +88,20 @@ begin
   perform 1 from public.tafe_coin_wallets where user_id = learner for update;
   if exists (select 1 from public.tafe_coin_events where user_id = learner and reference = receipt) then return; end if;
 
-  if product = 'premium' then
+  if product = 'focus' then
     if exists (select 1 from public.subscriptions where user_id = learner and status = 'active' and expires_at > now()) then
       raise exception 'An active or scheduled subscription already exists';
     end if;
-    select id into premium_plan from public.plans where name = 'TAFE Mastery' and active;
-    if premium_plan is null then raise exception 'Premium is unavailable'; end if;
+    select id into focus_plan from public.plans where name = 'TAFE Focus' and active;
+    if focus_plan is null then raise exception 'TAFE Focus is unavailable'; end if;
   end if;
 
   update public.tafe_coin_wallets set balance = balance - price where user_id = learner and balance >= price;
   if not found then raise exception 'Insufficient TafeCoin'; end if;
   insert into public.tafe_coin_events(user_id, reference, item, amount) values (learner, receipt, product, -price);
-  if product = 'premium' then
+  if product = 'focus' then
     insert into public.subscriptions(user_id, plan_id, expires_at)
-    values (learner, premium_plan, now() + interval '3 days');
+    values (learner, focus_plan, now() + interval '3 days');
   end if;
 end $$;
 
@@ -119,7 +119,26 @@ begin
   on conflict (user_id) do update set theme = excluded.theme;
 end $$;
 
+create function public.check_in_tafe_coins()
+returns jsonb language plpgsql security definer set search_path = '' as $$
+declare learner uuid := auth.uid();
+declare study_day date := (now() at time zone 'Asia/Tashkent')::date;
+declare earned integer := 0;
+begin
+  if not public.account_active(learner) then raise exception 'Account unavailable'; end if;
+  insert into public.tafe_coin_wallets(user_id) values (learner) on conflict do nothing;
+  perform 1 from public.tafe_coin_wallets where user_id = learner for update;
+
+  insert into public.tafe_coin_events(user_id, reference, item, amount)
+  values (learner, 'login:' || study_day, 'login', 10) on conflict do nothing;
+  if found then
+    earned := 10;
+    update public.tafe_coin_wallets set balance = balance + earned where user_id = learner;
+  end if;
+  return public.tafe_coin_wallet() || jsonb_build_object('daily_earned', earned);
+end $$;
+
 revoke all on function public.tafe_coin_wallet(), public.claim_tafe_coins(),
-  public.tafe_coin_purchase(text, uuid), public.set_tafe_coin_theme(text) from public, anon, authenticated;
+  public.tafe_coin_purchase(text, uuid), public.set_tafe_coin_theme(text), public.check_in_tafe_coins() from public, anon, authenticated;
 grant execute on function public.tafe_coin_wallet(), public.claim_tafe_coins(),
-  public.tafe_coin_purchase(text, uuid), public.set_tafe_coin_theme(text) to authenticated;
+  public.tafe_coin_purchase(text, uuid), public.set_tafe_coin_theme(text), public.check_in_tafe_coins() to authenticated;

@@ -1,26 +1,29 @@
+import { TafeCoinBadge, TafeCoinReward } from "./TafeCoinBadge";
 import { useState } from "react";
-import { Check, Coins, Crown, Palette } from "lucide-react";
+import { Check, Crown, Palette } from "lucide-react";
 import { localeTag, t } from "./i18n";
 import { Feedback, rpc, useAction } from "./platform";
 
 export type CoinTheme = "classic" | "aurora" | "midnight";
 export type CoinWallet = {
   balance: number;
+  daily_earned?: number;
   theme: CoinTheme;
   owned: CoinTheme[];
   history: { item: string; amount: number; created_at: string }[];
 };
 const themes = [
   { id: "classic", title: "TAFE Classic", price: 0 },
-  { id: "aurora", title: "Aurora Glass", price: 45 },
-  { id: "midnight", title: "Midnight Circuit", price: 75 },
+  { id: "aurora", title: "Aurora Glass", price: 90 },
+  { id: "midnight", title: "Midnight Circuit", price: 150 },
 ] as const;
-const premiumPrice = 180;
+const focusPrice = 300;
 const eventLabels: Record<string, string> = {
   exam: "Test mukofoti",
   aurora: "Aurora Glass",
   midnight: "Midnight Circuit",
-  premium: "3 kunlik Premium",
+  focus: "3 kunlik TAFE Focus",
+  login: "Kunlik kirish mukofoti",
 };
 
 export function TafeCoinPage({
@@ -36,7 +39,8 @@ export function TafeCoinPage({
 }) {
   const action = useAction();
   const [earned, setEarned] = useState<number | null>(null);
-  const [confirmPremium, setConfirmPremium] = useState(false);
+  const [rewardId, setRewardId] = useState(0);
+  const [confirmFocus, setConfirmFocus] = useState(false);
   async function refresh() {
     onChange(await rpc("tafe_coin_wallet"));
   }
@@ -46,7 +50,7 @@ export function TafeCoinPage({
       product,
       request_id: crypto.randomUUID(),
     });
-    setConfirmPremium(false);
+    setConfirmFocus(false);
     await refresh();
   }
 
@@ -55,12 +59,12 @@ export function TafeCoinPage({
       <section className="coin-hero">
         <div>
           <p className="coin-eyebrow">
-            <Coins size={18} aria-hidden="true" /> TafeCoin
+            <TafeCoinBadge /> TafeCoin
           </p>
           <h1>{t("O‘quv mukofotlari")}</h1>
           <p>
             {t(
-              "Test ishlang va tangalarni mavzular yoki Premium uchun sarflang.",
+              "Test ishlang va tangalarni mavzular yoki TAFE Focus uchun sarflang.",
             )}
           </p>
         </div>
@@ -81,6 +85,9 @@ export function TafeCoinPage({
           <h2>{t("Tanga ishlab topish")}</h2>
           <ul>
             <li>
+              {t("Har kuni birinchi kirish")} · <strong>+10</strong>
+            </li>
+            <li>
               {t("Kamida 10 ballik testda 50% yoki undan yuqori natija")} ·{" "}
               <strong>+10</strong>
             </li>
@@ -100,12 +107,14 @@ export function TafeCoinPage({
           disabled={!wallet || action.busy}
           onClick={() =>
             void action.run(async () => {
-              setEarned(await rpc("claim_tafe_coins"));
+              const amount = await rpc("claim_tafe_coins");
+              setEarned(amount);
+              if (amount > 0) setRewardId((value) => value + 1);
               await refresh();
             }, "")
           }
         >
-          <Coins size={16} aria-hidden="true" /> {t("Tangalarni yig‘ish")}
+          <TafeCoinBadge /> {t("Tangalarni yig‘ish")}
         </button>
         {earned !== null && (
           <p className="coin-earned" role="status">
@@ -113,6 +122,13 @@ export function TafeCoinPage({
           </p>
         )}
       </section>
+      {earned !== null && earned > 0 && (
+        <TafeCoinReward
+          key={rewardId}
+          amount={earned}
+          label={t("Test mukofoti")}
+        />
+      )}
       <section aria-labelledby="coin-store-heading">
         <h2 id="coin-store-heading">{t("TafeCoin do‘koni")}</h2>
         <div className="coin-shop">
@@ -158,26 +174,26 @@ export function TafeCoinPage({
             );
           })}
           <article className="coin-product">
-            <div className="coin-theme-preview" data-preview="premium">
+            <div className="coin-theme-preview" data-preview="focus">
               <Crown size={24} aria-hidden="true" />
             </div>
-            <h3>{t("3 kunlik Premium")}</h3>
-            <p className="muted">TAFE Mastery · {premiumPrice} TafeCoin</p>
-            {confirmPremium && (
-              <p>{t("Faol obuna bo‘lmasa, Premium darhol boshlanadi.")}</p>
+            <h3>{t("3 kunlik TAFE Focus")}</h3>
+            <p className="muted">{focusPrice} TafeCoin</p>
+            {confirmFocus && (
+              <p>{t("Faol obuna bo‘lmasa, TAFE Focus darhol boshlanadi.")}</p>
             )}
             <button
-              disabled={!wallet || action.busy || wallet.balance < premiumPrice}
+              disabled={!wallet || action.busy || wallet.balance < focusPrice}
               onClick={() =>
-                confirmPremium
-                  ? void action.run(() => purchase("premium"), "")
-                  : setConfirmPremium(true)
+                confirmFocus
+                  ? void action.run(() => purchase("focus"), "")
+                  : setConfirmFocus(true)
               }
             >
-              {t(confirmPremium ? "Tasdiqlash" : "Sotib olish")}
+              {t(confirmFocus ? "Tasdiqlash" : "Sotib olish")}
             </button>
-            {confirmPremium && (
-              <button onClick={() => setConfirmPremium(false)}>
+            {confirmFocus && (
+              <button onClick={() => setConfirmFocus(false)}>
                 {t("Bekor qilish")}
               </button>
             )}

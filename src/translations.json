@@ -1,13 +1,23 @@
 {
+  "Kunlik kirish mukofoti": {
+    "uz": "Kunlik kirish mukofoti",
+    "en": "Daily sign-in reward",
+    "ru": "Награда за ежедневный вход"
+  },
+  "Har kuni birinchi kirish": {
+    "uz": "Har kuni birinchi kirish",
+    "en": "First sign-in each day",
+    "ru": "Первый вход за день"
+  },
   "O‘quv mukofotlari": {
     "uz": "O‘quv mukofotlari",
     "en": "Learning rewards",
     "ru": "Награды за обучение"
   },
-  "Test ishlang va tangalarni mavzular yoki Premium uchun sarflang.": {
-    "uz": "Test ishlang va tangalarni mavzular yoki Premium uchun sarflang.",
-    "en": "Take tests and spend coins on themes or Premium.",
-    "ru": "Проходите тесты и тратьте монеты на темы или Premium."
+  "Test ishlang va tangalarni mavzular yoki TAFE Focus uchun sarflang.": {
+    "uz": "Test ishlang va tangalarni mavzular yoki TAFE Focus uchun sarflang.",
+    "en": "Take tests and spend coins on themes or TAFE Focus.",
+    "ru": "Проходите тесты и тратьте монеты на темы или TAFE Focus."
   },
   "Balans": {
     "uz": "Balans",
@@ -64,15 +74,15 @@
     "en": "Activate theme",
     "ru": "Применить тему"
   },
-  "3 kunlik Premium": {
-    "uz": "3 kunlik Premium",
-    "en": "3 days of Premium",
-    "ru": "Premium на 3 дня"
+  "3 kunlik TAFE Focus": {
+    "uz": "3 kunlik TAFE Focus",
+    "en": "3 days of TAFE Focus",
+    "ru": "TAFE Focus на 3 дня"
   },
-  "Faol obuna bo‘lmasa, Premium darhol boshlanadi.": {
-    "uz": "Faol obuna bo‘lmasa, Premium darhol boshlanadi.",
-    "en": "Premium starts right away if you have no active subscription.",
-    "ru": "Premium активируется сразу при отсутствии активной подписки."
+  "Faol obuna bo‘lmasa, TAFE Focus darhol boshlanadi.": {
+    "uz": "Faol obuna bo‘lmasa, TAFE Focus darhol boshlanadi.",
+    "en": "TAFE Focus starts right away if you have no active subscription.",
+    "ru": "TAFE Focus активируется сразу при отсутствии активной подписки."
   },
   "Tanga tarixi": {
     "uz": "Tanga tarixi",

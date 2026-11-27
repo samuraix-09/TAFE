@@ -1,3 +1,4 @@
+import { TafeCoinBadge, TafeCoinReward } from "./TafeCoinBadge";
 import type { CoinWallet } from "./TafeCoinPage";
 import { readReadingProgress } from "./reading-progress";
 import {
@@ -15,7 +16,6 @@ import {
   ArrowUpRight,
   BookOpen,
   ChartNoAxesCombined,
-  Coins,
   LayoutDashboard,
   Library,
   LogOut,
@@ -169,7 +169,7 @@ function App() {
   const coinUser =
     account.data?.profile.status === "active" ? account.data.profile.id : null;
   const coinAccount = useData<CoinWallet | null>(
-    () => (coinUser ? rpc("tafe_coin_wallet") : Promise.resolve(null)),
+    () => (coinUser ? rpc("check_in_tafe_coins") : Promise.resolve(null)),
     [coinUser],
   );
   const [coinUpdate, setCoinUpdate] = useState<{
@@ -411,6 +411,13 @@ function App() {
   return (
     <>
       {!fullChat && aiShortcut}
+      {coinAccount.data?.daily_earned === 10 && (
+        <TafeCoinReward
+          key={session.user.id}
+          amount={10}
+          label={t("Kunlik kirish mukofoti")}
+        />
+      )}
       <aside className="student-sidebar" data-coin-theme={wallet?.theme}>
         <a className="brand" href="#/student/dashboard">
           <Brand />
@@ -478,7 +485,7 @@ function App() {
               aria-label="TafeCoin"
               aria-current={page === "coins" ? "page" : undefined}
             >
-              <Coins size={18} aria-hidden="true" />
+              <TafeCoinBadge />
               <span>{wallet?.balance ?? "—"}</span>
             </a>
             <LanguagePicker onChange={changeLanguage} />

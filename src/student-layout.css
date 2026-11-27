@@ -155,7 +155,7 @@
   );
 }
 
-.coin-theme-preview[data-preview="premium"] {
+.coin-theme-preview[data-preview="focus"] {
   background: linear-gradient(125deg, #72420b, #90651d);
 }
 
@@ -245,5 +245,79 @@
     flex: 1 1 auto;
     justify-content: flex-end;
     gap: 4px;
+  }
+}
+
+.tafecoin-mark {
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+  width: 1.35em;
+  aspect-ratio: 1;
+  border: 1px solid #aa6116;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 30% 20%,
+    #fff2ab,
+    #f8c052 53%,
+    #c77419 100%
+  );
+  color: #562802;
+  box-shadow:
+    inset 0 0 0 2px #ffe593,
+    0 1px 3px #40260040;
+  font:
+    900 1.1em / 1 system-ui,
+    sans-serif;
+}
+
+.tafecoin-reward {
+  position: fixed;
+  z-index: 30;
+  inset: 16px max(12px, env(safe-area-inset-right)) auto auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: calc(100vw - 24px);
+  padding: 12px 16px;
+  border: 1px solid #d9953866;
+  border-radius: 18px;
+  background: var(--paper);
+  box-shadow: 0 14px 36px #663d2240;
+  pointer-events: none;
+}
+
+.tafecoin-reward div {
+  display: grid;
+  gap: 2px;
+}
+
+.tafecoin-reward .tafecoin-mark {
+  font-size: 1.6rem;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .tafecoin-reward {
+    animation: tafecoin-arrive 360ms cubic-bezier(0.2, 0.7, 0.25, 1) both;
+  }
+
+  .tafecoin-reward .tafecoin-mark {
+    animation: tafecoin-flip 650ms ease-out both;
+  }
+}
+
+@keyframes tafecoin-arrive {
+  from {
+    opacity: 0;
+    transform: translateY(-12px) scale(0.94);
+  }
+}
+
+@keyframes tafecoin-flip {
+  from {
+    transform: rotateY(-180deg) scale(0.76);
+  }
+  70% {
+    transform: rotateY(18deg) scale(1.15);
   }
 }

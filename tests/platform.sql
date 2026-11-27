@@ -466,17 +466,21 @@ from (select id from public.tests
 select set_config('request.jwt.claim.sub','c1000000-0000-4000-8000-000000000099',true);
 set local role authenticated;
 do $$
+declare check_in jsonb;
 begin
+  check_in := public.check_in_tafe_coins();
+  if check_in->>'daily_earned' <> '10' or check_in->>'balance' <> '10' then
+    raise exception 'Daily login reward failed';
+  end if;
+  if public.check_in_tafe_coins()->>'daily_earned' <> '0' then
+    raise exception 'Daily login reward was duplicated';
+  end if;
   if now() >= '2026-11-27 00:00:00+05'::timestamptz then
     if public.claim_tafe_coins() <> 45 or public.claim_tafe_coins() <> 0 then
       raise exception 'Coin daily limit or repeat claim failed';
     end if;
-    perform public.tafe_coin_purchase('aurora','c9000000-0000-4000-8000-000000000001');
-    perform public.tafe_coin_purchase('aurora','c9000000-0000-4000-8000-000000000002');
-    perform public.set_tafe_coin_theme('aurora');
-    if (public.tafe_coin_wallet()->>'balance')::integer <> 0 or
-       public.tafe_coin_wallet()->>'theme' <> 'aurora' then
-      raise exception 'Theme purchase or activation failed';
+    if (public.tafe_coin_wallet()->>'balance')::integer <> 55 then
+      raise exception 'Exam rewards were not added to login coins';
     end if;
   end if;
   begin
@@ -492,16 +496,23 @@ begin
   end;
 end $$;
 reset role;
-insert into public.tafe_coin_wallets(user_id,balance) values ('c1000000-0000-4000-8000-000000000099',200)
+insert into public.tafe_coin_wallets(user_id,balance) values ('c1000000-0000-4000-8000-000000000099',420)
 on conflict (user_id) do update set balance = excluded.balance;
 set local role authenticated;
 do $$
 begin
-  perform public.tafe_coin_purchase('premium','c9000000-0000-4000-8000-000000000004');
-  perform public.tafe_coin_purchase('premium','c9000000-0000-4000-8000-000000000004');
-  if public.tafe_coin_wallet()->>'balance' <> '20' or
-     public.my_entitlements()->'plan'->>'name' <> 'TAFE Mastery' then
-    raise exception 'Premium coin redemption failed';
+  perform public.tafe_coin_purchase('aurora','c9000000-0000-4000-8000-000000000001');
+  perform public.tafe_coin_purchase('aurora','c9000000-0000-4000-8000-000000000002');
+  perform public.set_tafe_coin_theme('aurora');
+  if public.tafe_coin_wallet()->>'balance' <> '330' or
+     public.tafe_coin_wallet()->>'theme' <> 'aurora' then
+    raise exception 'Theme purchase or activation failed';
+  end if;
+  perform public.tafe_coin_purchase('focus','c9000000-0000-4000-8000-000000000004');
+  perform public.tafe_coin_purchase('focus','c9000000-0000-4000-8000-000000000004');
+  if public.tafe_coin_wallet()->>'balance' <> '30' or
+     public.my_entitlements()->'plan'->>'name' <> 'TAFE Focus' then
+    raise exception 'Focus coin redemption failed';
   end if;
 end $$;
 reset role;
