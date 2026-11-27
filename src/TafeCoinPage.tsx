@@ -1,8 +1,16 @@
 import { TafeCoinBadge, TafeCoinReward } from "./TafeCoinBadge";
 import { useState } from "react";
-import { Check, Crown, Palette } from "lucide-react";
+import {
+  Check,
+  Crown,
+  CalendarDays,
+  ClipboardCheck,
+  Eye,
+  Sparkles,
+} from "lucide-react";
 import { localeTag, t } from "./i18n";
-import { Feedback, rpc, useAction } from "./platform";
+import { db } from "./db";
+import { checked, Feedback, Modal, rpc, useAction, useData } from "./platform";
 
 export type CoinTheme = "classic" | "aurora" | "midnight";
 export type CoinWallet = {
@@ -40,7 +48,29 @@ export function TafeCoinPage({
   const action = useAction();
   const [earned, setEarned] = useState<number | null>(null);
   const [rewardId, setRewardId] = useState(0);
-  const [confirmFocus, setConfirmFocus] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<
+    (typeof themes)[number] | { id: "focus"; title: string; price: number }
+  >();
+  const [darkPreview, setDarkPreview] = useState(false);
+  const focus = useData(
+    async () =>
+      selectedProduct?.id === "focus"
+        ? checked(
+            await db
+              .from("plans")
+              .select("ai_daily,tests_daily,library_rank")
+              .eq("name", "TAFE Focus")
+              .eq("active", true)
+              .maybeSingle(),
+          )
+        : null,
+    [selectedProduct?.id === "focus"],
+  );
+  function preview(product: NonNullable<typeof selectedProduct>) {
+    action.clear();
+    setDarkPreview(document.documentElement.dataset.theme === "dark");
+    setSelectedProduct(product);
+  }
   async function refresh() {
     onChange(await rpc("tafe_coin_wallet"));
   }
@@ -50,8 +80,8 @@ export function TafeCoinPage({
       product,
       request_id: crypto.randomUUID(),
     });
-    setConfirmFocus(false);
     await refresh();
+    setSelectedProduct(undefined);
   }
 
   return (
@@ -81,21 +111,32 @@ export function TafeCoinPage({
         </button>
       )}
       <section className="coin-earn">
-        <div>
+        <div className="coin-earn-guide">
           <h2>{t("Tanga ishlab topish")}</h2>
-          <ul>
-            <li>
-              {t("Har kuni birinchi kirish")} · <strong>+10</strong>
-            </li>
-            <li>
-              {t("Kamida 10 ballik testda 50% yoki undan yuqori natija")} ·{" "}
+          <div className="coin-earning-grid">
+            <article>
+              <CalendarDays size={21} aria-hidden="true" />
               <strong>+10</strong>
-            </li>
-            <li>
-              {t("Shu testda 80% yoki undan yuqori natija")} ·{" "}
+              <h3>{t("Har kuni birinchi kirish")}</h3>
+              <p>
+                {t(
+                  "Toshkent vaqti bo‘yicha kuniga bir marta avtomatik qo‘shiladi.",
+                )}
+              </p>
+            </article>
+            <article>
+              <ClipboardCheck size={21} aria-hidden="true" />
+              <strong>+10</strong>
+              <h3>{t("Test natijasi 50–79%")}</h3>
+              <p>{t("Kamida 10 ballik testni yakunlang.")}</p>
+            </article>
+            <article>
+              <Sparkles size={21} aria-hidden="true" />
               <strong>+15</strong>
-            </li>
-          </ul>
+              <h3>{t("Test natijasi 80% yoki yuqori")}</h3>
+              <p>{t("Yuqori natija uchun 15 tanga beriladi.")}</p>
+            </article>
+          </div>
           <p className="muted">
             {t(
               "Kuniga 3 tagacha turli test uchun. So‘nggi 30 kundagi mos testlar hisobga olinadi.",
@@ -138,37 +179,18 @@ export function TafeCoinPage({
             const selected = wallet?.theme === theme.id;
             return (
               <article className="coin-product" key={theme.id}>
-                <div className="coin-theme-preview" data-preview={theme.id}>
-                  <Palette size={24} aria-hidden="true" />
-                </div>
+                <ThemePreview theme={theme.id} dark={false} />
                 <h3>{theme.title}</h3>
                 <p className="muted">
                   {owned ? t("Sizda mavjud") : `${theme.price} TafeCoin`}
                 </p>
-                <button
-                  disabled={
-                    !wallet ||
-                    action.busy ||
-                    selected ||
-                    (!owned && wallet.balance < theme.price)
-                  }
-                  onClick={() =>
-                    void action.run(async () => {
-                      if (owned) {
-                        await rpc("set_tafe_coin_theme", { product: theme.id });
-                        await refresh();
-                      } else await purchase(theme.id);
-                    }, "")
-                  }
-                >
-                  {selected && <Check size={16} aria-hidden="true" />}
-                  {t(
-                    selected
-                      ? "Faol mavzu"
-                      : owned
-                        ? "Mavzuni yoqish"
-                        : "Sotib olish",
+                <button type="button" onClick={() => preview(theme)}>
+                  {selected ? (
+                    <Check size={16} aria-hidden="true" />
+                  ) : (
+                    <Eye size={16} aria-hidden="true" />
                   )}
+                  {t(selected ? "Faol mavzu" : "Batafsil ko‘rish")}
                 </button>
               </article>
             );
@@ -179,27 +201,111 @@ export function TafeCoinPage({
             </div>
             <h3>{t("3 kunlik TAFE Focus")}</h3>
             <p className="muted">{focusPrice} TafeCoin</p>
-            {confirmFocus && (
-              <p>{t("Faol obuna bo‘lmasa, TAFE Focus darhol boshlanadi.")}</p>
-            )}
             <button
-              disabled={!wallet || action.busy || wallet.balance < focusPrice}
+              type="button"
               onClick={() =>
-                confirmFocus
-                  ? void action.run(() => purchase("focus"), "")
-                  : setConfirmFocus(true)
+                preview({
+                  id: "focus",
+                  title: "3 kunlik TAFE Focus",
+                  price: focusPrice,
+                })
               }
             >
-              {t(confirmFocus ? "Tasdiqlash" : "Sotib olish")}
+              <Eye size={16} aria-hidden="true" /> {t("Batafsil ko‘rish")}
             </button>
-            {confirmFocus && (
-              <button onClick={() => setConfirmFocus(false)}>
-                {t("Bekor qilish")}
-              </button>
-            )}
           </article>
         </div>
       </section>
+      {selectedProduct && (
+        <Modal
+          title={t(selectedProduct.title)}
+          onClose={() => setSelectedProduct(undefined)}
+        >
+          <div className="coin-product-details">
+            {selectedProduct.id === "focus" ? (
+              <>
+                <p>{t("Faol obuna bo‘lmasa, TAFE Focus darhol boshlanadi.")}</p>
+                <Feedback loading={focus.loading} error={focus.error} />
+                {focus.data && (
+                  <ul>
+                    <li>
+                      TAFE AI · {focus.data.ai_daily} {t("kunlik")}
+                    </li>
+                    <li>
+                      {t("Testlar")} · {focus.data.tests_daily} {t("kunlik")}
+                    </li>
+                    <li>
+                      {t("Kutubxona")} · {t("Daraja")} {focus.data.library_rank}
+                    </li>
+                  </ul>
+                )}
+              </>
+            ) : (
+              <>
+                <ThemePreview theme={selectedProduct.id} dark={darkPreview} />
+                <div className="button-row" aria-label={t("Rang rejimi")}>
+                  <button
+                    aria-pressed={!darkPreview}
+                    onClick={() => setDarkPreview(false)}
+                  >
+                    {t("Yorug‘")}
+                  </button>
+                  <button
+                    aria-pressed={darkPreview}
+                    onClick={() => setDarkPreview(true)}
+                  >
+                    {t("Tungi")}
+                  </button>
+                </div>
+              </>
+            )}
+            <p>
+              <strong>
+                {wallet?.theme === selectedProduct.id ||
+                selectedProduct.id === "classic" ||
+                wallet?.owned.includes(selectedProduct.id as CoinTheme)
+                  ? t("Sizda mavjud")
+                  : `${selectedProduct.price} TafeCoin`}
+              </strong>
+            </p>
+            <Feedback error={action.error} />
+            <button
+              className="primary"
+              disabled={
+                !wallet ||
+                action.busy ||
+                wallet.theme === selectedProduct.id ||
+                (selectedProduct.id !== "classic" &&
+                  !wallet.owned.includes(selectedProduct.id as CoinTheme) &&
+                  wallet.balance < selectedProduct.price)
+              }
+              onClick={() =>
+                void action.run(async () => {
+                  if (
+                    selectedProduct.id === "classic" ||
+                    wallet?.owned.includes(selectedProduct.id as CoinTheme)
+                  ) {
+                    await rpc("set_tafe_coin_theme", {
+                      product: selectedProduct.id,
+                    });
+                    await refresh();
+                    setSelectedProduct(undefined);
+                  } else await purchase(selectedProduct.id);
+                }, "")
+              }
+            >
+              {t(
+                wallet?.theme === selectedProduct.id
+                  ? "Faol mavzu"
+                  : selectedProduct.id === "classic" ||
+                      wallet?.owned.includes(selectedProduct.id as CoinTheme)
+                    ? "Mavzuni yoqish"
+                    : "Xaridni tasdiqlash",
+              )}
+            </button>
+          </div>
+        </Modal>
+      )}
       {Boolean(wallet?.history.length) && (
         <section className="coin-history">
           <h2>{t("Tanga tarixi")}</h2>
@@ -219,6 +325,30 @@ export function TafeCoinPage({
           </ul>
         </section>
       )}
+    </div>
+  );
+}
+
+function ThemePreview({ theme, dark }: { theme: CoinTheme; dark: boolean }) {
+  return (
+    <div
+      className="coin-workspace-preview"
+      data-coin-theme={theme}
+      data-preview-mode={dark ? "dark" : "light"}
+      aria-hidden="true"
+    >
+      <div className="coin-preview-nav">
+        <b>TAFE</b>
+        <i />
+        <i />
+      </div>
+      <div className="coin-preview-content">
+        <div className="coin-preview-hero">{t("Testlarni ko‘rish ")}</div>
+        <div className="coin-preview-panels">
+          <span>{t("Testlar")}</span>
+          <span>{t("Kutubxona")}</span>
+        </div>
+      </div>
     </div>
   );
 }

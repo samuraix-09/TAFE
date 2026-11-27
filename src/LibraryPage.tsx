@@ -5,7 +5,6 @@ import {
   BookOpen,
   Download,
   ImagePlus,
-  Sparkles,
   Plus,
   Search,
   Trash2,
@@ -24,10 +23,6 @@ import {
 import "./library-reader.css";
 
 const DocumentPreview = lazy(() => import("./LibraryDocument"));
-const ReaderChat = lazy(() =>
-  import("./ChatPage").then((module) => ({ default: module.ChatPage })),
-);
-
 export function LibraryPage({
   admin = false,
   userId,
@@ -377,7 +372,6 @@ export function LibraryPage({
           url={preview.url}
           path={preview.path}
           title={preview.title}
-          userId={userId}
           notesKey={
             userId && !admin
               ? JSON.stringify([userId, preview.bookId, preview.path])
@@ -420,7 +414,6 @@ function BookReader({
   url,
   path,
   title,
-  userId,
   initialPage,
   notesKey,
   onPage,
@@ -429,14 +422,12 @@ function BookReader({
   url: string;
   path: string;
   title: string;
-  userId?: string;
   initialPage: number;
   notesKey?: string;
   onPage: (page: number) => void;
   onClose: () => void;
 }) {
   const dialog = useRef<HTMLDialogElement>(null);
-  const [showAi, setShowAi] = useState(false);
   useEffect(() => {
     const reader = dialog.current;
     reader?.showModal();
@@ -455,20 +446,11 @@ function BookReader({
           {t("Kutubxonaga qaytish")}
         </button>
         <strong>{title}</strong>
-        {userId && (
-          <button
-            type="button"
-            aria-expanded={showAi}
-            onClick={() => setShowAi((open) => !open)}
-          >
-            <Sparkles size={16} aria-hidden="true" /> TAFE AI
-          </button>
-        )}
         <a className="button-link" href={url} target="_blank" rel="noreferrer">
           {t("Alohida oynada ochish / yuklab olish ↗")}
         </a>
       </header>
-      <div className={showAi ? "book-reader-view has-ai" : "book-reader-view"}>
+      <div className="book-reader-view">
         <Suspense fallback={<p role="status">{t("TAFE yuklanmoqda…")}</p>}>
           <DocumentPreview
             url={url}
@@ -479,16 +461,6 @@ function BookReader({
             onPage={onPage}
           />
         </Suspense>
-        {showAi && userId && (
-          <div className="book-reader-chat">
-            <Suspense fallback={<p role="status">{t("TAFE yuklanmoqda…")}</p>}>
-              <ReaderChat
-                userId={userId}
-                initialPrompt={`“${title}” kitobidagi quyidagi matnni tushuntiring: `}
-              />
-            </Suspense>
-          </div>
-        )}
       </div>
     </dialog>
   );
