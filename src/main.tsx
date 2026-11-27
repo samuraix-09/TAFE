@@ -356,7 +356,8 @@ function App() {
         setAiPrompt("");
       }}
     >
-      <Sparkles size={18} aria-hidden="true" /> TAFE AI
+      <Sparkles className="tafe-ai-sparkle" size={18} aria-hidden="true" />
+      <span>TAFE AI</span>
     </a>
   );
   if (adminRoute)
@@ -439,9 +440,13 @@ function App() {
           <span className="student-breadcrumb">
             TAFE / {t(nav.find((n) => n[0] === page)?.[1] || "")}
           </span>
-          <div className="student-app-title">
+          <a
+            className="student-app-title"
+            href="#/student/profile"
+            aria-label={t("Profil va sozlamalar")}
+          >
             <Brand caption={t(nav.find((n) => n[0] === page)?.[1] || "")} />
-          </div>
+          </a>
           <div>
             <LanguagePicker onChange={changeLanguage} />
             {admin && (

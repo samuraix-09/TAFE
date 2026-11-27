@@ -1,0 +1,201 @@
+.landing {
+  --landing-accent: #5143a8;
+  --landing-tint: #7466d81c;
+  --landing-width: 1260px;
+  --landing-gutter: clamp(14px, 4vw, 48px);
+  color: var(--ink);
+}
+
+[data-theme="dark"] .landing {
+  --landing-accent: #bdb3ff;
+  --landing-tint: #9584fb29;
+}
+
+.landing header.public-header {
+  width: calc(100% - 2 * var(--landing-gutter));
+  max-width: var(--landing-width);
+  height: auto;
+  min-height: 72px;
+  margin: 16px auto 0;
+  padding: 10px clamp(12px, 2vw, 26px);
+  border: 1px solid var(--glass-rim);
+  border-radius: 25px;
+  background:
+    linear-gradient(160deg, var(--glass-sheen), transparent 60%),
+    var(--glass-surface);
+  backdrop-filter: blur(20px) saturate(150%);
+  z-index: 5;
+}
+
+.landing .public-main,
+.landing .public-footer {
+  max-width: calc(var(--landing-width) + 2 * var(--landing-gutter));
+  padding-inline: var(--landing-gutter);
+}
+
+.landing .public-links a,
+.landing .public-footer nav :is(a, button) {
+  font-size: 13px;
+}
+
+.landing .landing-hero {
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+  gap: clamp(28px, 6vw, 90px);
+  padding-block: clamp(50px, 9vw, 125px);
+}
+
+.landing .hero-copy h1 {
+  margin-top: 0;
+  font-size: clamp(36px, 6vw, 79px);
+  line-height: 1.02;
+  letter-spacing: -0.055em;
+}
+
+.landing .hero-copy h1 em,
+.landing .public-exams svg {
+  color: var(--landing-accent);
+}
+
+.landing .hero-copy > p {
+  max-width: 48ch;
+  font-size: clamp(15px, 1.5vw, 18px);
+  line-height: 1.6;
+}
+
+.landing
+  :is(
+    .platform-preview,
+    .exam-strip,
+    .feature-card,
+    .public-exams > button,
+    .how-block,
+    .pricing-card,
+    .final-cta,
+    .windows-downloads
+  ) {
+  background:
+    linear-gradient(150deg, var(--glass-sheen), transparent 55%),
+    var(--glass-surface);
+  border: 1px solid var(--glass-rim);
+  border-radius: clamp(16px, 3vw, 28px);
+  box-shadow:
+    inset 0 1px 0 var(--glass-sheen),
+    0 12px 32px var(--glass-shadow);
+}
+
+.landing .platform-preview {
+  color: var(--ink);
+  padding: clamp(8px, 1.5vw, 18px);
+}
+
+.landing .platform-preview .preview-top {
+  color: var(--subtle);
+  background: transparent;
+}
+
+.landing .exam-strip {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 14px 16px;
+}
+
+.landing .exam-strip a {
+  color: var(--landing-accent);
+  background: var(--landing-tint);
+}
+
+.landing .section-heading {
+  padding-top: clamp(56px, 8vw, 100px);
+  margin-bottom: 20px;
+}
+
+.landing :is(.section-heading, .how-block, .final-cta) h2 {
+  color: var(--ink);
+  font-size: clamp(29px, 5vw, 50px);
+  line-height: 1.14;
+  letter-spacing: -0.045em;
+}
+
+.landing :is(.feature-grid, .public-exams, .pricing-grid) {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 245px), 1fr));
+  gap: clamp(12px, 2vw, 22px);
+}
+
+.landing :is(.feature-card, .pricing-card, .public-exams > button) {
+  padding: clamp(18px, 3vw, 32px);
+}
+
+.landing :is(.feature-card p, .public-exams p, .pricing-card li) {
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.landing .feature-icon {
+  color: var(--landing-accent);
+  background: var(--landing-tint);
+  border-radius: 15px;
+}
+
+.landing .public-exams h3 {
+  padding-inline-end: 25px;
+  margin-top: 0;
+}
+
+.landing .public-exams > button:hover,
+.landing .pricing-card.featured {
+  border-color: var(--landing-accent);
+}
+
+.landing .pricing-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.landing .pricing-card h3 {
+  margin-top: 0;
+}
+
+.landing .pricing-card ul {
+  flex: 1;
+}
+
+.landing .how-block {
+  gap: clamp(22px, 5vw, 72px);
+  padding: clamp(20px, 5vw, 56px);
+}
+
+.landing .final-cta {
+  margin-top: clamp(40px, 7vw, 88px);
+  padding: clamp(32px, 7vw, 90px) 20px;
+}
+
+.landing .public-footer {
+  padding-block: 34px 24px;
+}
+
+@media (max-width: 850px) {
+  .landing .landing-hero,
+  .landing .how-block {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .landing .hero-stage {
+    min-width: 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .landing header.public-header {
+    border-radius: 18px;
+  }
+
+  .landing .public-footer {
+    grid-template-columns: 1fr;
+  }
+
+  .landing .public-footer nav {
+    justify-content: flex-start;
+  }
+}

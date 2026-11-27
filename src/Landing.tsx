@@ -20,6 +20,7 @@ import { db } from "./db";
 import { PlanPurchaseLink } from "./PlanPurchaseLink";
 import { WindowsDownloads } from "./WindowsDownloads";
 import "./visitor.css";
+import "./landing-glass.css";
 export type VisitorPage =
   | "home"
   | "login"
@@ -214,10 +215,6 @@ export function Landing({
       <main className="public-main">
         <div className="landing-hero" id="home">
           <div className="hero-copy">
-            <span className="tiny-label">
-              <span className="status-dot" />
-              {t(" YOUR NEXT CHAPTER STARTS HERE")}
-            </span>
             <h1>
               <span className="hero-line">{t("Prepare Smarter.")}</span>
               <em className="hero-line">{t("Achieve More.")}</em>
@@ -236,10 +233,6 @@ export function Landing({
                 {t("Explore Platform ")}
                 <ArrowUpRight size={18} />
               </a>
-            </div>
-            <div className="hero-note">
-              <ShieldCheck size={16} />
-              {t(" Shaxsiy natijalar. Aniq maqsad. Doimiy rivojlanish.")}
             </div>
           </div>
           <div className="hero-stage">
@@ -307,13 +300,6 @@ export function Landing({
                   </div>
                 </div>
               </div>
-              <span className="floating-note">
-                <Sparkles size={19} />
-                <span>
-                  {t("Learn with clarity.")}
-                  <small>{t("Grow with TAFE.")}</small>
-                </span>
-              </span>
             </div>
           </div>
         </div>
@@ -326,12 +312,7 @@ export function Landing({
           ))}
         </div>
         <div className="section-heading" id="features">
-          <p className="eyebrow">{t("BUILT AROUND YOUR AMBITION")}</p>
-          <h2>
-            {t("Everything you need.")}
-            <br />
-            <span>{t("A clearer path forward.")}</span>
-          </h2>
+          <h2>{t("Features")}</h2>
           <p className="muted">
             {t("Tayyorgarlik, amaliyot va shaxsiy natijalaringiz bir joyda.")}
           </p>
@@ -348,11 +329,7 @@ export function Landing({
           ))}
         </div>
         <div className="section-heading" id="exams">
-          <p className="eyebrow">{t("CHOOSE YOUR DIRECTION")}</p>
-          <h2>
-            {t("Your exam. ")}
-            <span>{t("Your starting point.")}</span>
-          </h2>
+          <h2>{t("Exams")}</h2>
         </div>
         {error && (
           <div role="alert" className="error">
@@ -360,9 +337,8 @@ export function Landing({
           </div>
         )}
         <div className="public-exams">
-          {cats.map((c, i) => (
+          {cats.map((c) => (
             <button key={c.id} onClick={() => go("register")}>
-              <small>0{i + 1}</small>
               <h3>{t(c.name)}</h3>
               <p>{c.description || t("Tayyorgarlikni shu yerdan boshlang.")}</p>
               <ArrowUpRight size={20} />
@@ -376,7 +352,6 @@ export function Landing({
         )}
         <div className="how-block">
           <div>
-            <p className="eyebrow">{t("A SIMPLE WAY FORWARD")}</p>
             <h2>
               {t("Small steps.")}
               <br />
@@ -406,14 +381,7 @@ export function Landing({
           </ol>
         </div>
         <div className="section-heading" id="pricing">
-          <p className="eyebrow">{t("ROOM TO GROW")}</p>
-          <h2>
-            {t("A plan for ")}
-            <span>{t("your ambition.")}</span>
-          </h2>
-          <p className="muted">
-            {t("Tariflar va narxlar platforma bazasidan olinadi.")}
-          </p>
+          <h2>{t("Pricing")}</h2>
         </div>
         <div className="pricing-grid">
           {plans.map((p, i) => (
@@ -421,7 +389,6 @@ export function Landing({
               key={p.id}
               className={i === 1 ? "pricing-card featured" : "pricing-card"}
             >
-              <span className="plan-index">0{i + 1} / TAFE</span>
               <h3>{p.name}</h3>
               <div className="plan-price">
                 {p.monthly_price === null ? (
@@ -465,7 +432,6 @@ export function Landing({
         )}
         <WindowsDownloads />
         <div className="final-cta">
-          <p className="eyebrow">{t("MAKE YOUR NEXT MOVE")}</p>
           <h2>
             {t("Your next achievement")}
             <br />
@@ -480,7 +446,6 @@ export function Landing({
       <footer className="public-footer">
         <div>
           <Brand />
-          <p>{t("Prepare Smarter. Achieve More.")}</p>
         </div>
         <nav aria-label={t("Pastki menyu")}>
           <a href="#home">{t("About")}</a>
