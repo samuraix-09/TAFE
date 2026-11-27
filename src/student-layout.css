@@ -321,3 +321,102 @@
     transform: rotateY(18deg) scale(1.15);
   }
 }
+
+.coin-earn-guide {
+  flex: 1 1 100%;
+  min-width: 0;
+}
+.coin-earning-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 190px), 1fr));
+  gap: 10px;
+  margin-block: 12px;
+}
+.coin-earning-grid article {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 7px;
+  padding: 13px;
+  border: 1px solid var(--stroke);
+  border-radius: 14px;
+  background: var(--surface);
+}
+.coin-earning-grid article :is(h3, p) {
+  grid-column: 1/-1;
+}
+.coin-earning-grid article :is(svg, strong) {
+  color: var(--blue);
+}
+.coin-product-details {
+  display: grid;
+  gap: 12px;
+}
+.coin-product-details > p {
+  margin: 0;
+}
+.coin-workspace-preview {
+  --sample-base: #e8edfb;
+  --sample-panel: #ffffffb8;
+  --sample-ink: #182642;
+  display: grid;
+  grid-template-columns: minmax(55px, 0.7fr) minmax(0, 2fr);
+  min-width: 0;
+  min-height: 122px;
+  border: 1px solid var(--stroke);
+  border-radius: 12px;
+  overflow: hidden;
+  color: var(--sample-ink);
+  background: var(--sample-bg, var(--sample-base));
+}
+.coin-workspace-preview[data-preview-mode="dark"] {
+  --sample-base: #101a32;
+  --sample-panel: #243454e0;
+  --sample-ink: #eef4ff;
+}
+.coin-workspace-preview[data-coin-theme="aurora"] {
+  --sample-bg:
+    radial-gradient(ellipse at 12% 0%, #81dfb6a0, transparent 65%),
+    radial-gradient(ellipse at 95% 28%, #a17cff99, transparent 65%),
+    var(--sample-base);
+}
+.coin-workspace-preview[data-coin-theme="midnight"] {
+  --sample-bg:
+    repeating-linear-gradient(0deg, transparent 0 15px, #698ee541 15px 16px),
+    repeating-linear-gradient(90deg, transparent 0 15px, #698ee541 15px 16px),
+    var(--sample-base);
+}
+.coin-preview-nav {
+  display: grid;
+  gap: 8px;
+  align-content: start;
+  padding: 10px 6px;
+  background: var(--sample-panel);
+}
+.coin-preview-nav i {
+  height: 5px;
+  width: 56%;
+  border-radius: 5px;
+  background: currentColor;
+  opacity: 0.3;
+}
+.coin-preview-content {
+  display: grid;
+  align-content: center;
+  gap: 7px;
+  padding: 8px;
+  min-width: 0;
+}
+.coin-preview-hero,
+.coin-preview-panels span {
+  background: var(--sample-panel);
+  border-radius: 7px;
+  padding: 7px 5px;
+  font-size: 11px;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+.coin-preview-panels {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 5px;
+}

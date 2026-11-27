@@ -1,4 +1,39 @@
 {
+  "Toshkent vaqti bo‘yicha kuniga bir marta avtomatik qo‘shiladi.": {
+    "uz": "Toshkent vaqti bo‘yicha kuniga bir marta avtomatik qo‘shiladi.",
+    "en": "Automatically credited once a day, Tashkent time.",
+    "ru": "Начисляется раз в день по ташкентскому времени."
+  },
+  "Test natijasi 50–79%": {
+    "uz": "Test natijasi 50–79%",
+    "en": "Test score of 50–79%",
+    "ru": "Результат теста 50–79%"
+  },
+  "Kamida 10 ballik testni yakunlang.": {
+    "uz": "Kamida 10 ballik testni yakunlang.",
+    "en": "Complete a test worth at least 10 points.",
+    "ru": "Завершите тест, в котором можно набрать хотя бы 10 баллов."
+  },
+  "Test natijasi 80% yoki yuqori": {
+    "uz": "Test natijasi 80% yoki yuqori",
+    "en": "Test score of 80% or higher",
+    "ru": "Результат теста 80% и выше"
+  },
+  "Yuqori natija uchun 15 tanga beriladi.": {
+    "uz": "Yuqori natija uchun 15 tanga beriladi.",
+    "en": "Earn 15 coins for a high score.",
+    "ru": "За высокий результат начисляется 15 монет."
+  },
+  "Batafsil ko‘rish": {
+    "uz": "Batafsil ko‘rish",
+    "en": "View details",
+    "ru": "Подробнее"
+  },
+  "Xaridni tasdiqlash": {
+    "uz": "Xaridni tasdiqlash",
+    "en": "Confirm purchase",
+    "ru": "Подтвердить покупку"
+  },
   "Kunlik kirish mukofoti": {
     "uz": "Kunlik kirish mukofoti",
     "en": "Daily sign-in reward",
