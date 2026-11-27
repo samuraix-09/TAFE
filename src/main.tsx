@@ -1,3 +1,5 @@
+import { equippedExtra, type CoinExtra } from "./coin-extras";
+import { CoinDecoration, decorationStyle } from "./CoinDecoration";
 import { signedCoinBackground } from "./CoinBackground";
 import { StudyTimer } from "./StudyTimer";
 import type { CSSProperties } from "react";
@@ -184,6 +186,11 @@ function App() {
     coinUpdate && coinUpdate.userId === coinUser
       ? coinUpdate.wallet
       : coinAccount.data;
+  const scene = equippedExtra(wallet?.equipped, "scene");
+  const badge = equippedExtra(wallet?.equipped, "badge");
+  const frame = equippedExtra(wallet?.equipped, "frame");
+  const effect = equippedExtra(wallet?.equipped, "effect");
+  const dashboardDecoration = equippedExtra(wallet?.equipped, "dashboard");
   const backgroundUser =
     coinUser && wallet?.owned.includes("background") ? coinUser : null;
   const coinBackground = useData<string | null>(
@@ -435,6 +442,7 @@ function App() {
       {coinAccount.data?.daily_earned === 10 && (
         <TafeCoinReward
           key={session.user.id}
+          effect={effect}
           amount={10}
           label={t("Kunlik kirish mukofoti")}
         />
@@ -485,12 +493,16 @@ function App() {
         }
         data-coin-theme={wallet?.theme}
         data-custom-background={selectedBackground ? true : undefined}
+        data-extra-scene={scene ? true : undefined}
         style={
-          selectedBackground
-            ? ({
-                "--custom-background": `url(${JSON.stringify(selectedBackground)})`,
-              } as CSSProperties)
-            : undefined
+          {
+            ...(scene ? decorationStyle(scene) : {}),
+            ...(selectedBackground
+              ? {
+                  "--custom-background": `url(${JSON.stringify(selectedBackground)})`,
+                }
+              : {}),
+          } as CSSProperties
         }
       >
         <header className="student-topbar">
@@ -506,6 +518,7 @@ function App() {
             aria-label={t("Profil va sozlamalar")}
           >
             <Brand caption={t(nav.find((n) => n[0] === page)?.[1] || "")} />
+            {badge && <CoinDecoration item={badge} />}
             {wallet?.owned.includes("scholar") && (
               <span className="golden-scholar-badge" title="Golden Scholar">
                 <BadgeCheck size={18} aria-hidden="true" />
@@ -543,7 +556,13 @@ function App() {
             >
               <LogOut size={16} />
             </button>
-            <div className="avatar">{(profile.display_name || "T")[0]}</div>
+            <div
+              className="avatar"
+              data-extra-frame={frame?.variant}
+              style={frame ? decorationStyle(frame) : undefined}
+            >
+              {(profile.display_name || "T")[0]}
+            </div>
           </div>
         </header>
         <main
@@ -561,6 +580,7 @@ function App() {
                 onResume={start}
                 busy={action.busy}
                 hasStudyTimer={Boolean(wallet?.owned.includes("study_timer"))}
+                decoration={dashboardDecoration}
               />
             )}
             {page === "tests" && (
@@ -692,6 +712,7 @@ function Dashboard({
   onResume,
   busy,
   hasStudyTimer,
+  decoration,
 }: {
   profile: Row;
   categories: Row[];
@@ -699,6 +720,7 @@ function Dashboard({
   onResume: (id: string, category: string, section: string) => void;
   busy: boolean;
   hasStudyTimer: boolean;
+  decoration?: CoinExtra;
 }) {
   const result = useData(async () => {
     await rpc("settle_exam_sessions");
@@ -768,6 +790,7 @@ function Dashboard({
       />
       <Feedback error={result.error || ent.error} loading={result.loading} />
       <section className="dashboard-next">
+        {decoration && <CoinDecoration item={decoration} />}
         <div>
           <h2>{t(next.title)}</h2>
           {next.detail && <p>{next.detail}</p>}

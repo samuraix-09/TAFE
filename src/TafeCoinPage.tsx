@@ -1,3 +1,5 @@
+import { CoinExtraShop } from "./CoinExtraShop";
+import { coinExtras, equippedExtra, type CoinCollection } from "./coin-extras";
 import { CoinBackground } from "./CoinBackground";
 import { TafeCoinBadge, TafeCoinReward } from "./TafeCoinBadge";
 import { useState } from "react";
@@ -27,6 +29,8 @@ type Collectible = CoinTheme | "scholar" | "background" | "study_timer";
 export type CoinWallet = {
   balance: number;
   daily_earned?: number;
+  equipped?: CoinCollection;
+  extra_owned?: string[];
   theme: CoinTheme;
   owned: Collectible[];
   history: { item: string; amount: number; created_at: string }[];
@@ -52,6 +56,7 @@ const eventLabels: Record<string, string> = {
   scholar: scholar.title,
   ...Object.fromEntries(features.map(({ id, title }) => [id, title])),
   login: "Kunlik kirish mukofoti",
+  ...Object.fromEntries(coinExtras.map(({ id, name }) => [id, name])),
 };
 
 export function TafeCoinPage({
@@ -206,6 +211,7 @@ export function TafeCoinPage({
       {earned !== null && earned > 0 && (
         <TafeCoinReward
           key={rewardId}
+          effect={equippedExtra(wallet?.equipped, "effect")}
           amount={earned}
           label={t("Test mukofoti")}
         />
@@ -414,6 +420,7 @@ export function TafeCoinPage({
           </div>
         </Modal>
       )}
+      <CoinExtraShop wallet={wallet} onChange={onChange} />
       {Boolean(wallet?.history.length) && (
         <section className="coin-history">
           <h2>{t("Tanga tarixi")}</h2>

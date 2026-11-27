@@ -544,3 +544,147 @@
   font-weight: 700;
   font-variant-numeric: tabular-nums;
 }
+
+.coin-category-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.coin-category-filters button[aria-pressed="true"] {
+  border-color: var(--blue);
+  color: var(--blue);
+}
+.coin-decoration-sample,
+.coin-decoration {
+  display: grid;
+  place-items: center;
+  color: var(--ink);
+  background:
+    linear-gradient(var(--coin-extra-tint), var(--coin-extra-tint)),
+    var(--paper);
+  border: 1px solid var(--coin-extra-color);
+}
+.coin-decoration-sample {
+  min-height: 82px;
+  border-radius: 13px;
+  overflow: hidden;
+}
+.coin-decoration {
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+}
+.coin-decoration-sample[data-kind="scene"] {
+  background: var(--coin-extra-pattern), var(--surface);
+}
+.student-workspace[data-extra-scene="true"]:not(
+    [data-custom-background="true"]
+  ) {
+  background: var(--coin-extra-pattern), var(--surface);
+}
+.coin-frame-demo,
+.avatar[data-extra-frame] {
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 2px var(--coin-extra-color),
+    0 0 0 5px var(--coin-extra-tint);
+}
+.coin-frame-demo {
+  width: 44px;
+  height: 44px;
+  background: var(--paper);
+}
+.avatar[data-extra-frame="1"],
+.avatar[data-extra-frame="4"] {
+  border-radius: 10px;
+}
+.avatar[data-extra-frame="2"],
+.avatar[data-extra-frame="5"] {
+  box-shadow:
+    0 0 0 3px var(--coin-extra-color),
+    0 0 14px var(--coin-extra-color);
+}
+.avatar[data-extra-frame="3"] {
+  outline: 1px dashed var(--coin-extra-color);
+  outline-offset: 5px;
+}
+.dashboard-next > .coin-decoration {
+  width: 50px;
+  height: 50px;
+}
+@media (max-width: 700px) {
+  .student-topbar .avatar[data-extra-frame] {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  [data-kind="effect"][data-animate="true"] svg {
+    animation: coin-extra-flip 650ms ease both;
+  }
+  [data-kind="effect"][data-animate="true"][data-variant="1"] svg {
+    animation-name: coin-extra-pop;
+  }
+  [data-kind="effect"][data-animate="true"][data-variant="2"] svg {
+    animation-name: coin-extra-orbit;
+  }
+  [data-kind="effect"][data-animate="true"][data-variant="3"] svg {
+    animation-name: coin-extra-rise;
+  }
+  [data-kind="effect"][data-animate="true"][data-variant="4"] svg {
+    animation-name: coin-extra-bounce;
+  }
+  [data-kind="effect"][data-animate="true"][data-variant="5"] svg {
+    animation-name: coin-extra-pulse;
+  }
+}
+@keyframes coin-extra-flip {
+  from {
+    transform: rotateY(-180deg) scale(0.75);
+  }
+}
+@keyframes coin-extra-pop {
+  0% {
+    transform: scale(0.4);
+  }
+  65% {
+    transform: scale(1.4);
+  }
+}
+@keyframes coin-extra-orbit {
+  from {
+    transform: rotate(-270deg) scale(0.55);
+  }
+}
+@keyframes coin-extra-rise {
+  from {
+    transform: translateY(24px);
+    opacity: 0;
+  }
+}
+@keyframes coin-extra-bounce {
+  0% {
+    transform: translateY(-26px);
+  }
+  55% {
+    transform: translateY(6px);
+  }
+  75% {
+    transform: translateY(-5px);
+  }
+}
+@keyframes coin-extra-pulse {
+  0%,
+  35%,
+  65% {
+    transform: translateX(-5px);
+  }
+  20%,
+  50%,
+  80% {
+    transform: translateX(5px);
+  }
+}

@@ -1,4 +1,49 @@
 {
+  "Maxsus kolleksiya": {
+    "uz": "Maxsus kolleksiya",
+    "en": "Special collection",
+    "ru": "Особая коллекция"
+  },
+  "Kabinet fonlari": {
+    "uz": "Kabinet fonlari",
+    "en": "Workspace backgrounds",
+    "ru": "Фоны кабинета"
+  },
+  "Profil nishonlari": {
+    "uz": "Profil nishonlari",
+    "en": "Profile badges",
+    "ru": "Значки профиля"
+  },
+  "Avatar ramkalari": {
+    "uz": "Avatar ramkalari",
+    "en": "Avatar frames",
+    "ru": "Рамки аватара"
+  },
+  "Mukofot animatsiyalari": {
+    "uz": "Mukofot animatsiyalari",
+    "en": "Reward animations",
+    "ru": "Анимации наград"
+  },
+  "Bosh sahifa bezaklari": {
+    "uz": "Bosh sahifa bezaklari",
+    "en": "Dashboard decorations",
+    "ru": "Украшения главной страницы"
+  },
+  "Animatsiyani ko‘rish": {
+    "uz": "Animatsiyani ko‘rish",
+    "en": "Preview animation",
+    "ru": "Посмотреть анимацию"
+  },
+  "Faollashtirish": {
+    "uz": "Faollashtirish",
+    "en": "Activate",
+    "ru": "Активировать"
+  },
+  "Item is not owned": {
+    "uz": "Bu mahsulot hali xarid qilinmagan.",
+    "en": "Item is not owned",
+    "ru": "Предмет не приобретён"
+  },
   "Xariddan so‘ng oltin belgi profil logosi yonida ko‘rinadi.": {
     "uz": "Xariddan so‘ng oltin belgi profil logosi yonida ko‘rinadi.",
     "en": "The gold badge appears next to your profile logo after purchase.",

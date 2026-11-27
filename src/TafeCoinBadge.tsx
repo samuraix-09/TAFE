@@ -1,3 +1,5 @@
+import { CoinDecoration } from "./CoinDecoration";
+import type { CoinExtra } from "./coin-extras";
 import { useEffect, useState } from "react";
 
 export function TafeCoinBadge() {
@@ -11,9 +13,11 @@ export function TafeCoinBadge() {
 export function TafeCoinReward({
   amount,
   label,
+  effect,
 }: {
   amount: number;
   label: string;
+  effect?: CoinExtra;
 }) {
   const [visible, setVisible] = useState(true);
 
@@ -25,7 +29,7 @@ export function TafeCoinReward({
   if (!visible) return null;
   return (
     <aside className="tafecoin-reward" role="status">
-      <TafeCoinBadge />
+      {effect ? <CoinDecoration item={effect} animate /> : <TafeCoinBadge />}
       <div>
         <strong>+{amount} TafeCoin</strong>
         <span>{label}</span>
